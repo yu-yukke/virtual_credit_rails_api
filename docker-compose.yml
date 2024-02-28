@@ -34,5 +34,15 @@ services:
       DATABASE_URL: postgresql://admin:password@postgres:5432/virtual_credit_rails_api
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 4000 -b '0.0.0.0'"
 
+  openapi:
+    container_name: virtual_credit_rails_api_openapi
+    image: swaggerapi/swagger-ui
+    environment:
+      SWAGGER_JSON: /docs/openapi.yaml
+    volumes:
+      - ./doc/openapi.yml:/docs/openapi.yaml
+    ports:
+      - '8080:8080'
+
 volumes:
   postgres_data:
