@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: virtual_credit_rails_api_postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: virtual_credit_rails_api
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  pgadmin:
+    container_name: virtual_credit_rails_api_pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: virtualcredit.official@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    depends_on:
+      - postgres
+    ports:
+      - '5050:80'
+
+  app:
+    container_name: virtual_credit_rails_api_app
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - '4000:4000'
+    environment:
+      DATABASE_URL: postgresql://admin:password@postgres:5432/virtual_credit_rails_api
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 4000 -b '0.0.0.0'"
+
+volumes:
+  postgres_data:
