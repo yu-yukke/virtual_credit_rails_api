@@ -30,7 +30,7 @@ jobs:
           bundle install --jobs 4 --retry 3
       - name: Setup database
         run: |
-          cp config/database.yml.travis config/database.yml
+          cp config/database.yml config/database.yml
           bundle exec rake db:create db:schema:load --trace
       - name: Run RSpec
         run: bundle exec rspec
