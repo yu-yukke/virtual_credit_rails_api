@@ -1,0 +1,36 @@
+name: RSpec
+
+on: [push]
+
+jobs:
+  rspec_test:
+    name: RSpec Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: virtual_credit_rails_api_test
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+      - name: Install dependencies
+        run: |
+          sudo apt-get install libpq-dev
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+      - name: Setup database
+        run: |
+          cp config/database.yml.travis config/database.yml
+          bundle exec rake db:create db:schema:load --trace
+      - name: Run RSpec
+        run: bundle exec rspec
