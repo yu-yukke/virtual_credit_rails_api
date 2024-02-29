@@ -16,6 +16,11 @@ jobs:
           POSTGRES_DB: virtual_credit_rails_api_test
         ports:
           - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
@@ -29,8 +34,12 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
       - name: Setup database
-        run: |
-          cp config/database.yml config/database.yml
-          bundle exec rake db:create db:schema:load --trace
+        run: bundle exec rails db:create
+        env:
+          RAILS_ENV: test
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: password
+      - name: Database migrate
+        run: bundle exec rake ridge:run RAILS_ENV='test'
       - name: Run RSpec
         run: bundle exec rspec
