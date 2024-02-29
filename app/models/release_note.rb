@@ -13,8 +13,4 @@ class ReleaseNote < ApplicationRecord
     validates :version
     validates :title
   end
-
-  def hoge
-    Rails.loger.debug 'hoge'
-  end
 end

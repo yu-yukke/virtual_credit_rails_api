@@ -2,6 +2,9 @@ name: RSpec
 
 on: [push]
 
+env:
+  GH_TOKEN: '${{secrets.GH_TOKEN}}'
+
 jobs:
   rspec_test:
     name: RSpec Test
@@ -43,3 +46,8 @@ jobs:
         run: bundle exec rake ridge:run RAILS_ENV='test'
       - name: Run RSpec
         run: bundle exec rspec
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: yu-yukke/virtual_credit_rails_api

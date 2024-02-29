@@ -17,7 +17,6 @@
 # coverage
 require 'simplecov'
 
-SimpleCov.minimum_coverage 100
 SimpleCov.start do
   add_filter 'spec'
   add_filter 'config'
@@ -30,6 +29,8 @@ SimpleCov.start do
   add_group 'Models', 'app/models'
   add_group 'Controllers', 'app/controllers/api'
 end
+
+SimpleCov.minimum_coverage line: 100, branch: 100
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
