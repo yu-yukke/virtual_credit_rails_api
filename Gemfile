@@ -47,6 +47,10 @@ group :development, :test do
 
   # debug
   gem 'pry-rails'
+
+  # test
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -68,4 +72,11 @@ group :development do
 
   # security
   gem 'brakeman'
+end
+
+group :test do
+  # test
+  gem 'shoulda-matchers'
+  gem 'test-prof', '~> 1.0'
+  gem 'simplecov', require: false
 end
