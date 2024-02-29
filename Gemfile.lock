@@ -86,6 +86,7 @@ GEM
     debug (1.9.1)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    diffy (3.4.2)
     erubi (1.12.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -121,6 +122,8 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
+    nokogiri (1.16.2-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.16.2-arm64-darwin)
       racc (~> 1.4)
     overcommit (0.63.0)
@@ -182,6 +185,9 @@ GEM
     reline (0.4.3)
       io-console (~> 0.5)
     rexml (3.2.6)
+    ridgepole (2.0.2)
+      activerecord (>= 6.1, < 7.2)
+      diffy
     rubocop (1.61.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -226,6 +232,7 @@ GEM
     zeitwerk (2.6.13)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-21
 
 DEPENDENCIES
@@ -239,6 +246,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 5.0)
   rails (~> 7.0.8, >= 7.0.8.1)
+  ridgepole
   rubocop
   rubocop-performance
   rubocop-rails
