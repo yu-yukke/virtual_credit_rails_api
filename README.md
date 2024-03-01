@@ -101,6 +101,10 @@ git cz
 
 `chore: update README.md #1`
 
+### Overcommit
+
+コミット時に Overcommit が Rubocop をチェックするのでそこでコケたら修正してコミット
+
 ## 3. develop へ PR
 
 Github workflow で Rubocop, RSpec(coverage), Brakeman をチェックしているので問題なければマージ
