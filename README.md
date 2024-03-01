@@ -1,24 +1,70 @@
-# README
+# Ruby
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- 3.2.2
 
-Things you may want to cover:
+# Rails
 
-* Ruby version
+- 7.0.8
 
-* System dependencies
+# 環境構築
 
-* Configuration
+- docker コンテナをビルド
 
-* Database creation
+```bash
+docker-compose build
+```
 
-* Database initialization
+- docker コンテナを起動
 
-* How to run the test suite
+```bash
+docker-compose up
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+- データベース作成
 
-* Deployment instructions
+```bash
+docker-compose exec app bundle exec rails db:create
+```
 
-* ...
+# 各ポートへの割り当て
+
+## 4000
+
+- API
+
+## 5432
+
+- PostgresQL
+
+## 5050
+
+- pgadmin
+
+## 8080
+
+- Swagger UI
+
+# マイグレーション
+
+- ridgepole を採用
+
+```bash
+ docker-compose exec app bundle exec ridge:run
+```
+
+# テスト
+
+- RSpec
+  - simplecov で網羅率チェック
+
+```bash
+ docker-compose exec app bundle exec rspec
+```
+
+# コード品質
+
+- Rubocop
+
+```bash
+docker-compose exec app bundle exec rubocop
+```
