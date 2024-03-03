@@ -3,6 +3,9 @@ FROM ruby:3.2.2
 # 必要なパッケージのインストール
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 
+ENV LANG=C.UTF-8 \
+  TZ=Asia/Tokyo
+
 # ワークディレクトリの設定
 RUN mkdir /myapp
 WORKDIR /myapp
