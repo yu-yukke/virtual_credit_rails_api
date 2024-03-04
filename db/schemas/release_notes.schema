@@ -1,11 +1,15 @@
 index_key  = 'index_release_notes_on_'
 
 create_table 'release_notes', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
-  t.string      'version',    null: false,
-                              limit: 191
+  t.string      'version',      null: false,
+                                limit: 191
+  t.index       'version',      name: "#{index_key}version",
+                                unique: true
 
-  t.string      'title',      null: false,
-                              limit: 191
+  t.string      'title',        null: false,
+                                limit: 191
+
+  t.text        'description',  null: false
 
   t.timestamp   'created_at'
   t.timestamp   'updated_at'
