@@ -76,6 +76,7 @@ end
 
 group :test do
   # test
+  gem 'faker'
   gem 'shoulda-matchers'
   gem 'test-prof', '~> 1.0'
   gem 'simplecov', require: false
