@@ -8,16 +8,122 @@ info:
     name: admin
 servers:
   - url: 'http://localhost:4000/api'
-tags: []
+tags:
+  - name: ReleaseNote
+    description: リリースノートに関するAPI
 components:
   securitySchemes: {}
+  schemas:
+    Pagination:
+      title: Pagination
+      x-stoplight:
+        id: n2bdaewgmjspr
+      type: object
+      properties:
+        hasNext:
+          type: boolean
+          x-stoplight:
+            id: d3ybcecx147m8
+        hasPrevious:
+          type: boolean
+          x-stoplight:
+            id: b6aygypylv4zf
+        currentPage:
+          type: integer
+          x-stoplight:
+            id: obdz7vxhz8o52
+        totalPages:
+          type: integer
+          x-stoplight:
+            id: oftt6zy92c0w7
+        totalCount:
+          type: integer
+          x-stoplight:
+            id: bema3583qynnb
+      required:
+        - hasNext
+        - hasPrevious
+        - currentPage
+        - totalPages
+        - totalCount
+      x-examples: {}
+    ReleaseNote:
+      title: ReleaseNote
+      x-stoplight:
+        id: oupyewy02383q
+      type: object
+      properties:
+        id:
+          type: string
+        version:
+          type: string
+          x-stoplight:
+            id: 5rr8wkdsv8cw2
+        title:
+          type: string
+          x-stoplight:
+            id: gujhci7o78ufq
+        description:
+          type: string
+          x-stoplight:
+            id: 7f0nw7jlwgb3d
+        createdAt:
+          type: string
+          x-stoplight:
+            id: rlwyvjkwdvwmu
+          format: date-time
+      required:
+        - id
+        - version
+        - title
+        - description
+        - createdAt
+      x-examples: {}
+  responses:
+    ReleaseNoteIndex:
+      description: リリースノート一覧
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              items:
+                $ref: '#/components/schemas/ReleaseNote'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+            required:
+              - items
+              - pagination
+          examples:
+            Example 1:
+              value:
+                items:
+                  id: kg9f-kdd9-vnag-19dn
+                  version: 1.0.0
+                  title: New Release
+                  description: 新機能がリリースされました
+                  createdAt: '2019-08-24T14:15:22Z'
+                pagination:
+                  hasNext: true
+                  hasPrevious: true
+                  currentPage: 1
+                  totalPages: 20
+                  totalCount: 300
+  examples: {}
 paths:
-  /v1/sample:
+  /v1/release_notes:
     get:
-      summary: Sample
-      tags: []
+      summary: リリースノート一覧
+      tags:
+        - ReleaseNote
       responses:
         '200':
-          description: OK
+          $ref: '#/components/responses/ReleaseNoteIndex'
       operationId: get-v1-sample
-      description: Sample
+      description: 指定したページ数のリリースノートの一覧を返す
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: page
+    parameters: []
