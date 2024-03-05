@@ -88,27 +88,29 @@ components:
             type: object
             properties:
               items:
-                $ref: '#/components/schemas/ReleaseNote'
-              pagination:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReleaseNote'
+              meta:
                 $ref: '#/components/schemas/Pagination'
             required:
               - items
-              - pagination
+              - meta
           examples:
             Example 1:
               value:
                 items:
-                  id: kg9f-kdd9-vnag-19dn
-                  version: 1.0.0
-                  title: New Release
-                  description: 新機能がリリースされました
-                  createdAt: '2019-08-24T14:15:22Z'
-                pagination:
+                  - id: fjh1-fu33-fk10-a85l
+                    version: 1.0.0
+                    title: New release
+                    description: 新機能がリリースされました
+                    createdAt: '2019-08-24T14:15:22Z'
+                meta:
                   hasNext: true
                   hasPrevious: true
                   currentPage: 1
-                  totalPages: 20
-                  totalCount: 300
+                  totalPages: 10
+                  totalCount: 100
   examples: {}
 paths:
   /v1/release_notes:
