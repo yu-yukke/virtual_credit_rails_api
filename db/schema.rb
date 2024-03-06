@@ -17,8 +17,10 @@ ActiveRecord::Schema[7.0].define(version: 0) do
   create_table "release_notes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "version", limit: 191, null: false
     t.string "title", limit: 191, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.text "description", null: false
+    t.index ["version"], name: "index_release_notes_on_version", unique: true
   end
 
 end

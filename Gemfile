@@ -41,6 +41,12 @@ gem 'bootsnap', require: false
 # migration
 gem 'ridgepole'
 
+# serializer
+gem 'active_model_serializers'
+
+# pagination
+gem 'kaminari'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mingw x64_mingw]
@@ -76,7 +82,9 @@ end
 
 group :test do
   # test
+  gem 'faker'
   gem 'shoulda-matchers'
   gem 'test-prof', '~> 1.0'
   gem 'simplecov', require: false
+  gem 'committee-rails'
 end
