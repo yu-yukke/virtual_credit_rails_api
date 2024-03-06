@@ -14,6 +14,10 @@
 #  index_release_notes_on_version  (version) UNIQUE
 #
 class ReleaseNote < ApplicationRecord
+  # kaminari
+  default_scope -> { order(version: :desc) }
+  paginates_per 24
+
   with_options presence: true do
     validates :version
     validates :title
