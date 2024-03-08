@@ -87,19 +87,19 @@ components:
           schema:
             type: object
             properties:
-              items:
+              data:
                 type: array
                 items:
                   $ref: '#/components/schemas/ReleaseNote'
               meta:
                 $ref: '#/components/schemas/Pagination'
             required:
-              - items
+              - data
               - meta
           examples:
             Example 1:
               value:
-                items:
+                data:
                   - id: fjh1-fu33-fk10-a85l
                     version: 1.0.0
                     title: New release
@@ -126,77 +126,38 @@ components:
                 type: integer
                 x-stoplight:
                   id: 1chfxtti2vigq
-              error:
-                type: object
+              errors:
+                type: array
                 x-stoplight:
-                  id: o98zt1r4rugpg
-                required:
-                  - resource
-                  - message
-                properties:
-                  resource:
-                    type: string
-                    x-stoplight:
-                      id: pdr1a7retyfej
-                  message:
-                    type: string
-                    x-stoplight:
-                      id: ek9hn814n0t2c
+                  id: n8qyf1s3cuwi2
+                items:
+                  x-stoplight:
+                    id: t3w1j886yxi9d
+                  type: object
+                  properties:
+                    resource:
+                      type: string
+                      x-stoplight:
+                        id: 9uv48ti1wmgu8
+                    message:
+                      type: string
+                      x-stoplight:
+                        id: eo85piucr3gh5
+                  required:
+                    - resource
+                    - message
             required:
               - message
               - code
-              - error
+              - errors
           examples:
             Example 1:
               value:
                 message: Request failed
                 code: 400
-                error:
-                  resource: User
-                  message: 'wrong number of arguments (given 0, expected 1)'
-    InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                x-stoplight:
-                  id: 5q40yknifnskc
-              code:
-                type: integer
-                x-stoplight:
-                  id: k19l10iq0jxjp
-              error:
-                type: object
-                x-stoplight:
-                  id: tfzeat2241crj
-                required:
-                  - resource
-                  - message
-                properties:
-                  resource:
-                    type: string
-                    x-stoplight:
-                      id: vnowom4kjdthn
-                  message:
-                    type: string
-                    x-stoplight:
-                      id: nih8cmpdiqjuu
-            required:
-              - message
-              - code
-              - error
-          examples:
-            Example 1:
-              value:
-                message: Server error
-                code: 500
-                error:
-                  resource: User
-                  message: 'undefined method `hogehoge'' for #User:0xknf83448djf1'
+                errors:
+                  - resource: User
+                    message: 'wrong number of arguments (given 0, expected 1)'
   examples: {}
   parameters:
     page:
@@ -217,8 +178,6 @@ paths:
           $ref: '#/components/responses/ReleaseNoteIndex'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
       operationId: get-v1-release-notes
       description: リリースノートの一覧を返す
       parameters:
