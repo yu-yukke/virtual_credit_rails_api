@@ -13,11 +13,11 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
         before { request }
       end
 
-      it 'returns 0 items' do
+      it 'returns 0 release_notes' do
         request
         body = response.parsed_body
 
-        expect(body['items'].size).to eq(0)
+        expect(body['data'].size).to eq(0)
       end
 
       it 'returns correct meta pagination' do
@@ -41,11 +41,11 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
         before { request }
       end
 
-      it 'returns 0 items' do
+      it 'returns 0 release_notes' do
         request
         body = response.parsed_body
 
-        expect(body['items'].size).to eq(0)
+        expect(body['data'].size).to eq(0)
       end
 
       it 'returns correct meta pagination' do
@@ -70,18 +70,18 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
         before { request }
       end
 
-      it 'returns 24 items' do
+      it 'returns 24 release_notes' do
         request
         body = response.parsed_body
 
-        expect(body['items'].size).to eq(24)
+        expect(body['data'].size).to eq(24)
       end
 
-      it 'items are ordered by descending version' do
+      it 'release_notes are ordered by descending version' do
         request
         body = response.parsed_body
 
-        expect(body['items'].pluck('version')).to eq(release_notes.map(&:version).sort.reverse)
+        expect(body['data'].pluck('version')).to eq(release_notes.map(&:version).sort.reverse)
       end
 
       it 'returns correct meta pagination' do
@@ -106,18 +106,18 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
         before { request }
       end
 
-      it 'returns 24 items' do
+      it 'returns 24 release_notes' do
         request
         body = response.parsed_body
 
-        expect(body['items'].size).to eq(24)
+        expect(body['data'].size).to eq(24)
       end
 
-      it 'items are ordered by descending version' do
+      it 'release_notes are ordered by descending version' do
         request
         body = response.parsed_body
 
-        expect(body['items'].pluck('version')).to eq(release_notes.map(&:version).sort.reverse)
+        expect(body['data'].pluck('version')).to eq(release_notes.map(&:version).sort.reverse)
       end
 
       it 'returns correct meta pagination' do
@@ -142,11 +142,11 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
         before { request }
       end
 
-      it 'returns 0 items' do
+      it 'returns 0 release_notes' do
         request
         body = response.parsed_body
 
-        expect(body['items'].size).to eq(0)
+        expect(body['data'].size).to eq(0)
       end
 
       it 'returns correct meta pagination' do
@@ -171,18 +171,18 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
         before { request }
       end
 
-      it 'returns 24 items' do
+      it 'returns 24 release_notes' do
         request
         body = response.parsed_body
 
-        expect(body['items'].size).to eq(24)
+        expect(body['data'].size).to eq(24)
       end
 
-      it 'items are ordered by descending version' do
+      it 'release_notes are ordered by descending version' do
         request
         body = response.parsed_body
 
-        expect(body['items'].pluck('version')).to eq(release_notes.map(&:version).sort.last(24).reverse)
+        expect(body['data'].pluck('version')).to eq(release_notes.map(&:version).sort.last(24).reverse)
       end
 
       it 'returns correct meta pagination' do
@@ -207,18 +207,18 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
         before { request }
       end
 
-      it 'returns 24 items' do
+      it 'returns 24 release_notes' do
         request
         body = response.parsed_body
 
-        expect(body['items'].size).to eq(24)
+        expect(body['data'].size).to eq(24)
       end
 
-      it 'items are ordered by descending version' do
+      it 'release_notes are ordered by descending version' do
         request
         body = response.parsed_body
 
-        expect(body['items'].pluck('version')).to eq(release_notes.map(&:version).sort.last(24).reverse)
+        expect(body['data'].pluck('version')).to eq(release_notes.map(&:version).sort.last(24).reverse)
       end
 
       it 'returns correct meta pagination' do
@@ -243,11 +243,11 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
         before { request }
       end
 
-      it 'returns 1 item' do
+      it 'returns 1 release_note' do
         request
         body = response.parsed_body
 
-        expect(body['items'].size).to eq(1)
+        expect(body['data'].size).to eq(1)
       end
 
       it 'returns correct meta pagination' do
@@ -272,11 +272,11 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
         before { request }
       end
 
-      it 'returns 0 items' do
+      it 'returns 0 release_notes' do
         request
         body = response.parsed_body
 
-        expect(body['items'].size).to eq(0)
+        expect(body['data'].size).to eq(0)
       end
 
       it 'returns correct meta pagination' do
@@ -290,6 +290,14 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
           'totalCount' => 25,
           'totalPages' => 2
         )
+      end
+    end
+
+    context 'with page as string' do
+      let_it_be(:page) { 'page' }
+
+      it_behaves_like 'bad request' do
+        before { request }
       end
     end
   end
