@@ -87,19 +87,19 @@ components:
           schema:
             type: object
             properties:
-              items:
+              data:
                 type: array
                 items:
                   $ref: '#/components/schemas/ReleaseNote'
               meta:
                 $ref: '#/components/schemas/Pagination'
             required:
-              - items
+              - data
               - meta
           examples:
             Example 1:
               value:
-                items:
+                data:
                   - id: fjh1-fu33-fk10-a85l
                     version: 1.0.0
                     title: New release
@@ -111,7 +111,62 @@ components:
                   currentPage: 1
                   totalPages: 10
                   totalCount: 100
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                x-stoplight:
+                  id: 6d68gqhean4dp
+              code:
+                type: integer
+                x-stoplight:
+                  id: 1chfxtti2vigq
+              errors:
+                type: array
+                x-stoplight:
+                  id: n8qyf1s3cuwi2
+                items:
+                  x-stoplight:
+                    id: t3w1j886yxi9d
+                  type: object
+                  properties:
+                    resource:
+                      type: string
+                      x-stoplight:
+                        id: 9uv48ti1wmgu8
+                    message:
+                      type: string
+                      x-stoplight:
+                        id: eo85piucr3gh5
+                  required:
+                    - resource
+                    - message
+            required:
+              - message
+              - code
+              - errors
+          examples:
+            Example 1:
+              value:
+                message: Request failed
+                code: 400
+                errors:
+                  - resource: User
+                    message: 'wrong number of arguments (given 0, expected 1)'
   examples: {}
+  parameters:
+    page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: 取得したいページ数
 paths:
   /v1/release_notes:
     get:
@@ -121,11 +176,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ReleaseNoteIndex'
-      operationId: get-v1-sample
-      description: 指定したページ数のリリースノートの一覧を返す
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      operationId: get-v1-release-notes
+      description: リリースノートの一覧を返す
       parameters:
-        - schema:
-            type: integer
-          in: query
-          name: page
+        - $ref: '#/components/parameters/page'
     parameters: []
