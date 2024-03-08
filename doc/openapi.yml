@@ -111,7 +111,101 @@ components:
                   currentPage: 1
                   totalPages: 10
                   totalCount: 100
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                x-stoplight:
+                  id: 6d68gqhean4dp
+              code:
+                type: integer
+                x-stoplight:
+                  id: 1chfxtti2vigq
+              error:
+                type: object
+                x-stoplight:
+                  id: o98zt1r4rugpg
+                required:
+                  - resource
+                  - message
+                properties:
+                  resource:
+                    type: string
+                    x-stoplight:
+                      id: pdr1a7retyfej
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: ek9hn814n0t2c
+            required:
+              - message
+              - code
+              - error
+          examples:
+            Example 1:
+              value:
+                message: Request failed
+                code: 400
+                error:
+                  resource: User
+                  message: 'wrong number of arguments (given 0, expected 1)'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                x-stoplight:
+                  id: 5q40yknifnskc
+              code:
+                type: integer
+                x-stoplight:
+                  id: k19l10iq0jxjp
+              error:
+                type: object
+                x-stoplight:
+                  id: tfzeat2241crj
+                required:
+                  - resource
+                  - message
+                properties:
+                  resource:
+                    type: string
+                    x-stoplight:
+                      id: vnowom4kjdthn
+                  message:
+                    type: string
+                    x-stoplight:
+                      id: nih8cmpdiqjuu
+            required:
+              - message
+              - code
+              - error
+          examples:
+            Example 1:
+              value:
+                message: Server error
+                code: 500
+                error:
+                  resource: User
+                  message: 'undefined method `hogehoge'' for #User:0xknf83448djf1'
   examples: {}
+  parameters:
+    page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: 取得したいページ数
 paths:
   /v1/release_notes:
     get:
@@ -121,11 +215,12 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ReleaseNoteIndex'
-      operationId: get-v1-sample
-      description: 指定したページ数のリリースノートの一覧を返す
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      operationId: get-v1-release-notes
+      description: リリースノートの一覧を返す
       parameters:
-        - schema:
-            type: integer
-          in: query
-          name: page
+        - $ref: '#/components/parameters/page'
     parameters: []
