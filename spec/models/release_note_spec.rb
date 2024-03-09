@@ -4,8 +4,8 @@
 #
 #  id          :uuid             not null, primary key
 #  description :text             not null
-#  title       :string(191)      not null
-#  version     :string(191)      not null
+#  title       :string           not null
+#  version     :string           not null
 #  created_at  :datetime
 #  updated_at  :datetime
 #
@@ -20,9 +20,10 @@ RSpec.describe ReleaseNote do
     subject { build(:release_note) }
 
     it { is_expected.to validate_presence_of(:version) }
-    it { is_expected.to validate_uniqueness_of(:version).case_insensitive }
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_presence_of(:description) }
+
+    it { is_expected.to validate_uniqueness_of(:version).case_insensitive }
   end
 
   describe 'methods' do
