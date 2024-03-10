@@ -48,4 +48,6 @@ create_table 'users', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
                                                 unique: true
   t.index       'confirmation_token',           name: "#{index_key}confirmation_token",
                                                 unique: true
+  t.index       %w[uid provider],               name: "#{index_key}uid_provider",
+                                                unique: true
 end
