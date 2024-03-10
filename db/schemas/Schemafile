@@ -1,2 +1,5 @@
+# ユーザー
+require 'users.schema'
+
 # リリースノート
 require 'release_notes.schema'
