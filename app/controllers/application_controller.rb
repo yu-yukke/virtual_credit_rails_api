@@ -14,16 +14,47 @@ class ApplicationController < ActionController::API
     params[:page].to_i.to_s == params[:page]
   end
 
-  def render_400(resource:, message:)
-    render json: {
-      message: 'Request failed',
-      code: 400,
+  # TODO: 要レスポンス確認
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    render_error(
+      status: :not_found,
+      resource: e.model,
       errors: [
         {
-          resource:,
-          message:
+          field: 'id',
+          message: '指定されたIDのリソースが見つかりません。'
         }
       ]
-    }, status: :bad_request
+    )
+  end
+
+  # TODO: 要レスポンス確認
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    render_error(
+      status: :unprocessable_entity,
+      resource: e.record.class.to_s,
+      errors: e.record.errors.map do |error|
+        {
+          field: error.attribute,
+          message: error.message
+        }
+      end
+    )
+  end
+
+  def render_error(status:, resource:, errors:)
+    code = Rack::Utils::SYMBOL_TO_STATUS_CODE[status]
+
+    render json: {
+      message: 'Request failed',
+      resource:,
+      code:,
+      errors: errors.map do |error|
+        {
+          field: error[:field],
+          message: error[:message]
+        }
+      end
+    }, status:
   end
 end
