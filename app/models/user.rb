@@ -32,6 +32,10 @@
 #  index_users_on_slug                (slug) UNIQUE
 #
 class User < ApplicationRecord
+  devise :database_authenticatable, :registerable, :rememberable,
+         :trackable, :confirmable
+  include DeviseTokenAuth::Concerns::User
+
   PROVIDERS = ['email'].freeze
 
   with_options presence: true do
