@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.index ["email"], name: "index_users_on_email"
     t.index ["name"], name: "index_users_on_name"
     t.index ["slug"], name: "index_users_on_slug", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_provider", unique: true
   end
 
 end

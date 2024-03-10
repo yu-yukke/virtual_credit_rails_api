@@ -30,6 +30,7 @@
 #  index_users_on_email               (email)
 #  index_users_on_name                (name)
 #  index_users_on_slug                (slug) UNIQUE
+#  index_users_on_uid_provider        (uid,provider) UNIQUE
 #
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :rememberable,
