@@ -60,6 +60,7 @@ group :development, :test do
   gem 'pry-rails'
 
   # test
+  gem 'faker'
   gem 'rspec-rails'
   gem 'factory_bot_rails'
 end
@@ -87,7 +88,6 @@ end
 
 group :test do
   # test
-  gem 'faker'
   gem 'shoulda-matchers'
   gem 'test-prof', '~> 1.0'
   gem 'simplecov', require: false
