@@ -8,6 +8,7 @@
 #  confirmed_at         :datetime
 #  current_sign_in_at   :datetime
 #  description          :text
+#  email                :string           not null
 #  encrypted_password   :string           default(""), not null
 #  image                :string
 #  last_sign_in_at      :datetime
@@ -18,6 +19,7 @@
 #  sign_in_count        :integer          default(0), not null
 #  slug                 :string
 #  tokens               :text
+#  uid                  :string           default(""), not null
 #  unconfirmed_email    :string
 #  created_at           :datetime
 #  updated_at           :datetime
@@ -25,6 +27,7 @@
 # Indexes
 #
 #  index_users_on_confirmation_token  (confirmation_token) UNIQUE
+#  index_users_on_email               (email)
 #  index_users_on_name                (name)
 #  index_users_on_slug                (slug) UNIQUE
 #
@@ -32,6 +35,7 @@ class User < ApplicationRecord
   PROVIDERS = ['email'].freeze
 
   with_options presence: true do
+    validates :email
     validates :published
     validates :encrypted_password
     validates :provider

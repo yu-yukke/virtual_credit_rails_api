@@ -42,7 +42,10 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.text "tokens"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.string "email", null: false
+    t.string "uid", default: "", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email"
     t.index ["name"], name: "index_users_on_name"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
