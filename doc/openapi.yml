@@ -286,19 +286,19 @@ paths:
                   type: string
                   x-stoplight:
                     id: g5yr3pzzba2at
-                password_confirmation:
+                passwordConfirmation:
                   type: string
                   x-stoplight:
                     id: poi8c209kjif7
               required:
                 - email
                 - password
-                - password_confirmation
+                - passwordConfirmation
             examples:
               Example 1:
                 value:
                   email: hogehoge@fuga.com
                   password: password
-                  password_confirmation: password
+                  passwordConfirmation: password
       tags:
         - Authentication
