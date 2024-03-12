@@ -71,6 +71,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.6)
+      public_suffix (>= 2.0.2, < 6.0)
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
@@ -151,6 +153,15 @@ GEM
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
     language_server-protocol (3.17.0.3)
+    launchy (2.5.2)
+      addressable (~> 2.8)
+    letter_opener (1.9.0)
+      launchy (>= 2.2, < 3)
+    letter_opener_web (2.0.0)
+      actionmailer (>= 5.2)
+      letter_opener (~> 1.7)
+      railties (>= 5.2)
+      rexml
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -197,6 +208,7 @@ GEM
       pry (>= 0.10.4)
     psych (5.1.2)
       stringio
+    public_suffix (5.0.4)
     puma (5.6.8)
       nio4r (~> 2.0)
     racc (1.7.3)
@@ -336,6 +348,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   kaminari
+  letter_opener_web (~> 2.0)
   overcommit
   pg (~> 1.1)
   pry-rails
