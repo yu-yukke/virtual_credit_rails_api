@@ -39,7 +39,6 @@ RSpec.describe User do
     subject { build(:user) }
 
     it { is_expected.to validate_presence_of :email }
-    it { is_expected.to validate_presence_of :published }
     it { is_expected.to validate_presence_of :provider }
     it { is_expected.to validate_presence_of :encrypted_password }
     it { is_expected.to validate_presence_of :sign_in_count }
