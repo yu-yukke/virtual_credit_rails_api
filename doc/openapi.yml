@@ -11,6 +11,8 @@ servers:
 tags:
   - name: ReleaseNote
     description: リリースノートに関するAPI
+  - name: Authentication
+    description: 認証に関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -79,39 +81,121 @@ components:
         - description
         - createdAt
       x-examples: {}
+    NewUser:
+      title: NewUser
+      x-stoplight:
+        id: d1ug2igiozwng
+      type: object
+      properties:
+        provider:
+          type: string
+          x-stoplight:
+            id: r4ae886pyb5a1
+        email:
+          type: string
+          x-stoplight:
+            id: 7nlqudrkcs40i
+      required:
+        - provider
+        - email
+    Error:
+      title: Error
+      x-stoplight:
+        id: yaeqhcu06c8j1
+      type: object
+      properties:
+        message:
+          type: string
+          x-stoplight:
+            id: y59gxc86odxqz
+        resource:
+          type: string
+          x-stoplight:
+            id: oedpyfp0krt6b
+        code:
+          type: integer
+          x-stoplight:
+            id: kh944euclth3n
+        errors:
+          type: array
+          x-stoplight:
+            id: exuao25m3o6ex
+          items:
+            x-stoplight:
+              id: urr0xqy1j3mdi
+            type: object
+            properties:
+              field:
+                type: string
+                x-stoplight:
+                  id: 8yqmizf5lp9kk
+              message:
+                type: string
+                x-stoplight:
+                  id: mvq0kx7yf06h7
+            required:
+              - field
+              - message
+      required:
+        - message
+        - resource
+        - code
+        - errors
   responses:
-    ReleaseNoteIndex:
-      description: リリースノート一覧
+    BadRequest:
+      description: Bad Request
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              items:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ReleaseNote'
-              meta:
-                $ref: '#/components/schemas/Pagination'
-            required:
-              - items
-              - meta
+            $ref: '#/components/schemas/Error'
           examples:
             Example 1:
               value:
-                items:
-                  - id: fjh1-fu33-fk10-a85l
-                    version: 1.0.0
-                    title: New release
-                    description: 新機能がリリースされました
-                    createdAt: '2019-08-24T14:15:22Z'
-                meta:
-                  hasNext: true
-                  hasPrevious: true
-                  currentPage: 1
-                  totalPages: 10
-                  totalCount: 100
+                message: Request failed
+                resource: User
+                code: 400
+                errors:
+                  - field: page
+                    message: pageは数字で入力してください。
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            Example 1:
+              value:
+                message: Validation failed
+                resource: User
+                code: 422
+                errors:
+                  - field: name
+                    message: ユーザー名の入力は必須です。
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            Example 1:
+              value:
+                message: Resource conflicted
+                resource: User
+                code: 409
+                errors:
+                  - field: email
+                    message: 既にメールアドレスが使用されています。
   examples: {}
+  parameters:
+    page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: 取得したいページ数
 paths:
   /v1/release_notes:
     get:
@@ -120,12 +204,101 @@ paths:
         - ReleaseNote
       responses:
         '200':
-          $ref: '#/components/responses/ReleaseNoteIndex'
-      operationId: get-v1-sample
-      description: 指定したページ数のリリースノートの一覧を返す
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: rb1sb9jr5d19w
+                    items:
+                      $ref: '#/components/schemas/ReleaseNote'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+                required:
+                  - data
+                  - meta
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - id: dk54-1222-fnd1-dk1a
+                        version: 1.0.1
+                        title: New Release
+                        description: 新機能がリリースされまｓｈちあ
+                        createdAt: '2019-08-24T14:15:22Z'
+                    meta:
+                      hasNext: true
+                      hasPrevious: true
+                      currentPage: 1
+                      totalPages: 10
+                      totalCount: 100
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      operationId: get-v1-release-notes
+      description: リリースノートの一覧を返す
       parameters:
-        - schema:
-            type: integer
-          in: query
-          name: page
+        - $ref: '#/components/parameters/page'
     parameters: []
+  /v1/auth:
+    post:
+      summary: ユーザー登録
+      operationId: post-v1-auth
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NewUser'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      provider: email
+                      email: hogehoge@gmail.com
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      description: 未認証状態のユーザーを登録する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  x-stoplight:
+                    id: 5gnmpioukq5zs
+                password:
+                  type: string
+                  x-stoplight:
+                    id: g5yr3pzzba2at
+                passwordConfirmation:
+                  type: string
+                  x-stoplight:
+                    id: poi8c209kjif7
+              required:
+                - email
+                - password
+                - passwordConfirmation
+            examples:
+              Example 1:
+                value:
+                  email: hogehoge@fuga.com
+                  password: password
+                  passwordConfirmation: password
+      tags:
+        - Authentication
