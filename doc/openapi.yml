@@ -81,8 +81,8 @@ components:
         - description
         - createdAt
       x-examples: {}
-    UnconfirmedUser:
-      title: UnconfirmedUser
+    NewUser:
+      title: NewUser
       x-stoplight:
         id: d1ug2igiozwng
       type: object
@@ -91,13 +91,13 @@ components:
           type: string
           x-stoplight:
             id: r4ae886pyb5a1
-        unconfirmed_email:
+        email:
           type: string
           x-stoplight:
             id: 7nlqudrkcs40i
       required:
         - provider
-        - unconfirmed_email
+        - email
     Error:
       title: Error
       x-stoplight:
@@ -256,7 +256,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/UnconfirmedUser'
+                    $ref: '#/components/schemas/NewUser'
                 required:
                   - data
               examples:
@@ -264,7 +264,7 @@ paths:
                   value:
                     data:
                       provider: email
-                      unconfirmed_email: hogehoge@gmail.com
+                      email: hogehoge@gmail.com
         '400':
           $ref: '#/components/responses/BadRequest'
         '409':
