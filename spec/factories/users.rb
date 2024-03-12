@@ -27,7 +27,7 @@
 # Indexes
 #
 #  index_users_on_confirmation_token  (confirmation_token) UNIQUE
-#  index_users_on_email               (email)
+#  index_users_on_email               (email) UNIQUE
 #  index_users_on_name                (name)
 #  index_users_on_slug                (slug) UNIQUE
 #  index_users_on_uid_provider        (uid,provider) UNIQUE
