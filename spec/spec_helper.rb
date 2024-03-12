@@ -21,6 +21,7 @@ SimpleCov.start do
   add_filter 'spec'
   add_filter 'config'
   add_filter '/app/controllers/concerns'
+  add_filter '/app/controllers/application_controller.rb'
   add_filter do |source_file|
     source_file.lines.count < 5
   end

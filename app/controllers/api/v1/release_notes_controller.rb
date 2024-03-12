@@ -8,8 +8,7 @@ module Api
 
         data = ActiveModelSerializers::SerializableResource.new(
           release_notes,
-          each_serializer: Api::V1::ReleaseNoteSerializer,
-          include: '**'
+          each_serializer: Api::V1::ReleaseNoteSerializer
         ).serializable_hash
 
         render(
@@ -27,9 +26,15 @@ module Api
         return if params[:page].nil?
         return if is_pagination_params_valid
 
-        render_400(
+        render_errors(
+          status: :bad_request,
           resource: 'ReleaseNote',
-          message: 'wrong type of page params ( given string, expected integer)'
+          errors: [
+            {
+              field: 'page',
+              message: 'pageは数字で入力してください。'
+            }
+          ]
         )
       end
     end

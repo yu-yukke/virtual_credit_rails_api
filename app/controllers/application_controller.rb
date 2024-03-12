@@ -14,16 +14,67 @@ class ApplicationController < ActionController::API
     params[:page].to_i.to_s == params[:page]
   end
 
-  def render_400(resource:, message:)
-    render json: {
-      message: 'Request failed',
-      code: 400,
+  # TODO: 要レスポンス確認
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    render_errors(
+      status: :not_found,
+      resource: e.model,
       errors: [
         {
-          resource:,
-          message:
+          field: 'id',
+          message: '指定されたIDのリソースが見つかりません。'
         }
       ]
-    }, status: :bad_request
+    )
+  end
+
+  # TODO: 要レスポンス確認
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    render_errors(
+      status: :unprocessable_entity,
+      resource: e.record.class.to_s,
+      errors: e.record.errors.map do |error|
+        {
+          field: error.attribute,
+          message: error.message
+        }
+      end
+    )
+  end
+
+  private
+
+  def check_required_params(resource:, required_params:, requested_params:)
+    missing_params = required_params - requested_params.keys
+    return if missing_params.empty?
+
+    render_errors(
+      status: :bad_request,
+      resource:,
+      errors: missing_params.map do |params|
+        {
+          field: params,
+          message: "#{params} は必須パラメータです。"
+        }
+      end
+    )
+  end
+
+  protected
+
+  def render_errors(status:, resource:, errors:)
+    code = Rack::Utils::SYMBOL_TO_STATUS_CODE[status]
+
+    render json: {
+      message: 'Request failed',
+      resource:,
+      code:,
+      errors: errors.map do |error|
+        {
+          field: error[:field],
+          message: error[:message]
+        }
+      end
+    }, status:
   end
 end

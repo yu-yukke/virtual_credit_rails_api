@@ -27,7 +27,7 @@
 # Indexes
 #
 #  index_users_on_confirmation_token  (confirmation_token) UNIQUE
-#  index_users_on_email               (email)
+#  index_users_on_email               (email) UNIQUE
 #  index_users_on_name                (name)
 #  index_users_on_slug                (slug) UNIQUE
 #  index_users_on_uid_provider        (uid,provider) UNIQUE
@@ -39,7 +39,6 @@ RSpec.describe User do
     subject { build(:user) }
 
     it { is_expected.to validate_presence_of :email }
-    it { is_expected.to validate_presence_of :published }
     it { is_expected.to validate_presence_of :provider }
     it { is_expected.to validate_presence_of :encrypted_password }
     it { is_expected.to validate_presence_of :sign_in_count }

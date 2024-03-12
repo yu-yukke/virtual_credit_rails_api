@@ -84,6 +84,9 @@ group :development do
 
   # security
   gem 'brakeman'
+
+  # mailer
+  gem 'letter_opener_web', '~> 2.0'
 end
 
 group :test do

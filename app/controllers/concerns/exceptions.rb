@@ -8,6 +8,7 @@ module Exceptions
       render(
         json: {
           error: {
+            code: 500,
             message: "予期せぬエラーが発生しました。: #{error}"
           }
         },

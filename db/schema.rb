@@ -45,7 +45,7 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.string "email", null: false
     t.string "uid", default: "", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_users_on_email"
+    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["slug"], name: "index_users_on_slug", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_provider", unique: true

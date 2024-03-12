@@ -43,7 +43,8 @@ create_table 'users', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
   t.timestamp   'updated_at'
 
   t.index       'name',                         name: "#{index_key}name"
-  t.index       'email',                        name: "#{index_key}email"
+  t.index       'email',                        name: "#{index_key}email",
+                                                unique: true
   t.index       'slug',                         name: "#{index_key}slug",
                                                 unique: true
   t.index       'confirmation_token',           name: "#{index_key}confirmation_token",

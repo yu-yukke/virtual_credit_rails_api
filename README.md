@@ -127,8 +127,8 @@ Github workflow で Rubocop, RSpec(coverage), Brakeman をチェックしてい�
 
 ### 204
 
-- DELETE が成功した時
-- 返却値はなし
+- POST, PUT, DELETE が成功した時
+- 返却値すべきコンテンツがない場合
 
 ## 400 系
 
