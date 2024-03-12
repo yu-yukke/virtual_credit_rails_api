@@ -16,7 +16,7 @@ class ApplicationController < ActionController::API
 
   # TODO: 要レスポンス確認
   rescue_from ActiveRecord::RecordNotFound do |e|
-    render_error(
+    render_errors(
       status: :not_found,
       resource: e.model,
       errors: [
@@ -30,7 +30,7 @@ class ApplicationController < ActionController::API
 
   # TODO: 要レスポンス確認
   rescue_from ActiveRecord::RecordInvalid do |e|
-    render_error(
+    render_errors(
       status: :unprocessable_entity,
       resource: e.record.class.to_s,
       errors: e.record.errors.map do |error|
@@ -42,7 +42,27 @@ class ApplicationController < ActionController::API
     )
   end
 
-  def render_error(status:, resource:, errors:)
+  private
+
+  def check_required_params(resource:, required_params:, requested_params:)
+    missing_params = required_params - requested_params.keys
+    return if missing_params.empty?
+
+    render_errors(
+      status: :bad_request,
+      resource:,
+      errors: missing_params.map do |params|
+        {
+          field: params,
+          message: "#{params} は必須パラメータです。"
+        }
+      end
+    )
+  end
+
+  protected
+
+  def render_errors(status:, resource:, errors:)
     code = Rack::Utils::SYMBOL_TO_STATUS_CODE[status]
 
     render json: {
