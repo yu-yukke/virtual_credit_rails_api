@@ -8,8 +8,7 @@ module Api
 
         data = ActiveModelSerializers::SerializableResource.new(
           release_notes,
-          each_serializer: Api::V1::ReleaseNoteSerializer,
-          include: '**'
+          each_serializer: Api::V1::ReleaseNoteSerializer
         ).serializable_hash
 
         render(
@@ -27,7 +26,7 @@ module Api
         return if params[:page].nil?
         return if is_pagination_params_valid
 
-        render_error(
+        render_errors(
           status: :bad_request,
           resource: 'ReleaseNote',
           errors: [
