@@ -39,6 +39,14 @@ RSpec.describe User do
   #
   # validations
   #
+  context 'when that is not activated' do
+    subject { build(:user, :not_activated, name: nil, slug: nil, image: nil, description: nil) }
+
+    it { is_expected.not_to validate_presence_of :name }
+    it { is_expected.not_to validate_presence_of :slug }
+    it { is_expected.not_to validate_presence_of :image }
+    it { is_expected.not_to validate_presence_of :description }
+  end
 
   context 'when that is activated' do
     subject { build(:user) }
@@ -58,15 +66,6 @@ RSpec.describe User do
     it { is_expected.to validate_numericality_of(:sign_in_count).is_greater_than_or_equal_to(0) }
 
     it { is_expected.to validate_inclusion_of(:provider).in_array(User::PROVIDERS) }
-  end
-
-  context 'when that is not activated' do
-    subject { build(:user, :not_activated, name: nil, slug: nil, image: nil, description: nil) }
-
-    it { is_expected.not_to validate_presence_of :name }
-    it { is_expected.not_to validate_presence_of :slug }
-    it { is_expected.not_to validate_presence_of :image }
-    it { is_expected.not_to validate_presence_of :description }
   end
 
   #
