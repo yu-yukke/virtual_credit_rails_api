@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                   :uuid             not null, primary key
+#  activated_at         :datetime
 #  confirmation_sent_at :datetime
 #  confirmation_token   :string
 #  confirmed_at         :datetime
@@ -48,6 +49,11 @@ class User < ApplicationRecord
     validates :sign_in_count
   end
 
+  # activated userは必須
+  with_options if: -> { activated? } do
+    validates :name, :image, :slug, :description, presence: true
+  end
+
   validates :email, uniqueness: true, format: { with: EMAIL_REGEXP }
   validates :published, inclusion: [true, false]
   validates :provider, inclusion: { in: PROVIDERS }
@@ -56,4 +62,8 @@ class User < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }
+
+  def activated?
+    activated_at.present?
+  end
 end

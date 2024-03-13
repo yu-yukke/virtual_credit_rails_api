@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                   :uuid             not null, primary key
+#  activated_at         :datetime
 #  confirmation_sent_at :datetime
 #  confirmation_token   :string
 #  confirmed_at         :datetime
@@ -39,5 +40,13 @@ FactoryBot.define do
     password = Faker::Internet.password(min_length: 8)
     password { password }
     password_confirmation { password }
+    slug { Faker::Internet.unique.slug }
+    description { Faker::Lorem.paragraph }
+    image { Faker::Avatar.image }
+    activated_at { Time.zone.now }
+
+    trait :not_activated do
+      activated_at { nil }
+    end
   end
 end

@@ -24,6 +24,14 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         expect { request }.to change(User, :count).by(1)
       end
 
+      it 'creates new User is not activated' do
+        request
+
+        new_user = User.order(created_at: :desc).first
+
+        expect(new_user.activated_at).to be_nil
+      end
+
       it 'sends a registration email' do
         expect { request }.to change { ActionMailer::Base.deliveries.size }.by(1)
       end
