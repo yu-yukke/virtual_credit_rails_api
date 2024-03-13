@@ -18,7 +18,7 @@ module Api
 
         def check_registration_params
           check_required_params(
-            resource: @resource.class.name,
+            resource: 'User',
             required_params: User::REGISTRATION_PARAMS,
             requested_params: registration_params
           )
@@ -29,7 +29,7 @@ module Api
 
           render_errors(
             status: :conflict,
-            resource: @resource.class.name,
+            resource: 'User',
             errors: [
               {
                 field: 'email',
