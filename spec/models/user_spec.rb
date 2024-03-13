@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                   :uuid             not null, primary key
+#  activated_at         :datetime
 #  confirmation_sent_at :datetime
 #  confirmation_token   :string
 #  confirmed_at         :datetime
@@ -35,8 +36,17 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  describe 'validations' do
+  #
+  # validations
+  #
+
+  context 'when that is activated' do
     subject { build(:user) }
+
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :slug }
+    it { is_expected.to validate_presence_of :image }
+    it { is_expected.to validate_presence_of :description }
 
     it { is_expected.to validate_presence_of :email }
     it { is_expected.to validate_presence_of :provider }
@@ -48,5 +58,35 @@ RSpec.describe User do
     it { is_expected.to validate_numericality_of(:sign_in_count).is_greater_than_or_equal_to(0) }
 
     it { is_expected.to validate_inclusion_of(:provider).in_array(User::PROVIDERS) }
+  end
+
+  context 'when that is not activated' do
+    subject { build(:user, :not_activated, name: nil, slug: nil, image: nil, description: nil) }
+
+    it { is_expected.not_to validate_presence_of :name }
+    it { is_expected.not_to validate_presence_of :slug }
+    it { is_expected.not_to validate_presence_of :image }
+    it { is_expected.not_to validate_presence_of :description }
+  end
+
+  #
+  # methods
+  #
+  describe '.activated?' do
+    context 'when user is not activated' do
+      let_it_be(:user) { create(:user, :not_activated) }
+
+      it 'returns false' do
+        expect(user.activated?).to be(false)
+      end
+    end
+
+    context 'when user is activated' do
+      let_it_be(:user) { create(:user) }
+
+      it 'returns true' do
+        expect(user.activated?).to be(true)
+      end
+    end
   end
 end
