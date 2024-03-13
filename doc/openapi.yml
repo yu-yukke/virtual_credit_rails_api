@@ -290,15 +290,21 @@ paths:
                   type: string
                   x-stoplight:
                     id: poi8c209kjif7
+                confirmSuccessUrl:
+                  type: string
+                  x-stoplight:
+                    id: l27wu2d2mfcyu
               required:
                 - email
                 - password
                 - passwordConfirmation
+                - confirmSuccessUrl
             examples:
               Example 1:
                 value:
                   email: hogehoge@fuga.com
                   password: password
                   passwordConfirmation: password
+                  confirmSuccessUrl: 'https://google.com'
       tags:
         - Authentication

@@ -11,7 +11,8 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         {
           email: 'virtualcredit.official@gmail.com',
           password: 'password',
-          password_confirmation: 'password'
+          password_confirmation: 'password',
+          confirm_success_url: 'https://google.com'
         }
       end
 
@@ -59,7 +60,8 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         {
           email: user.email,
           password: 'password',
-          password_confirmation: 'password'
+          password_confirmation: 'password',
+          confirm_success_url: 'https://google.com'
         }
       end
 
@@ -81,7 +83,8 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         {
           email: 'invalid-email@hogehoge',
           password: 'password',
-          password_confirmation: 'password'
+          password_confirmation: 'password',
+          confirm_success_url: 'https://google.com'
         }
       end
 
@@ -103,7 +106,8 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         {
           email: 'virtualcredit.official@gmail.com',
           password: 'passwor',
-          password_confirmation: 'passwor'
+          password_confirmation: 'passwor',
+          confirm_success_url: 'https://google.com'
         }
       end
 
@@ -125,7 +129,8 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         {
           email: 'virtualcredit.official@gmail.com',
           password: 'passwordpasswordpasswordp',
-          password_confirmation: 'passwordpasswordpasswordp'
+          password_confirmation: 'passwordpasswordpasswordp',
+          confirm_success_url: 'https://google.com'
         }
       end
 
