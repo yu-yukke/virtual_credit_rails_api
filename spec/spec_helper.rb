@@ -22,6 +22,8 @@ SimpleCov.start do
   add_filter 'config'
   add_filter '/app/controllers/concerns'
   add_filter '/app/controllers/application_controller.rb'
+  add_filter '/app/controllers/api/v1/auth/confirmations_controller.rb' # 99割コピペなのでチェックしない
+  add_filter '/app/views'
   add_filter do |source_file|
     source_file.lines.count < 5
   end
