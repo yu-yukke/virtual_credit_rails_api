@@ -51,7 +51,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, format: { with: EMAIL_REGEXP }
   validates :published, inclusion: [true, false]
   validates :provider, inclusion: { in: PROVIDERS }
-  validates :slug, uniqueness: true
+  validates :slug, uniqueness: true, allow_nil: true
   validates :sign_in_count, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0
