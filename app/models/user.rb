@@ -40,7 +40,7 @@ class User < ApplicationRecord
 
   EMAIL_REGEXP = /\A[\w\-._]+@[\w\-._]+\.[A-Za-z]+\z/
   PROVIDERS = ['email'].freeze
-  REGISTRATION_PARAMS = %w[email password password_confirmation].freeze
+  REGISTRATION_PARAMS = %w[email password password_confirmation confirm_success_url].freeze
 
   with_options presence: true do
     validates :email
