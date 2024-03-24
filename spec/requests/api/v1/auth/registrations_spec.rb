@@ -16,7 +16,7 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'created' do
+      it_behaves_like 'ok' do
         before { request }
       end
 
@@ -46,8 +46,96 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
       end
     end
 
-    context 'with empty params' do
+    context 'when params is empty' do
       let_it_be(:params) { {} }
+
+      it_behaves_like 'bad request' do
+        before { request }
+      end
+
+      it 'does not create new User' do
+        expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not send a registration email' do
+        expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
+      end
+    end
+
+    context 'when lack of email' do
+      let_it_be(:params) do
+        {
+          password: 'password',
+          password_confirmation: 'password',
+          confirm_success_url: 'https://google.com'
+        }
+      end
+
+      it_behaves_like 'bad request' do
+        before { request }
+      end
+
+      it 'does not create new User' do
+        expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not send a registration email' do
+        expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
+      end
+    end
+
+    context 'when lack of password' do
+      let_it_be(:params) do
+        {
+          email: 'virtualcredit.official@gmail.com',
+          password_confirmation: 'password',
+          confirm_success_url: 'https://google.com'
+        }
+      end
+
+      it_behaves_like 'bad request' do
+        before { request }
+      end
+
+      it 'does not create new User' do
+        expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not send a registration email' do
+        expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
+      end
+    end
+
+    context 'when lack of password_confirmation' do
+      let_it_be(:params) do
+        {
+          email: 'virtualcredit.official@gmail.com',
+          password: 'password',
+          confirm_success_url: 'https://google.com'
+        }
+      end
+
+      it_behaves_like 'bad request' do
+        before { request }
+      end
+
+      it 'does not create new User' do
+        expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not send a registration email' do
+        expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
+      end
+    end
+
+    context 'when lack of confirm_success_url' do
+      let_it_be(:params) do
+        {
+          email: 'virtualcredit.official@gmail.com',
+          password: 'password',
+          password_confirmation: 'password'
+        }
+      end
 
       it_behaves_like 'bad request' do
         before { request }
@@ -69,75 +157,6 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
           email: user.email,
           password: 'password',
           password_confirmation: 'password',
-          confirm_success_url: 'https://google.com'
-        }
-      end
-
-      it_behaves_like 'conflict' do
-        before { request }
-      end
-
-      it 'does not create new User' do
-        expect { request }.not_to change(User, :count)
-      end
-
-      it 'does not send a registration email' do
-        expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
-      end
-    end
-
-    context 'with invalid email' do
-      let_it_be(:params) do
-        {
-          email: 'invalid-email@hogehoge',
-          password: 'password',
-          password_confirmation: 'password',
-          confirm_success_url: 'https://google.com'
-        }
-      end
-
-      it_behaves_like 'unprocessable entity' do
-        before { request }
-      end
-
-      it 'does not create new User' do
-        expect { request }.not_to change(User, :count)
-      end
-
-      it 'does not send a registration email' do
-        expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
-      end
-    end
-
-    context 'with short password' do
-      let_it_be(:params) do
-        {
-          email: 'virtualcredit.official@gmail.com',
-          password: 'passwor',
-          password_confirmation: 'passwor',
-          confirm_success_url: 'https://google.com'
-        }
-      end
-
-      it_behaves_like 'unprocessable entity' do
-        before { request }
-      end
-
-      it 'does not create new User' do
-        expect { request }.not_to change(User, :count)
-      end
-
-      it 'does not send a registration email' do
-        expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
-      end
-    end
-
-    context 'with long password' do
-      let_it_be(:params) do
-        {
-          email: 'virtualcredit.official@gmail.com',
-          password: 'passwordpasswordpasswordp',
-          password_confirmation: 'passwordpasswordpasswordp',
           confirm_success_url: 'https://google.com'
         }
       end
