@@ -8,11 +8,13 @@
 #  confirmation_token   :string
 #  confirmed_at         :datetime
 #  current_sign_in_at   :datetime
+#  current_sign_in_ip   :string
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
 #  image                :string
 #  last_sign_in_at      :datetime
+#  last_sign_in_ip      :string
 #  name                 :string
 #  provider             :string           default("email"), not null
 #  published            :boolean          default(FALSE), not null
