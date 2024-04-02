@@ -279,7 +279,7 @@ components:
                   provider: email
                   uid: test@example.com
                   email: test@example.com
-                  activatedAt: '2019-08-24T14:15:22Z'
+                  activatedAt: null
                   createdAt: '2019-08-24T14:15:22Z'
                   updatedAt: '2019-08-24T14:15:22Z'
     DeviseRegistrationFailed:
