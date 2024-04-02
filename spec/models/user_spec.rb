@@ -163,6 +163,14 @@ RSpec.describe User do
       it 'returns true' do
         expect(user.activate!).to be(true)
       end
+
+      it 'does not update user to not activated' do
+        expect do
+          user.activate!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.activated? }.from(true)
+      end
     end
 
     context 'when user is not confirmed yet' do
@@ -170,6 +178,14 @@ RSpec.describe User do
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      it 'does not update user to activated' do
+        expect do
+          user.activate!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.activated? }.from(false)
       end
     end
 
@@ -179,6 +195,14 @@ RSpec.describe User do
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
       end
+
+      it 'does not update user to activated' do
+        expect do
+          user.activate!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.activated? }.from(false)
+      end
     end
 
     context 'when image is nil' do
@@ -186,6 +210,14 @@ RSpec.describe User do
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      it 'does not update user to activated' do
+        expect do
+          user.activate!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.activated? }.from(false)
       end
     end
 
@@ -195,6 +227,14 @@ RSpec.describe User do
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
       end
+
+      it 'does not update user to activated' do
+        expect do
+          user.activate!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.activated? }.from(false)
+      end
     end
 
     context 'when description is nil' do
@@ -202,6 +242,14 @@ RSpec.describe User do
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      it 'does not update user to activated' do
+        expect do
+          user.activate!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.activated? }.from(false)
       end
     end
   end
@@ -247,6 +295,14 @@ RSpec.describe User do
       it 'returns true' do
         expect(user.publish!).to be(true)
       end
+
+      it 'does not update user to unpublished' do
+        expect do
+          user.publish!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.published? }.from(true)
+      end
     end
 
     context 'when user is not published' do
@@ -267,6 +323,14 @@ RSpec.describe User do
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
       end
+
+      it 'does not update user to published' do
+        expect do
+          user.publish!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.published? }.from(false)
+      end
     end
 
     context 'when name is nil' do
@@ -274,6 +338,14 @@ RSpec.describe User do
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      it 'does not update user to published' do
+        expect do
+          user.publish!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.published? }.from(false)
       end
     end
 
@@ -283,6 +355,14 @@ RSpec.describe User do
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
       end
+
+      it 'does not update user to published' do
+        expect do
+          user.publish!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.published? }.from(false)
+      end
     end
 
     context 'when slug is nil' do
@@ -291,6 +371,14 @@ RSpec.describe User do
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
       end
+
+      it 'does not update user to published' do
+        expect do
+          user.publish!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.published? }.from(false)
+      end
     end
 
     context 'when description is nil' do
@@ -298,6 +386,14 @@ RSpec.describe User do
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+      it 'does not update user to published' do
+        expect do
+          user.publish!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.published? }.from(false)
       end
     end
   end
@@ -308,6 +404,14 @@ RSpec.describe User do
 
       it 'returns true' do
         expect(user.unpublish!).to be(true)
+      end
+
+      it 'does not update user to published' do
+        expect do
+          user.unpublish!
+        rescue StandardError
+          nil
+        end.not_to change { user.reload.published? }.from(false)
       end
     end
 
