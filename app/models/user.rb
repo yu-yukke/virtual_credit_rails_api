@@ -51,8 +51,8 @@ class User < ApplicationRecord
     validates :sign_in_count
   end
 
-  # activated userは必須
-  with_options if: -> { activated? } do
+  # activated or published userは必須
+  with_options if: -> { activated? || published? } do
     validates :name, :image, :slug, :description, presence: true
   end
 
@@ -65,7 +65,47 @@ class User < ApplicationRecord
     greater_than_or_equal_to: 0
   }
 
+  def confirmed?
+    confirmed_at.present?
+  end
+
+  def activate!
+    # TODO: activateAPI実装時に条件を改めて考えること
+    return true if activated?
+
+    unless confirmed?
+      errors.add(:base, 'まだ認証が完了していないユーザーです。')
+
+      raise ActiveRecord::RecordInvalid, self
+    end
+
+    self.activated_at = Time.zone.now
+    save!
+  end
+
   def activated?
     activated_at.present?
+  end
+
+  def publish!
+    # TODO: publishAPI実装時に条件を改めて考えること
+    return true if published?
+
+    unless activated?
+      errors.add(:base, 'まだアカウントが有効化されていないユーザーです。')
+
+      raise ActiveRecord::RecordInvalid, self
+    end
+
+    self.published = true
+    save!
+  end
+
+  def unpublish!
+    # TODO: unpublishAPI実装時に条件を改めて考えること
+    return true unless published?
+
+    self.published = false
+    save!
   end
 end
