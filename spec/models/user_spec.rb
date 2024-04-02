@@ -41,17 +41,70 @@ RSpec.describe User do
   #
   # validations
   #
-  context 'when that is not activated' do
-    subject { build(:user, :not_activated, name: nil, slug: nil, image: nil, description: nil) }
+  context 'when that is new user' do
+    subject { create(:user, :new_user) }
 
     it { is_expected.not_to validate_presence_of :name }
     it { is_expected.not_to validate_presence_of :slug }
     it { is_expected.not_to validate_presence_of :image }
     it { is_expected.not_to validate_presence_of :description }
+
+    it { is_expected.to validate_presence_of :email }
+    it { is_expected.to validate_presence_of :provider }
+    it { is_expected.to validate_presence_of :encrypted_password }
+    it { is_expected.to validate_presence_of :sign_in_count }
   end
 
-  context 'when that is activated' do
-    subject { build(:user) }
+  context 'when that is new user confirmed' do
+    subject { create(:user, :new_user, :confirmed) }
+
+    it { is_expected.not_to validate_presence_of :name }
+    it { is_expected.not_to validate_presence_of :slug }
+    it { is_expected.not_to validate_presence_of :image }
+    it { is_expected.not_to validate_presence_of :description }
+
+    it { is_expected.to validate_presence_of :email }
+    it { is_expected.to validate_presence_of :provider }
+    it { is_expected.to validate_presence_of :encrypted_password }
+    it { is_expected.to validate_presence_of :sign_in_count }
+  end
+
+  context 'when that is confirmed (not activated)' do
+    subject { create(:user, :confirmed) }
+
+    it { is_expected.not_to validate_presence_of :name }
+    it { is_expected.not_to validate_presence_of :slug }
+    it { is_expected.not_to validate_presence_of :image }
+    it { is_expected.not_to validate_presence_of :description }
+
+    it { is_expected.to validate_presence_of :email }
+    it { is_expected.to validate_presence_of :provider }
+    it { is_expected.to validate_presence_of :encrypted_password }
+    it { is_expected.to validate_presence_of :sign_in_count }
+  end
+
+  context 'when that is activated (not published)' do
+    subject { create(:user, :activated) }
+
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :slug }
+    it { is_expected.to validate_presence_of :image }
+    it { is_expected.to validate_presence_of :description }
+
+    it { is_expected.to validate_presence_of :email }
+    it { is_expected.to validate_presence_of :provider }
+    it { is_expected.to validate_presence_of :encrypted_password }
+    it { is_expected.to validate_presence_of :sign_in_count }
+
+    it { is_expected.to validate_uniqueness_of(:slug) }
+
+    it { is_expected.to validate_numericality_of(:sign_in_count).is_greater_than_or_equal_to(0) }
+
+    it { is_expected.to validate_inclusion_of(:provider).in_array(User::PROVIDERS) }
+  end
+
+  context 'when that is published' do
+    subject { create(:user, :published) }
 
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :slug }
@@ -73,9 +126,105 @@ RSpec.describe User do
   #
   # methods
   #
+  describe '.confirmed?' do
+    context 'when user is not confirmed yet' do
+      let_it_be(:user) { create(:user, :new_user) }
+
+      it 'returns false' do
+        expect(user.confirmed?).to be(false)
+      end
+    end
+
+    context 'when user is confirmed' do
+      let_it_be(:user) { create(:user, :new_user, :confirmed) }
+
+      it 'returns true' do
+        expect(user.confirmed?).to be(true)
+      end
+    end
+  end
+
+  describe '.activate!' do
+    context 'when user has all information' do
+      let_it_be(:user) { create(:user, :confirmed) }
+
+      it 'returns true' do
+        expect(user.activate!).to be(true)
+      end
+
+      it 'update user to activated' do
+        expect { user.activate! }.to change { user.reload.activated? }.to(true)
+      end
+    end
+
+    context 'when user is already activated' do
+      let_it_be(:user) { create(:user, :activated) }
+
+      it 'returns true' do
+        expect(user.activate!).to be(true)
+      end
+    end
+
+    context 'when user is not confirmed yet' do
+      let_it_be(:user) { create(:user, :new_user) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context 'when name is nil' do
+      let_it_be(:user) { create(:user, :confirmed, name: nil) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context 'when image is nil' do
+      let_it_be(:user) { create(:user, :confirmed, image: nil) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context 'when slug is nil' do
+      let_it_be(:user) { create(:user, :confirmed, slug: nil) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context 'when description is nil' do
+      let_it_be(:user) { create(:user, :confirmed, description: nil) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+  end
+
   describe '.activated?' do
-    context 'when user is not activated' do
-      let_it_be(:user) { create(:user, :not_activated) }
+    context 'when user is new user' do
+      let_it_be(:user) { create(:user, :new_user) }
+
+      it 'returns false' do
+        expect(user.activated?).to be(false)
+      end
+    end
+
+    context 'when user is confirmed new user' do
+      let_it_be(:user) { create(:user, :new_user, :confirmed) }
+
+      it 'returns false' do
+        expect(user.activated?).to be(false)
+      end
+    end
+
+    context 'when user is not activated yet' do
+      let_it_be(:user) { create(:user, :confirmed) }
 
       it 'returns false' do
         expect(user.activated?).to be(false)
@@ -83,10 +232,94 @@ RSpec.describe User do
     end
 
     context 'when user is activated' do
-      let_it_be(:user) { create(:user) }
+      let_it_be(:user) { create(:user, :activated) }
 
       it 'returns true' do
         expect(user.activated?).to be(true)
+      end
+    end
+  end
+
+  describe '.publish!' do
+    context 'when user is already published' do
+      let_it_be(:user) { create(:user, :published) }
+
+      it 'returns true' do
+        expect(user.publish!).to be(true)
+      end
+    end
+
+    context 'when user is not published' do
+      let_it_be(:user) { create(:user, :activated) }
+
+      it 'returns true' do
+        expect(user.publish!).to be(true)
+      end
+
+      it 'update user to published' do
+        expect { user.publish! }.to change { user.reload.published? }.to(true)
+      end
+    end
+
+    context 'when user is not activated yet' do
+      let_it_be(:user) { create(:user, :confirmed) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context 'when name is nil' do
+      let_it_be(:user) { create(:user, :confirmed, name: nil) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context 'when image is nil' do
+      let_it_be(:user) { create(:user, :confirmed, image: nil) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context 'when slug is nil' do
+      let_it_be(:user) { create(:user, :confirmed, slug: nil) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+
+    context 'when description is nil' do
+      let_it_be(:user) { create(:user, :confirmed, description: nil) }
+
+      it 'raise ActiveRecord::RecordInvalid' do
+        expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+  end
+
+  describe '.unpublish!' do
+    context 'when user is not published' do
+      let_it_be(:user) { create(:user, :activated) }
+
+      it 'returns true' do
+        expect(user.unpublish!).to be(true)
+      end
+    end
+
+    context 'when user is published' do
+      let_it_be(:user) { create(:user, :published) }
+
+      it 'returns true' do
+        expect(user.unpublish!).to be(true)
+      end
+
+      it 'update user to unpublished' do
+        expect { user.unpublish! }.to change { user.reload.published? }.to(false)
       end
     end
   end
