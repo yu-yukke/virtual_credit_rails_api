@@ -1,6 +1,8 @@
 module Api
   module V1
     class ReleaseNotesController < ApplicationController
+      skip_before_action :authenticate_api_v1_user!
+
       before_action :check_page_params
 
       def index

@@ -5,6 +5,7 @@ class ApplicationController < ActionController::API
   include Exceptions
 
   before_action :camelcase_to_snakecase
+  before_action :authenticate_api_v1_user!
 
   def camelcase_to_snakecase
     params.deep_transform_keys!(&:underscore)
