@@ -47,3 +47,13 @@ shared_examples 'unprocessable entity' do
     assert_response_schema_confirm(422)
   end
 end
+
+shared_examples 'unauthorized' do
+  it 'returns unauthorized' do
+    expect(response).to have_http_status(:unauthorized)
+  end
+
+  it 'returns 401 response schema' do
+    assert_response_schema_confirm(401)
+  end
+end
