@@ -13,6 +13,8 @@ tags:
     description: リリースノートに関するAPI
   - name: Authentication
     description: 認証に関するAPI
+  - name: User
+    description: ユーザーに関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -346,9 +348,9 @@ components:
                   provider: email
                   uid: test@example.com
                   email: test@example.com
-                  activatedAt: null
-                  createdAt: '2019-08-24T14:15:22Z'
-                  updatedAt: '2019-08-24T14:15:22Z'
+                  activated_at: null
+                  created_at: '2019-08-24T14:15:22Z'
+                  updated_at: '2019-08-24T14:15:22Z'
     DeviseRegistrationFailed:
       description: Devise Registration Failed
       content:
@@ -493,6 +495,24 @@ components:
       schema:
         type: integer
       description: 取得したいページ数
+    uid:
+      name: uid
+      in: header
+      required: true
+      schema:
+        type: string
+    client:
+      name: client
+      in: header
+      required: true
+      schema:
+        type: string
+    access-token:
+      name: access-token
+      in: header
+      required: true
+      schema:
+        type: string
 paths:
   /v1/release_notes:
     get:
@@ -622,3 +642,42 @@ paths:
                   password: password
       tags:
         - Authentication
+  /v1/users/me:
+    get:
+      summary: ログイン中ユーザーの取得
+      tags:
+        - User
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UsersMe'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: null
+                      image: null
+                      slug: null
+                      description: null
+                      email: test@example.com
+                      published: false
+                      activatedAt: null
+                      createdAt: '2019-08-24T14:15:22Z'
+                      updatedAt: '2019-08-24T14:15:22Z'
+        '401':
+          $ref: '#/components/responses/DeviseSignInFailed'
+      operationId: get-v1-users-me
+      description: 'uid, client, access-tokenからログイン中のユーザーを取得して返す'
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
