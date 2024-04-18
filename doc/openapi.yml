@@ -13,6 +13,8 @@ tags:
     description: リリースノートに関するAPI
   - name: Authentication
     description: 認証に関するAPI
+  - name: User
+    description: ユーザーに関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -81,23 +83,6 @@ components:
         - description
         - createdAt
       x-examples: {}
-    NewUser:
-      title: NewUser
-      x-stoplight:
-        id: d1ug2igiozwng
-      type: object
-      properties:
-        provider:
-          type: string
-          x-stoplight:
-            id: r4ae886pyb5a1
-        email:
-          type: string
-          x-stoplight:
-            id: 7nlqudrkcs40i
-      required:
-        - provider
-        - email
     Error:
       title: Error
       x-stoplight:
@@ -141,6 +126,152 @@ components:
         - resource
         - code
         - errors
+    UserInRegistration:
+      title: UserInRegistration
+      x-stoplight:
+        id: 0z5z5va8lnrhm
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        name:
+          type: string
+          x-stoplight:
+            id: 3y2gz6l4jxs97
+          nullable: true
+        image:
+          type: string
+          x-stoplight:
+            id: 7pyyfe3pdjgow
+          nullable: true
+        slug:
+          type: string
+          x-stoplight:
+            id: irddytld7o36a
+          nullable: true
+        description:
+          type: string
+          x-stoplight:
+            id: pd1loyvcnrxl3
+          nullable: true
+        published:
+          type: boolean
+          x-stoplight:
+            id: asn2cjhnqru9m
+        provider:
+          type: string
+          x-stoplight:
+            id: wum4lff3d9y8l
+          nullable: true
+        uid:
+          type: string
+          x-stoplight:
+            id: eg5u2hyw4625r
+          nullable: true
+        email:
+          type: string
+          x-stoplight:
+            id: 1e5fvjbaiqwad
+          nullable: true
+        activated_at:
+          type: string
+          x-stoplight:
+            id: hssj4q6nam62h
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          x-stoplight:
+            id: 52qrzsizqhrjx
+          format: date-time
+          nullable: true
+        updated_at:
+          type: string
+          x-stoplight:
+            id: 1sti645z8bbxm
+          format: date-time
+          nullable: true
+      required:
+        - id
+        - name
+        - image
+        - slug
+        - description
+        - published
+        - provider
+        - uid
+        - email
+        - activated_at
+        - created_at
+        - updated_at
+    UsersMe:
+      title: UsersMe
+      x-stoplight:
+        id: gcl4zt3urge1j
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        name:
+          type: string
+          x-stoplight:
+            id: 3iyi3k1e1tizx
+          nullable: true
+        image:
+          type: string
+          x-stoplight:
+            id: qqau2xgzp7pho
+          nullable: true
+        slug:
+          type: string
+          x-stoplight:
+            id: lqn932c3s3ipt
+          nullable: true
+        description:
+          type: string
+          x-stoplight:
+            id: tt834jippdtkj
+          nullable: true
+        email:
+          type: string
+          x-stoplight:
+            id: bditj4g3zvqnu
+          nullable: true
+        published:
+          type: boolean
+          x-stoplight:
+            id: nvt15dp35eigs
+        activatedAt:
+          type: string
+          x-stoplight:
+            id: 27b10c6qogl9j
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          x-stoplight:
+            id: xinncyng79mys
+          format: date-time
+          nullable: true
+        updatedAt:
+          type: string
+          x-stoplight:
+            id: cnbiy05fknlta
+          format: date-time
+          nullable: true
+      required:
+        - id
+        - name
+        - image
+        - slug
+        - description
+        - email
+        - published
+        - activatedAt
+        - createdAt
+        - updatedAt
   responses:
     BadRequest:
       description: Bad Request
@@ -187,6 +318,196 @@ components:
                 errors:
                   - field: email
                     message: 既にメールアドレスが使用されています。
+    DeviseRegistrationSuccess:
+      description: Devise Registration Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                x-stoplight:
+                  id: 1df1f6n3nptzf
+              data:
+                $ref: '#/components/schemas/UserInRegistration'
+            required:
+              - status
+              - data
+          examples:
+            Example 1:
+              value:
+                status: success
+                data:
+                  id: ba4367ee-e54c-4976-8c53-513c893fb418
+                  name: null
+                  image: null
+                  slug: null
+                  description: null
+                  published: false
+                  provider: email
+                  uid: test@example.com
+                  email: test@example.com
+                  activated_at: null
+                  created_at: '2019-08-24T14:15:22Z'
+                  updated_at: '2019-08-24T14:15:22Z'
+    DeviseRegistrationFailed:
+      description: Devise Registration Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                x-stoplight:
+                  id: 0uprqalfazxjl
+              data:
+                $ref: '#/components/schemas/UserInRegistration'
+              errors:
+                type: object
+                x-stoplight:
+                  id: 5elkl44ti26zw
+                properties:
+                  email:
+                    type: array
+                    x-stoplight:
+                      id: na304dvv82obv
+                    items:
+                      x-stoplight:
+                        id: oz6ni9l2gx8ti
+                      type: string
+                  password:
+                    type: array
+                    x-stoplight:
+                      id: 0875txw0e51cb
+                    items:
+                      x-stoplight:
+                        id: xem6mb6x039na
+                      type: string
+                  password_confirmation:
+                    type: array
+                    x-stoplight:
+                      id: 75c1vncad2mr4
+                    items:
+                      x-stoplight:
+                        id: 2ef1wp12q87xp
+                      type: string
+                  full_messages:
+                    type: array
+                    x-stoplight:
+                      id: 0ev6q36bx7q8e
+                    items:
+                      x-stoplight:
+                        id: 7dyypcgn2njdf
+                      type: string
+            required:
+              - status
+              - data
+              - errors
+          examples:
+            Example 1:
+              value:
+                status: error
+                data:
+                  id: null
+                  name: null
+                  image: null
+                  slug: null
+                  description: null
+                  published: false
+                  provider: email
+                  uid: ''
+                  email: test@example.com
+                  activated_at: null
+                  created_at: '2019-08-24T14:15:22Z'
+                  updated_at: '2019-08-24T14:15:22Z'
+                errors:
+                  email:
+                    - を入力してください
+                    - はすでに存在します
+                  password:
+                    - を入力してください
+                  password_confirmation:
+                    - とパスワードの入力が一致しません
+                  full_messages:
+                    - Eメールはすでに存在します
+                    - パスワードは24文字以内で入力してください
+    DeviseSignInSuccess:
+      description: Devise Sign-in Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/UsersMe'
+            required:
+              - data
+          examples:
+            Example 1:
+              value:
+                data:
+                  id: ba4367ee-e54c-4976-8c53-513c893fb418
+                  name: null
+                  image: null
+                  slug: null
+                  description: null
+                  email: test@example.com
+                  published: false
+                  activatedAt: null
+                  createdAt: '2019-08-24T14:15:22Z'
+                  updatedAt: '2019-08-24T14:15:22Z'
+    DeviseSignInFailed:
+      description: Devise Sign-in Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                x-stoplight:
+                  id: yk2z24qwrqapn
+              errors:
+                type: array
+                x-stoplight:
+                  id: cq4rksj8ta8ds
+                items:
+                  x-stoplight:
+                    id: 1h5vbdk6rwu80
+                  type: string
+            required:
+              - success
+              - errors
+          examples:
+            Example 1:
+              value:
+                success: false
+                errors:
+                  - ログイン用の認証情報が正しくありません。再度お試しください。
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                x-stoplight:
+                  id: 9yxf6i1j7c61j
+                items:
+                  x-stoplight:
+                    id: nbb08r3qajwtk
+                  type: string
+            required:
+              - errors
+          examples:
+            Example 1:
+              value:
+                errors:
+                  - ログインもしくはアカウント登録してください。
   examples: {}
   parameters:
     page:
@@ -196,6 +517,24 @@ components:
       schema:
         type: integer
       description: 取得したいページ数
+    uid:
+      name: uid
+      in: header
+      required: true
+      schema:
+        type: string
+    client:
+      name: client
+      in: header
+      required: true
+      schema:
+        type: string
+    access-token:
+      name: access-token
+      in: header
+      required: true
+      schema:
+        type: string
 paths:
   /v1/release_notes:
     get:
@@ -248,29 +587,12 @@ paths:
       summary: ユーザー登録
       operationId: post-v1-auth
       responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/NewUser'
-                required:
-                  - data
-              examples:
-                Example 1:
-                  value:
-                    data:
-                      provider: email
-                      email: hogehoge@gmail.com
+        '200':
+          $ref: '#/components/responses/DeviseRegistrationSuccess'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '409':
-          $ref: '#/components/responses/Conflict'
         '422':
-          $ref: '#/components/responses/UnprocessableEntity'
+          $ref: '#/components/responses/DeviseRegistrationFailed'
       description: 未認証状態のユーザーを登録する
       requestBody:
         content:
@@ -290,15 +612,94 @@ paths:
                   type: string
                   x-stoplight:
                     id: poi8c209kjif7
+                confirmSuccessUrl:
+                  type: string
+                  x-stoplight:
+                    id: l27wu2d2mfcyu
               required:
                 - email
                 - password
                 - passwordConfirmation
+                - confirmSuccessUrl
             examples:
               Example 1:
                 value:
                   email: hogehoge@fuga.com
                   password: password
                   passwordConfirmation: password
+                  confirmSuccessUrl: 'https://google.com'
       tags:
         - Authentication
+  /v1/auth/sign_in:
+    post:
+      summary: ログイン
+      operationId: post-v1-auth-sign_in
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviseSignInSuccess'
+        '401':
+          $ref: '#/components/responses/DeviseSignInFailed'
+      description: 認証完了ユーザーのログイン
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  x-stoplight:
+                    id: i25u7akqmpz0b
+                password:
+                  type: string
+                  x-stoplight:
+                    id: 0059nsypr8ce7
+              required:
+                - email
+                - password
+            examples:
+              Example 1:
+                value:
+                  email: test@example.com
+                  password: password
+      tags:
+        - Authentication
+  /v1/users/me:
+    get:
+      summary: ログイン中ユーザーの取得
+      tags:
+        - User
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UsersMe'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: null
+                      image: null
+                      slug: null
+                      description: null
+                      email: test@example.com
+                      published: false
+                      activatedAt: null
+                      createdAt: '2019-08-24T14:15:22Z'
+                      updatedAt: '2019-08-24T14:15:22Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      operationId: get-v1-users-me
+      description: 'uid, client, access-tokenからログイン中のユーザーを取得して返す'
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'

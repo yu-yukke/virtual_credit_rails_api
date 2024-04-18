@@ -35,6 +35,8 @@ services:
     volumes:
       - .:/myapp
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 4000 -b '0.0.0.0'"
+    stdin_open: true
+    tty: true
 
   openapi:
     container_name: virtual_credit_rails_api_openapi

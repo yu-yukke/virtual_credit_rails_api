@@ -44,6 +44,9 @@ ActiveRecord::Schema[7.0].define(version: 0) do
     t.datetime "updated_at", precision: nil
     t.string "email", null: false
     t.string "uid", default: "", null: false
+    t.datetime "activated_at", precision: nil
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"

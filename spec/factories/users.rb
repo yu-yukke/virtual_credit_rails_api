@@ -3,15 +3,18 @@
 # Table name: users
 #
 #  id                   :uuid             not null, primary key
+#  activated_at         :datetime
 #  confirmation_sent_at :datetime
 #  confirmation_token   :string
 #  confirmed_at         :datetime
 #  current_sign_in_at   :datetime
+#  current_sign_in_ip   :string
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
 #  image                :string
 #  last_sign_in_at      :datetime
+#  last_sign_in_ip      :string
 #  name                 :string
 #  provider             :string           default("email"), not null
 #  published            :boolean          default(FALSE), not null
@@ -39,5 +42,39 @@ FactoryBot.define do
     password = Faker::Internet.password(min_length: 8)
     password { password }
     password_confirmation { password }
+    slug { Faker::Internet.unique.slug }
+    description { Faker::Lorem.paragraph }
+    image { Faker::Avatar.image }
+
+    trait :new_user do
+      name { nil }
+      email { Faker::Internet.email }
+      password = Faker::Internet.password(min_length: 8)
+      password { password }
+      password_confirmation { password }
+      slug { nil }
+      description { nil }
+      image { nil }
+      activated_at { nil }
+    end
+
+    trait :confirmed do
+      after(:create, &:confirm)
+    end
+
+    trait :activated do
+      after(:create) do |user|
+        user.confirm
+        user.activate!
+      end
+    end
+
+    trait :published do
+      after(:create) do |user|
+        user.confirm
+        user.activate!
+        user.publish!
+      end
+    end
   end
 end

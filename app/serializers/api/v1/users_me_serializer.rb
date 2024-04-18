@@ -3,15 +3,18 @@
 # Table name: users
 #
 #  id                   :uuid             not null, primary key
+#  activated_at         :datetime
 #  confirmation_sent_at :datetime
 #  confirmation_token   :string
 #  confirmed_at         :datetime
 #  current_sign_in_at   :datetime
+#  current_sign_in_ip   :string
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
 #  image                :string
 #  last_sign_in_at      :datetime
+#  last_sign_in_ip      :string
 #  name                 :string
 #  provider             :string           default("email"), not null
 #  published            :boolean          default(FALSE), not null
@@ -32,6 +35,7 @@
 #  index_users_on_slug                (slug) UNIQUE
 #  index_users_on_uid_provider        (uid,provider) UNIQUE
 #
-class Api::V1::NewUserSerializer < ActiveModel::Serializer
-  attributes :provider, :email
+class Api::V1::UsersMeSerializer < ActiveModel::Serializer
+  attributes :id, :name, :image, :slug, :description, :email, :published,
+             :activated_at, :created_at, :updated_at
 end

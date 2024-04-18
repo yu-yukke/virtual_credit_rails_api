@@ -9,6 +9,7 @@ create_table 'users', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
   t.text        'description'
   t.boolean     'published',                    null: false,
                                                 default: false
+  t.timestamp   'activated_at'
 
   # devise_token_auth
   ## required
@@ -27,6 +28,8 @@ create_table 'users', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
   ## trackable
   t.integer     'sign_in_count',                null: false,
                                                 default: 0
+  t.string      'current_sign_in_ip'
+  t.string      'last_sign_in_ip'
   t.timestamp   'current_sign_in_at'
   t.timestamp   'last_sign_in_at'
 
