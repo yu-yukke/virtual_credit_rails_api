@@ -11,6 +11,12 @@ Rails.application.routes.draw do
       }
 
       resources :release_notes, only: %i[index]
+
+      resources :users, only: %i[] do
+        collection do
+          get '/me', to: 'users_me#show'
+        end
+      end
     end
   end
 end

@@ -486,6 +486,28 @@ components:
                 success: false
                 errors:
                   - ログイン用の認証情報が正しくありません。再度お試しください。
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                x-stoplight:
+                  id: 9yxf6i1j7c61j
+                items:
+                  x-stoplight:
+                    id: nbb08r3qajwtk
+                  type: string
+            required:
+              - errors
+          examples:
+            Example 1:
+              value:
+                errors:
+                  - ログインもしくはアカウント登録してください。
   examples: {}
   parameters:
     page:
@@ -674,7 +696,7 @@ paths:
                       createdAt: '2019-08-24T14:15:22Z'
                       updatedAt: '2019-08-24T14:15:22Z'
         '401':
-          $ref: '#/components/responses/DeviseSignInFailed'
+          $ref: '#/components/responses/Unauthorized'
       operationId: get-v1-users-me
       description: 'uid, client, access-tokenからログイン中のユーザーを取得して返す'
       parameters:

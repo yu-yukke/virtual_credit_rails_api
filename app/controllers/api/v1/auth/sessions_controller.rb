@@ -2,6 +2,8 @@ module Api
   module V1
     module Auth
       class SessionsController < DeviseTokenAuth::SessionsController
+        skip_before_action :authenticate_api_v1_user!
+
         protected
 
         def render_create_success

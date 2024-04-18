@@ -2,6 +2,8 @@ module Api
   module V1
     module Auth
       class ConfirmationsController < DeviseTokenAuth::ConfirmationsController
+        skip_before_action :authenticate_api_v1_user!
+
         def show
           # 外部サイトへのリダイレクトで引っかかるのでallow_other_hostを渡して丸ごとオーバーライド
           @resource = resource_class.confirm_by_token(resource_params[:confirmation_token])
