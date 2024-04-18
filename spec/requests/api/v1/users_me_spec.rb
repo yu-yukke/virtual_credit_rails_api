@@ -9,7 +9,7 @@ RSpec.describe 'Api::V1::UsersMe' do
     let_it_be(:user) { create(:user, :confirmed) }
 
     context 'when user does not signed-in' do
-      let(:headers) { {} }
+      let_it_be(:headers) { {} }
 
       it_behaves_like 'unauthorized' do
         before { request }
@@ -17,7 +17,7 @@ RSpec.describe 'Api::V1::UsersMe' do
     end
 
     context 'when user signed-in' do
-      let(:headers) { sign_in(user) }
+      let_it_be(:headers) { sign_in(user) }
 
       it_behaves_like 'ok' do
         before { request }
