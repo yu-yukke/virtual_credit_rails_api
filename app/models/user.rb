@@ -51,8 +51,8 @@ class User < ApplicationRecord
     validates :sign_in_count
   end
 
-  # activated or published userは必須
-  with_options if: -> { activated? || published? } do
+  # activated userは必須
+  with_options if: -> { activated? } do
     validates :name, :image, :slug, :description, presence: true
   end
 
