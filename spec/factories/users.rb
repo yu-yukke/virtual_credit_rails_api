@@ -12,7 +12,6 @@
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
-#  image                :string
 #  last_sign_in_at      :datetime
 #  last_sign_in_ip      :string
 #  name                 :string
@@ -44,7 +43,6 @@ FactoryBot.define do
     password_confirmation { password }
     slug { Faker::Internet.unique.slug }
     description { Faker::Lorem.paragraph }
-    image { Faker::Avatar.image }
 
     trait :new_user do
       name { nil }
@@ -54,7 +52,6 @@ FactoryBot.define do
       password_confirmation { password }
       slug { nil }
       description { nil }
-      image { nil }
       activated_at { nil }
     end
 
@@ -75,6 +72,10 @@ FactoryBot.define do
         user.activate!
         user.publish!
       end
+    end
+
+    after(:build) do |user|
+      user.image.attach(io: File.open('spec/fixtures/takaomi.jpeg'), filename: 'takaomi.jpeg', content_type: 'image/jpeg')
     end
   end
 end
