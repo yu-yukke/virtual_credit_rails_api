@@ -36,6 +36,8 @@
 #  index_users_on_uid_provider        (uid,provider) UNIQUE
 #
 class Api::V1::UsersMeSerializer < ActiveModel::Serializer
-  attributes :id, :name, :image, :slug, :description, :email, :published,
+  attributes :id, :name, :slug, :description, :email, :published,
              :activated_at, :created_at, :updated_at
+
+  delegate :image_url, to: :object
 end

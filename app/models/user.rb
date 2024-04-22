@@ -12,7 +12,6 @@
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
-#  image                :string
 #  last_sign_in_at      :datetime
 #  last_sign_in_ip      :string
 #  name                 :string
@@ -39,10 +38,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :rememberable,
          :trackable, :confirmable, :validatable
   include DeviseTokenAuth::Concerns::User
+  include Rails.application.routes.url_helpers
+
+  has_one_attached :image
 
   EMAIL_REGEXP = /\A[\w\-._]+@[\w\-._]+\.[A-Za-z]+\z/
   PROVIDERS = ['email'].freeze
   REGISTRATION_PARAMS = %w[email password password_confirmation confirm_success_url].freeze
+  UPDATE_PARAMS = %w[name slug description image].freeze
 
   with_options presence: true do
     validates :email
@@ -53,7 +56,7 @@ class User < ApplicationRecord
 
   # activated userは必須
   with_options if: -> { activated? } do
-    validates :name, :image, :slug, :description, presence: true
+    validates :name, :slug, :description, presence: true
   end
 
   validates :email, uniqueness: true, format: { with: EMAIL_REGEXP }
@@ -64,6 +67,11 @@ class User < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }
+
+  def image_url
+    # 紐づいている画像のURLを取得する
+    image.attached? ? url_for(image) : nil
+  end
 
   def confirmed?
     confirmed_at.present?
