@@ -703,3 +703,65 @@ paths:
         - $ref: '#/components/parameters/uid'
         - $ref: '#/components/parameters/client'
         - $ref: '#/components/parameters/access-token'
+    patch:
+      summary: ログイン中ユーザーの更新
+      operationId: patch-v1-users-me
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UsersMe'
+                required:
+                  - data
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      description: 'uid, client, access-tokenからログイン中のユーザーを取得してリクエストした内容へ更新する'
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: m1ukf7oobytwn
+                slug:
+                  type: string
+                  x-stoplight:
+                    id: rkkzjegm26wv6
+                description:
+                  type: string
+                  x-stoplight:
+                    id: 92onyfklenln1
+                image:
+                  type: string
+                  x-stoplight:
+                    id: 41vpabcx5hkec
+              required:
+                - name
+                - slug
+                - description
+                - image
+            examples:
+              Example 1:
+                value:
+                  name: example user
+                  slug: example_user
+                  description: I am example user.
+                  image: path/to/image
+      tags:
+        - User
