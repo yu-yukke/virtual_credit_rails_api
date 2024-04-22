@@ -46,10 +46,16 @@ docker-compose exec app bundle exec rails db:create
 
 # マイグレーション
 
-- ridgepole を採用
+- 基本は ridgepole を採用
 
 ```bash
  docker-compose exec app bundle exec ridge:run
+```
+
+- ActiveStorage 等の Rails 標準機能は自動生成される migaration ファイルをそのまま使用する
+
+```bash
+ docker-compose exec app bundle exec rails db:migrate
 ```
 
 # テスト
