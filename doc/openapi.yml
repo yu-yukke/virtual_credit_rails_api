@@ -140,7 +140,7 @@ components:
           x-stoplight:
             id: 3y2gz6l4jxs97
           nullable: true
-        image:
+        thumbnailImageUrl:
           type: string
           x-stoplight:
             id: 7pyyfe3pdjgow
@@ -195,7 +195,7 @@ components:
       required:
         - id
         - name
-        - image
+        - thumbnailImageUrl
         - slug
         - description
         - published
@@ -219,7 +219,7 @@ components:
           x-stoplight:
             id: 3iyi3k1e1tizx
           nullable: true
-        image:
+        thumbnailImageUrl:
           type: string
           x-stoplight:
             id: qqau2xgzp7pho
@@ -264,7 +264,7 @@ components:
       required:
         - id
         - name
-        - image
+        - thumbnailImageUrl
         - slug
         - description
         - email
@@ -341,7 +341,7 @@ components:
                 data:
                   id: ba4367ee-e54c-4976-8c53-513c893fb418
                   name: null
-                  image: null
+                  thumbnailImageUrl: null
                   slug: null
                   description: null
                   published: false
@@ -412,7 +412,7 @@ components:
                 data:
                   id: null
                   name: null
-                  image: null
+                  thumbnailImageUrl: null
                   slug: null
                   description: null
                   published: false
@@ -450,7 +450,7 @@ components:
                 data:
                   id: ba4367ee-e54c-4976-8c53-513c893fb418
                   name: null
-                  image: null
+                  thumbnailImageUrl: null
                   slug: null
                   description: null
                   email: test@example.com
@@ -687,7 +687,7 @@ paths:
                     data:
                       id: ba4367ee-e54c-4976-8c53-513c893fb418
                       name: null
-                      image: null
+                      thumbnailImageUrl: null
                       slug: null
                       description: null
                       email: test@example.com
@@ -718,6 +718,20 @@ paths:
                     $ref: '#/components/schemas/UsersMe'
                 required:
                   - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: example user
+                      thumbnailImageUrl: path/to/thumbnailImage
+                      slug: example_user
+                      description: I am example user.
+                      email: test@example.com
+                      published: false
+                      activatedAt: null
+                      createdAt: '2019-08-24T14:15:22Z'
+                      updatedAt: '2019-08-24T14:15:22Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':

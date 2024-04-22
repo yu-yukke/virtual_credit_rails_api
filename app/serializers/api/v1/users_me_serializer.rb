@@ -39,5 +39,5 @@ class Api::V1::UsersMeSerializer < ActiveModel::Serializer
   attributes :id, :name, :slug, :description, :email, :published,
              :activated_at, :created_at, :updated_at
 
-  delegate :image_url, to: :object
+  delegate :thumbnail_image_url, to: :object
 end

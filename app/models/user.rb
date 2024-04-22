@@ -40,7 +40,7 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
   include Rails.application.routes.url_helpers
 
-  has_one_attached :image
+  has_one_attached :thumbnail_image
 
   EMAIL_REGEXP = /\A[\w\-._]+@[\w\-._]+\.[A-Za-z]+\z/
   PROVIDERS = ['email'].freeze
@@ -68,9 +68,9 @@ class User < ApplicationRecord
     greater_than_or_equal_to: 0
   }
 
-  def image_url
+  def thumbnail_image_url
     # 紐づいている画像のURLを取得する
-    image.attached? ? url_for(image) : nil
+    thumbnail_image.attached? ? url_for(thumbnail_image) : nil
   end
 
   def confirmed?
