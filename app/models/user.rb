@@ -68,6 +68,9 @@ class User < ApplicationRecord
     greater_than_or_equal_to: 0
   }
 
+  validate :check_image_type
+  validate :check_image_size
+
   def thumbnail_image_url
     # 紐づいている画像のURLを取得する
     thumbnail_image.attached? ? url_for(thumbnail_image) : nil
@@ -115,5 +118,21 @@ class User < ApplicationRecord
 
     self.published = false
     save!
+  end
+
+  private
+
+  def check_image_type
+    return unless thumbnail_image.attached?
+    return if thumbnail_image.blob.content_type.in?(%w[image/jpeg image/png])
+
+    errors.add(:thumbnail_image, 'JPEG 形式または PNG 形式のみ選択してください')
+  end
+
+  def check_image_size
+    return unless thumbnail_image.attached?
+    return if thumbnail_image.blob.byte_size < 5.megabytes
+
+    errors.add(:thumbnail_image, '5MB 以下の画像を添付してください')
   end
 end

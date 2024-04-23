@@ -75,7 +75,11 @@ FactoryBot.define do
     end
 
     after(:build) do |user|
-      user.image.attach(io: File.open('spec/fixtures/takaomi.jpeg'), filename: 'takaomi.jpeg', content_type: 'image/jpeg')
+      user.thumbnail_image.attach(
+        io: File.open('spec/fixtures/takaomi.jpeg'),
+        filename: 'takaomi.jpeg',
+        content_type: 'image/jpeg'
+      )
     end
   end
 end
