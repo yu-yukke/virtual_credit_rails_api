@@ -57,6 +57,10 @@ class User < ApplicationRecord
   # activated userは必須
   with_options if: -> { activated? } do
     validates :name, :slug, :description, presence: true
+    validates :thumbnail_image,
+              attached: true,
+              content_type: %w[image/png image/jpeg],
+              size: { less_than: 5.megabytes }
   end
 
   validates :email, uniqueness: true, format: { with: EMAIL_REGEXP }
@@ -67,9 +71,6 @@ class User < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }
-
-  validate :check_image_type
-  validate :check_image_size
 
   def thumbnail_image_url
     # 紐づいている画像のURLを取得する
@@ -118,21 +119,5 @@ class User < ApplicationRecord
 
     self.published = false
     save!
-  end
-
-  private
-
-  def check_image_type
-    return unless thumbnail_image.attached?
-    return if thumbnail_image.blob.content_type.in?(%w[image/jpeg image/png])
-
-    errors.add(:thumbnail_image, 'JPEG 形式または PNG 形式のみ選択してください')
-  end
-
-  def check_image_size
-    return unless thumbnail_image.attached?
-    return if thumbnail_image.blob.byte_size < 5.megabytes
-
-    errors.add(:thumbnail_image, '5MB 以下の画像を添付してください')
   end
 end

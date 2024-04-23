@@ -65,6 +65,7 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include FactoryBot::Syntax::Methods
+  config.include ActiveStorageValidations::Matchers
 
   config.add_setting :committee_options
   config.committee_options = {
