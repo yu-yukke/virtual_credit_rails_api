@@ -140,11 +140,6 @@ components:
           x-stoplight:
             id: 3y2gz6l4jxs97
           nullable: true
-        thumbnailImageUrl:
-          type: string
-          x-stoplight:
-            id: 7pyyfe3pdjgow
-          nullable: true
         slug:
           type: string
           x-stoplight:
@@ -195,7 +190,6 @@ components:
       required:
         - id
         - name
-        - thumbnailImageUrl
         - slug
         - description
         - published
