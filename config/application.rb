@@ -40,6 +40,8 @@ module VirtualCreditRailsApi
                        request_specs: true
       g.factory_bot false
       g.factory_bot dir: 'spec/factories'
+
+      g.orm :active_record, primary_key_type: :uuid
     end
   end
 end
