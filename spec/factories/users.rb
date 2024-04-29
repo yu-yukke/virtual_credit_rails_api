@@ -60,6 +60,14 @@ FactoryBot.define do
     end
 
     trait :activated do
+      after(:build) do |user|
+        user.thumbnail_image.attach(
+          io: File.open('spec/fixtures/takaomi.jpeg'),
+          filename: 'takaomi.jpeg',
+          content_type: 'image/jpeg'
+        )
+      end
+
       after(:create) do |user|
         user.confirm
         user.activate!
@@ -67,6 +75,14 @@ FactoryBot.define do
     end
 
     trait :published do
+      after(:build) do |user|
+        user.thumbnail_image.attach(
+          io: File.open('spec/fixtures/takaomi.jpeg'),
+          filename: 'takaomi.jpeg',
+          content_type: 'image/jpeg'
+        )
+      end
+
       after(:create) do |user|
         user.confirm
         user.activate!
@@ -74,12 +90,14 @@ FactoryBot.define do
       end
     end
 
-    after(:build) do |user|
-      user.thumbnail_image.attach(
-        io: File.open('spec/fixtures/takaomi.jpeg'),
-        filename: 'takaomi.jpeg',
-        content_type: 'image/jpeg'
-      )
+    trait :has_image do
+      after(:build) do |user|
+        user.thumbnail_image.attach(
+          io: File.open('spec/fixtures/takaomi.jpeg'),
+          filename: 'takaomi.jpeg',
+          content_type: 'image/jpeg'
+        )
+      end
     end
   end
 end
