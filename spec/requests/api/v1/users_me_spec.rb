@@ -40,18 +40,15 @@ RSpec.describe 'Api::V1::UsersMe' do
     end
   end
 
-  # TODO: 一時的に無効化
-  # rubocop:disable all
-=begin
-  .########.....###....########..######..##.....##......##.##...##.....##.########..########.....###....########.########
-  .##.....##...##.##......##....##....##.##.....##......##.##...##.....##.##.....##.##.....##...##.##......##....##......
-  .##.....##..##...##.....##....##.......##.....##....#########.##.....##.##.....##.##.....##..##...##.....##....##......
-  .########..##.....##....##....##.......#########......##.##...##.....##.########..##.....##.##.....##....##....######..
-  .##........#########....##....##.......##.....##....#########.##.....##.##........##.....##.#########....##....##......
-  .##........##.....##....##....##....##.##.....##......##.##...##.....##.##........##.....##.##.....##....##....##......
-  .##........##.....##....##.....######..##.....##......##.##....#######..##........########..##.....##....##....########
-=end
+  #   .########.....###....########..######..##.....##......##.##...##.....##.########..########.....###....########.########
+  #   .##.....##...##.##......##....##....##.##.....##......##.##...##.....##.##.....##.##.....##...##.##......##....##......
+  #   .##.....##..##...##.....##....##.......##.....##....#########.##.....##.##.....##.##.....##..##...##.....##....##......
+  #   .########..##.....##....##....##.......#########......##.##...##.....##.########..##.....##.##.....##....##....######..
+  #   .##........#########....##....##.......##.....##....#########.##.....##.##........##.....##.#########....##....##......
+  #   .##........##.....##....##....##....##.##.....##......##.##...##.....##.##........##.....##.##.....##....##....##......
+  #   .##........##.....##....##.....######..##.....##......##.##....#######..##........########..##.....##....##....########
 
+  # rubocop:disable all
   xdescribe 'PATCH #update' do
     subject(:request) do
       patch me_api_v1_users_path, headers:, params:
@@ -65,7 +62,7 @@ RSpec.describe 'Api::V1::UsersMe' do
           name: Faker::Internet.username,
           slug: Faker::Internet.unique.slug,
           description: Faker::Lorem.paragraph,
-          image: Faker::Avatar.image
+          thumbnail_image: Faker::Avatar.image
         }
       end
 
@@ -85,27 +82,8 @@ RSpec.describe 'Api::V1::UsersMe' do
         expect { request }.not_to(change { user.reload.description })
       end
 
-      it 'does not change image of the user' do
-        expect { request }.not_to(change { user.reload.image })
-      end
-    end
-
-    context 'when lack of name params' do
-      let_it_be(:headers) { sign_in(user) }
-      let_it_be(:params) do
-        {
-          slug: user.slug,
-          description: user.description,
-          image: user.image
-        }
-      end
-
-      it_behaves_like 'bad request' do
-        before { request }
-      end
-
-      it 'does not change name of the user' do
-        expect { request }.not_to(change { user.reload.name })
+      it 'does not change thumbnail_image of the user' do
+        expect { request }.not_to(change { user.reload.thumbnail_image })
       end
     end
 
@@ -114,19 +92,16 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: Faker::Internet.username,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: Faker::Internet.username
         }
       end
 
-      it_behaves_like 'ok' do
+      it_behaves_like 'unauthorized' do
         before { request }
       end
 
-      it 'changes name of the user' do
-        expect { request }.to change { user.reload.name }.from(user.name).to(params[:name])
+      it 'does not change name of the user' do
+        expect { request }.not_to(change { user.reload.name })
       end
     end
 
@@ -135,19 +110,16 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: nil,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: nil
         }
       end
 
-      it_behaves_like 'ok' do
+      it_behaves_like 'unauthorized' do
         before { request }
       end
 
-      it 'changes name of the user' do
-        expect { request }.to change { user.reload.name }.from(user.name).to(params[:name])
+      it 'does not change name of the user' do
+        expect { request }.not_to(change { user.reload.name })
       end
     end
 
@@ -156,10 +128,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: Faker::Internet.username,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: Faker::Internet.username
         }
       end
 
@@ -177,10 +146,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: nil,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: nil
         }
       end
 
@@ -198,10 +164,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: Faker::Internet.username,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: Faker::Internet.username
         }
       end
 
@@ -219,10 +182,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: nil,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: nil
         }
       end
 
@@ -240,10 +200,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: Faker::Internet.username,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: Faker::Internet.username
         }
       end
 
@@ -261,10 +218,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: nil,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: nil
         }
       end
 
@@ -282,10 +236,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: Faker::Internet.username,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: Faker::Internet.username
         }
       end
 
@@ -303,10 +254,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: nil,
-          slug: user.slug,
-          description: user.description,
-          image: user.image
+          name: nil
         }
       end
 
@@ -319,34 +267,12 @@ RSpec.describe 'Api::V1::UsersMe' do
       end
     end
 
-    context 'when lack of slug params' do
-      let_it_be(:headers) { sign_in(user) }
-      let_it_be(:params) do
-        {
-          name: user.name,
-          description: user.description,
-          image: user.image
-        }
-      end
-
-      it_behaves_like 'bad request' do
-        before { request }
-      end
-
-      it 'does not change slug of the user' do
-        expect { request }.not_to(change { user.reload.slug })
-      end
-    end
-
     context 'with changing slug of the new user' do
       let_it_be(:user) { create(:user, :new_user) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: Faker::Internet.unique.slug,
-          description: user.description,
-          image: user.image
+          slug: Faker::Internet.unique.slug
         }
       end
 
@@ -364,10 +290,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: nil,
-          description: user.description,
-          image: user.image
+          slug: nil
         }
       end
 
@@ -386,10 +309,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: other_user,
-          description: user.description,
-          image: user.image
+          slug: other_user
         }
       end
 
@@ -407,10 +327,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: Faker::Internet.unique.slug,
-          description: user.description,
-          image: user.image
+          slug: Faker::Internet.unique.slug
         }
       end
 
@@ -428,10 +345,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: nil,
-          description: user.description,
-          image: user.image
+          slug: nil
         }
       end
 
@@ -450,10 +364,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: other_user.slug,
-          description: user.description,
-          image: user.image
+          slug: other_user.slug
         }
       end
 
@@ -471,10 +382,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: Faker::Internet.unique.slug,
-          description: user.description,
-          image: user.image
+          slug: Faker::Internet.unique.slug
         }
       end
 
@@ -492,10 +400,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: nil,
-          description: user.description,
-          image: user.image
+          slug: nil
         }
       end
 
@@ -514,10 +419,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: other_user.slug,
-          description: user.description,
-          image: user.image
+          slug: other_user.slug
         }
       end
 
@@ -535,10 +437,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: Faker::Internet.unique.slug,
-          description: user.description,
-          image: user.image
+          slug: Faker::Internet.unique.slug
         }
       end
 
@@ -556,10 +455,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: nil,
-          description: user.description,
-          image: user.image
+          slug: nil
         }
       end
 
@@ -578,10 +474,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: other_user.slug,
-          description: user.description,
-          image: user.image
+          slug: other_user.slug
         }
       end
 
@@ -599,10 +492,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: Faker::Internet.unique.slug,
-          description: user.description,
-          image: user.image
+          slug: Faker::Internet.unique.slug
         }
       end
 
@@ -620,10 +510,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: nil,
-          description: user.description,
-          image: user.image
+          slug: nil
         }
       end
 
@@ -642,10 +529,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: other_user.slug,
-          description: user.description,
-          image: user.image
+          slug: other_user.slug
         }
       end
 
@@ -658,34 +542,12 @@ RSpec.describe 'Api::V1::UsersMe' do
       end
     end
 
-    context 'when lack of description params' do
-      let_it_be(:headers) { sign_in(user) }
-      let_it_be(:params) do
-        {
-          name: user.name,
-          slug: user.slug,
-          image: user.image
-        }
-      end
-
-      it_behaves_like 'bad request' do
-        before { request }
-      end
-
-      it 'does not change description of the user' do
-        expect { request }.not_to(change { user.reload.description })
-      end
-    end
-
     context 'with changing description of the new user' do
       let_it_be(:user) { create(:user, :new_user) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: Faker::Lorem.paragraph,
-          image: user.image
+          description: Faker::Lorem.paragraph
         }
       end
 
@@ -703,10 +565,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: nil,
-          image: user.image
+          description: nil
         }
       end
 
@@ -724,10 +583,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: Faker::Lorem.paragraph,
-          image: user.image
+          description: Faker::Lorem.paragraph
         }
       end
 
@@ -745,10 +601,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: nil,
-          image: user.image
+          description: nil
         }
       end
 
@@ -766,10 +619,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: Faker::Lorem.paragraph,
-          image: user.image
+          description: Faker::Lorem.paragraph
         }
       end
 
@@ -787,10 +637,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: nil,
-          image: user.image
+          description: nil
         }
       end
 
@@ -808,10 +655,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: Faker::Lorem.paragraph,
-          image: user.image
+          description: Faker::Lorem.paragraph
         }
       end
 
@@ -829,10 +673,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: nil,
-          image: user.image
+          description: nil
         }
       end
 
@@ -850,10 +691,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name:,
-          slug: user.slug,
-          description: Faker::Lorem.paragraph,
-          image: user.image
+          description: Faker::Lorem.paragraph
         }
       end
 
@@ -871,10 +709,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: nil,
-          image: user.image
+          description: nil
         }
       end
 
@@ -887,34 +722,12 @@ RSpec.describe 'Api::V1::UsersMe' do
       end
     end
 
-    context 'when lack of image params' do
-      let_it_be(:headers) { sign_in(user) }
-      let_it_be(:params) do
-        {
-          name: user.name,
-          slug: user.slug,
-          description: user.description
-        }
-      end
-
-      it_behaves_like 'bad request' do
-        before { request }
-      end
-
-      it 'does not change image of the user' do
-        expect { request }.not_to(change { user.reload.image })
-      end
-    end
-
-    context 'with changing image of the new user' do
+    context 'with changing thumbnail_image of the new user' do
       let_it_be(:user) { create(:user, :new_user) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: user.description,
-          image: Faker::Avatar.image
+          thumbnail_image: Faker::Avatar.image
         }
       end
 
@@ -923,19 +736,16 @@ RSpec.describe 'Api::V1::UsersMe' do
       end
 
       it 'changes image of the user' do
-        expect { request }.to change { user.reload.image }.from(user.image).to(params[:image])
+        expect { request }.to change { user.reload.thumbnail_image }.from(user.thumbnail_image).to(params[:thumbnail_image])
       end
     end
 
-    context 'with changing image of the new user to nil' do
+    context 'with changing thumbnail_image of the new user to nil' do
       let_it_be(:user) { create(:user, :new_user) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: user.description,
-          image: nil
+          thumbnail_image: nil
         }
       end
 
@@ -943,8 +753,8 @@ RSpec.describe 'Api::V1::UsersMe' do
         before { request }
       end
 
-      it 'changes image of the user' do
-        expect { request }.to change { user.reload.image }.from(user.image).to(params[:image])
+      it 'changes thumbnail_image of the user' do
+        expect { request }.to change { user.reload.thumbnail_image }.from(user.thumbnail_image).to(params[:thumbnail_image])
       end
     end
 
@@ -953,10 +763,7 @@ RSpec.describe 'Api::V1::UsersMe' do
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: user.description,
-          image: Faker::Avatar.image
+          thumbnail_image: Faker::Avatar.image
         }
       end
 
@@ -964,20 +771,17 @@ RSpec.describe 'Api::V1::UsersMe' do
         before { request }
       end
 
-      it 'changes image of the user' do
-        expect { request }.to change { user.reload.image }.from(user.image).to(params[:image])
+      it 'changes thumbnail_image of the user' do
+        expect { request }.to change { user.reload.thumbnail_image }.from(user.thumbnail_image).to(params[:thumbnail_image])
       end
     end
 
-    context 'with changing image of the new confirmed user to nil' do
+    context 'with changing thumbnail_image of the new confirmed user to nil' do
       let_it_be(:user) { create(:user, :new_user, :confirmed) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: user.description,
-          image: nil
+          thumbnail_image: nil
         }
       end
 
@@ -985,20 +789,17 @@ RSpec.describe 'Api::V1::UsersMe' do
         before { request }
       end
 
-      it 'changes image of the user' do
-        expect { request }.to change { user.reload.image }.from(user.image).to(params[:image])
+      it 'changes thumbnail_image of the user' do
+        expect { request }.to change { user.reload.thumbnail_image }.from(user.thumbnail_image).to(params[:thumbnail_image])
       end
     end
 
-    context 'with changing image of the confirmed user' do
+    context 'with changing thumbnail_image of the confirmed user' do
       let_it_be(:user) { create(:user, :confirmed) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: user.description,
-          image: Faker::Avatar.image
+          thumbnail_image: Faker::Avatar.image
         }
       end
 
@@ -1006,20 +807,17 @@ RSpec.describe 'Api::V1::UsersMe' do
         before { request }
       end
 
-      it 'changes image of the user' do
-        expect { request }.to change { user.reload.image }.from(user.image).to(params[:image])
+      it 'changes thumbnail_image of the user' do
+        expect { request }.to change { user.reload.thumbnail_image }.from(user.thumbnail_image).to(params[:thumbnail_image])
       end
     end
 
-    context 'with changing image of the confirmed user to nil' do
+    context 'with changing thumbnail_image of the confirmed user to nil' do
       let_it_be(:user) { create(:user, :confirmed) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: user.description,
-          image: nil
+          thumbnail_image: nil
         }
       end
 
@@ -1027,20 +825,17 @@ RSpec.describe 'Api::V1::UsersMe' do
         before { request }
       end
 
-      it 'changes image of the user' do
-        expect { request }.to change { user.reload.image }.from(user.image).to(params[:image])
+      it 'changes thumbnail_image of the user' do
+        expect { request }.to change { user.reload.thumbnail_image }.from(user.thumbnail_image).to(params[:thumbnail_image])
       end
     end
 
-    context 'with changing image of the activated user' do
+    context 'with changing thumbnail_image of the activated user' do
       let_it_be(:user) { create(:user, :activated) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: user.description,
-          image: Faker::Avatar.image
+          thumbnail_image: Faker::Avatar.image
         }
       end
 
@@ -1048,20 +843,17 @@ RSpec.describe 'Api::V1::UsersMe' do
         before { request }
       end
 
-      it 'changes image of the user' do
-        expect { request }.to change { user.reload.image }.from(user.image).to(params[:image])
+      it 'changes thumbnail_image of the user' do
+        expect { request }.to change { user.reload.thumbnail_image }.from(user.thumbnail_image).to(params[:thumbnail_image])
       end
     end
 
-    context 'with changing image of the activated user to nil' do
+    context 'with changing thumbnail_image of the activated user to nil' do
       let_it_be(:user) { create(:user, :activated) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: user.description,
-          image: nil
+          thumbnail_image: nil
         }
       end
 
@@ -1069,20 +861,17 @@ RSpec.describe 'Api::V1::UsersMe' do
         before { request }
       end
 
-      it 'does not change image of the user' do
-        expect { request }.not_to(change { user.reload.image })
+      it 'does not change thumbnail_image of the user' do
+        expect { request }.not_to(change { user.reload.thumbnail_image })
       end
     end
 
-    context 'with changing image of the published user' do
+    context 'with changing thumbnail_image of the published user' do
       let_it_be(:user) { create(:user, :published) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name:,
-          slug: user.slug,
-          description: user.description,
-          image: Faker::Avatar.image
+          thumbnail_image: Faker::Avatar.image
         }
       end
 
@@ -1090,20 +879,17 @@ RSpec.describe 'Api::V1::UsersMe' do
         before { request }
       end
 
-      it 'changes image of the user' do
-        expect { request }.to change { user.reload.image }.from(user.image).to(params[:image])
+      it 'changes thumbnail_image of the user' do
+        expect { request }.to change { user.reload.thumbnail_image }.from(user.thumbnail_image).to(params[:thumbnail_image])
       end
     end
 
-    context 'with changing image of the published user to nil' do
+    context 'with changing thumbnail_image of the published user to nil' do
       let_it_be(:user) { create(:user, :published) }
       let_it_be(:headers) { sign_in(user) }
       let_it_be(:params) do
         {
-          name: user.name,
-          slug: user.slug,
-          description: user.description,
-          image: nil
+          thumbnail_image: nil
         }
       end
 
@@ -1111,10 +897,9 @@ RSpec.describe 'Api::V1::UsersMe' do
         before { request }
       end
 
-      it 'does not change image of the user' do
-        expect { request }.not_to(change { user.reload.image })
+      it 'does not change thumbnail_image of the user' do
+        expect { request }.not_to(change { user.reload.thumbnail_image })
       end
     end
   end
-  # rubocop:enable all
 end
