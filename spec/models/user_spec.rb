@@ -107,6 +107,8 @@ RSpec.describe User do
     it { is_expected.to validate_size_of(:thumbnail_image).less_than(5.megabytes) }
 
     it { is_expected.to validate_uniqueness_of(:slug) }
+    it { is_expected.to validate_length_of(:slug).is_at_least(3) }
+    it { is_expected.to validate_length_of(:slug).is_at_most(32) }
 
     it { is_expected.to validate_numericality_of(:sign_in_count).is_greater_than_or_equal_to(0) }
 
@@ -130,6 +132,8 @@ RSpec.describe User do
     it { is_expected.to validate_size_of(:thumbnail_image).less_than(5.megabytes) }
 
     it { is_expected.to validate_uniqueness_of(:slug) }
+    it { is_expected.to validate_length_of(:slug).is_at_least(3) }
+    it { is_expected.to validate_length_of(:slug).is_at_most(32) }
 
     it { is_expected.to validate_numericality_of(:sign_in_count).is_greater_than_or_equal_to(0) }
 
@@ -143,6 +147,32 @@ RSpec.describe User do
   #   .##.....##.##..........##....##.....##.##.....##.##.....##.......##
   #   .##.....##.##..........##....##.....##.##.....##.##.....##.##....##
   #   .##.....##.########....##....##.....##..#######..########...######.
+
+  #   .########.##.....##.##.....##.##.....##.########..##....##....###....####.##...............####.##.....##....###.....######...########.........##.....##.########..##......
+  #   ....##....##.....##.##.....##.###...###.##.....##.###...##...##.##....##..##................##..###...###...##.##...##....##..##...............##.....##.##.....##.##......
+  #   ....##....##.....##.##.....##.####.####.##.....##.####..##..##...##...##..##................##..####.####..##...##..##........##...............##.....##.##.....##.##......
+  #   ....##....#########.##.....##.##.###.##.########..##.##.##.##.....##..##..##................##..##.###.##.##.....##.##...####.######...........##.....##.########..##......
+  #   ....##....##.....##.##.....##.##.....##.##.....##.##..####.#########..##..##................##..##.....##.#########.##....##..##...............##.....##.##...##...##......
+  #   ....##....##.....##.##.....##.##.....##.##.....##.##...###.##.....##..##..##................##..##.....##.##.....##.##....##..##...............##.....##.##....##..##......
+  #   ....##....##.....##..#######..##.....##.########..##....##.##.....##.####.########.#######.####.##.....##.##.....##..######...########.#######..#######..##.....##.########
+
+  describe '.thumbnail_image_url' do
+    context 'when user has thumbnail_image' do
+      let_it_be(:user) { create(:user, :activated) }
+
+      it 'returns thumbnail_image_url' do
+        expect(user.thumbnail_image_url).to be_a(String)
+      end
+    end
+
+    context 'when user does not have thumbnail_image' do
+      let_it_be(:user) { create(:user, :confirmed) }
+
+      it 'returns nil' do
+        expect(user.thumbnail_image_url).to be_nil
+      end
+    end
+  end
 
   #   ......######...#######..##....##.########.####.########..##.....##.########.########...#######.
   #   .....##....##.##.....##.###...##.##........##..##.....##.###...###.##.......##.....##.##.....##

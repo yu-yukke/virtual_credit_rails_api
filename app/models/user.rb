@@ -43,7 +43,7 @@ class User < ApplicationRecord
   has_one_attached :thumbnail_image
 
   EMAIL_REGEXP = /\A[\w\-._]+@[\w\-._]+\.[A-Za-z]+\z/
-  SLUG_REGEXP = /\A[a-zA-Z0-9]+[-_]*[a-zA-Z0-9]{2,}\z/
+  SLUG_REGEXP = /\A[a-zA-Z0-9][a-zA-Z0-9_-]*\z/
   PROVIDERS = ['email'].freeze
   REGISTRATION_PARAMS = %w[email password password_confirmation confirm_success_url].freeze
 
@@ -66,7 +66,10 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, format: { with: EMAIL_REGEXP }
   validates :published, inclusion: [true, false]
   validates :provider, inclusion: { in: PROVIDERS }
-  validates :slug, uniqueness: true, format: { with: SLUG_REGEXP }, allow_nil: true
+  validates :slug, uniqueness: true,
+                   format: { with: SLUG_REGEXP },
+                   length: { in: 3..32 },
+                   allow_nil: true
   validates :sign_in_count, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0
