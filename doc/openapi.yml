@@ -743,33 +743,36 @@ paths:
             schema:
               type: object
               properties:
-                name:
-                  type: string
+                user:
+                  type: object
                   x-stoplight:
-                    id: m1ukf7oobytwn
-                slug:
-                  type: string
-                  x-stoplight:
-                    id: rkkzjegm26wv6
-                description:
-                  type: string
-                  x-stoplight:
-                    id: 92onyfklenln1
-                image:
-                  type: string
-                  x-stoplight:
-                    id: 41vpabcx5hkec
+                    id: qfamq9c0urgzg
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: jpk3odicfbru9
+                    slug:
+                      type: string
+                      x-stoplight:
+                        id: hdibtch9kqtgm
+                    description:
+                      type: string
+                      x-stoplight:
+                        id: co8gesvg7i421
+                    thumbnailImage:
+                      type: string
+                      x-stoplight:
+                        id: z7tlwtpt8zwoz
               required:
-                - name
-                - slug
-                - description
-                - image
+                - user
             examples:
               Example 1:
                 value:
-                  name: example user
-                  slug: example_user
-                  description: I am example user.
-                  image: path/to/image
+                  user:
+                    name: example user
+                    slug: example_user
+                    description: I am example user.
+                    thumbnailImage: path/to/image
       tags:
         - User

@@ -34,7 +34,12 @@ module Api
       private
 
       def update_params
-        params.permit(:name, :slug, :description, :thumbnail_image)
+        params.require(:user).permit(
+          :name,
+          :slug,
+          :description,
+          :thumbnail_image
+        )
       end
     end
   end
