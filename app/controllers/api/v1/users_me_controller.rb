@@ -16,7 +16,8 @@ module Api
       end
 
       def update
-        current_api_v1_user.update!(update_params)
+        form = Forms::Users::UpdateForm.new(current_api_v1_user, update_params)
+        form.save!
 
         data = ActiveModelSerializers::SerializableResource.new(
           current_api_v1_user,
