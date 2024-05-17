@@ -85,9 +85,6 @@ group :development do
   # schemas
   gem 'annotate'
 
-  # performance
-  gem 'bullet'
-
   # security
   gem 'brakeman'
 
@@ -101,4 +98,7 @@ group :test do
   gem 'test-prof', '~> 1.0'
   gem 'simplecov', require: false
   gem 'committee-rails'
+
+  # performance
+  gem 'bullet'
 end
