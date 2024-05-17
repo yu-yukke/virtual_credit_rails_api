@@ -12,7 +12,6 @@
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
-#  image                :string
 #  last_sign_in_at      :datetime
 #  last_sign_in_ip      :string
 #  name                 :string
@@ -39,8 +38,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :rememberable,
          :trackable, :confirmable, :validatable
   include DeviseTokenAuth::Concerns::User
+  include Rails.application.routes.url_helpers
+
+  has_one_attached :thumbnail_image
 
   EMAIL_REGEXP = /\A[\w\-._]+@[\w\-._]+\.[A-Za-z]+\z/
+  SLUG_REGEXP = /\A[a-zA-Z0-9][a-zA-Z0-9_-]*\z/
   PROVIDERS = ['email'].freeze
   REGISTRATION_PARAMS = %w[email password password_confirmation confirm_success_url].freeze
 
@@ -53,17 +56,29 @@ class User < ApplicationRecord
 
   # activated userは必須
   with_options if: -> { activated? } do
-    validates :name, :image, :slug, :description, presence: true
+    validates :name, :slug, :description, presence: true
+    validates :thumbnail_image,
+              attached: true,
+              content_type: %w[image/png image/jpeg],
+              size: { less_than: 5.megabytes }
   end
 
   validates :email, uniqueness: true, format: { with: EMAIL_REGEXP }
   validates :published, inclusion: [true, false]
   validates :provider, inclusion: { in: PROVIDERS }
-  validates :slug, uniqueness: true, allow_nil: true
+  validates :slug, uniqueness: true,
+                   format: { with: SLUG_REGEXP },
+                   length: { in: 3..32 },
+                   allow_nil: true
   validates :sign_in_count, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0
   }
+
+  def thumbnail_image_url
+    # 紐づいている画像のURLを取得する
+    thumbnail_image.attached? ? url_for(thumbnail_image) : nil
+  end
 
   def confirmed?
     confirmed_at.present?

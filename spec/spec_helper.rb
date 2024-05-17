@@ -17,6 +17,9 @@
 # coverage
 require 'simplecov'
 
+# active_storage_validations
+require 'active_storage_validations/matchers'
+
 SimpleCov.start do
   add_filter 'spec'
   add_filter 'config'

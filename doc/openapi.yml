@@ -140,11 +140,6 @@ components:
           x-stoplight:
             id: 3y2gz6l4jxs97
           nullable: true
-        image:
-          type: string
-          x-stoplight:
-            id: 7pyyfe3pdjgow
-          nullable: true
         slug:
           type: string
           x-stoplight:
@@ -195,7 +190,6 @@ components:
       required:
         - id
         - name
-        - image
         - slug
         - description
         - published
@@ -219,7 +213,7 @@ components:
           x-stoplight:
             id: 3iyi3k1e1tizx
           nullable: true
-        image:
+        thumbnailImageUrl:
           type: string
           x-stoplight:
             id: qqau2xgzp7pho
@@ -264,7 +258,7 @@ components:
       required:
         - id
         - name
-        - image
+        - thumbnailImageUrl
         - slug
         - description
         - email
@@ -341,7 +335,7 @@ components:
                 data:
                   id: ba4367ee-e54c-4976-8c53-513c893fb418
                   name: null
-                  image: null
+                  thumbnailImageUrl: null
                   slug: null
                   description: null
                   published: false
@@ -412,7 +406,7 @@ components:
                 data:
                   id: null
                   name: null
-                  image: null
+                  thumbnailImageUrl: null
                   slug: null
                   description: null
                   published: false
@@ -450,7 +444,7 @@ components:
                 data:
                   id: ba4367ee-e54c-4976-8c53-513c893fb418
                   name: null
-                  image: null
+                  thumbnailImageUrl: null
                   slug: null
                   description: null
                   email: test@example.com
@@ -687,7 +681,7 @@ paths:
                     data:
                       id: ba4367ee-e54c-4976-8c53-513c893fb418
                       name: null
-                      image: null
+                      thumbnailImageUrl: null
                       slug: null
                       description: null
                       email: test@example.com
@@ -718,6 +712,20 @@ paths:
                     $ref: '#/components/schemas/UsersMe'
                 required:
                   - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: example user
+                      thumbnailImageUrl: path/to/thumbnailImage
+                      slug: example_user
+                      description: I am example user.
+                      email: test@example.com
+                      published: false
+                      activatedAt: null
+                      createdAt: '2019-08-24T14:15:22Z'
+                      updatedAt: '2019-08-24T14:15:22Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -735,33 +743,36 @@ paths:
             schema:
               type: object
               properties:
-                name:
-                  type: string
+                user:
+                  type: object
                   x-stoplight:
-                    id: m1ukf7oobytwn
-                slug:
-                  type: string
-                  x-stoplight:
-                    id: rkkzjegm26wv6
-                description:
-                  type: string
-                  x-stoplight:
-                    id: 92onyfklenln1
-                image:
-                  type: string
-                  x-stoplight:
-                    id: 41vpabcx5hkec
+                    id: qfamq9c0urgzg
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: jpk3odicfbru9
+                    slug:
+                      type: string
+                      x-stoplight:
+                        id: hdibtch9kqtgm
+                    description:
+                      type: string
+                      x-stoplight:
+                        id: co8gesvg7i421
+                    thumbnailImage:
+                      type: string
+                      x-stoplight:
+                        id: z7tlwtpt8zwoz
               required:
-                - name
-                - slug
-                - description
-                - image
+                - user
             examples:
               Example 1:
                 value:
-                  name: example user
-                  slug: example_user
-                  description: I am example user.
-                  image: path/to/image
+                  user:
+                    name: example user
+                    slug: example_user
+                    description: I am example user.
+                    thumbnailImage: path/to/image
       tags:
         - User

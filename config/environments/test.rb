@@ -5,6 +5,8 @@ require "active_support/core_ext/integer/time"
 # your test database is "scratch space" for the test suite and is wiped
 # and recreated between test runs. Don't rely on the data there!
 
+Rails.application.routes.default_url_options[:host] = 'localhost'
+Rails.application.routes.default_url_options[:port] = 4000
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -36,12 +38,15 @@ Rails.application.configure do
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
+  # Use inline job processing to make things happen immediately
+  config.active_job.queue_adapter = :inline
+
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
-  config.action_mailer.default_url_options = { host: 'localhost:4000' }
+  config.action_mailer.default_url_options = { host: 'localhost', port: 4000 }
   config.action_mailer.delivery_method = :test
 
   # Print deprecation notices to the stderr.

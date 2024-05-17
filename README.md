@@ -44,12 +44,22 @@ docker-compose exec app bundle exec rails db:create
 
 - Swagger UI
 
+## 9001
+
+- MinIO
+
 # マイグレーション
 
-- ridgepole を採用
+- 基本は ridgepole を採用
 
 ```bash
  docker-compose exec app bundle exec ridge:run
+```
+
+- ActiveStorage 等の Rails 標準機能は自動生成される migaration ファイルをそのまま使用する
+
+```bash
+ docker-compose exec app bundle exec rails db:migrate
 ```
 
 # テスト
@@ -175,6 +185,7 @@ docker attach virtual_credit_rails_api_app
 
 - クライアントからのリクエストは正しいがバックエンドが処理が失敗した場合
 - 基本的にはバリデーションエラーはこれで返す
+- 例外を発火させるようにコミットすると、自動的にキャッチしてフォーマットされたものが 422 で返るようになっている
 
 ## 500 系
 

@@ -42,7 +42,9 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: admin
           POSTGRES_PASSWORD: password
-      - name: Database migrate
+      - name: Run migration
+        run: bundle exec rails db:migrate RAILS_ENV='test'
+      - name: Run ridgepole
         run: bundle exec rake ridge:run RAILS_ENV='test'
       - name: Run RSpec
         run: bundle exec rspec

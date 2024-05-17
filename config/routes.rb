@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       resources :users, only: %i[] do
         collection do
           get '/me', to: 'users_me#show'
+          patch '/me', to: 'users_me#update'
         end
       end
     end

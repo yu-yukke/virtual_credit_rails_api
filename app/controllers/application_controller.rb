@@ -29,7 +29,6 @@ class ApplicationController < ActionController::API
     )
   end
 
-  # TODO: 要レスポンス確認
   rescue_from ActiveRecord::RecordInvalid do |e|
     render_errors(
       status: :unprocessable_entity,
