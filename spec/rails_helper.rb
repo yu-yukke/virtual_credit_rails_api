@@ -65,6 +65,7 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include FactoryBot::Syntax::Methods
+  config.include ActiveStorageValidations::Matchers
 
   config.add_setting :committee_options
   config.committee_options = {
@@ -82,4 +83,16 @@ RSpec.configure do |config|
   end
 
   config.include AuthorizationHelper, type: :request
+
+  # settings for bullet
+  if Bullet.enable?
+    config.before do
+      Bullet.start_request
+    end
+
+    config.after do
+      Bullet.perform_out_of_channel_notifications if Bullet.notification?
+      Bullet.end_request
+    end
+  end
 end

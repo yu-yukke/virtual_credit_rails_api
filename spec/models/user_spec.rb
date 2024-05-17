@@ -12,7 +12,6 @@
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
-#  image                :string
 #  last_sign_in_at      :datetime
 #  last_sign_in_ip      :string
 #  name                 :string
@@ -38,21 +37,27 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  #
-  # validations
-  #
+  #   .##.....##....###....##.......####.########.....###....########.####..#######..##....##..######.
+  #   .##.....##...##.##...##........##..##.....##...##.##......##.....##..##.....##.###...##.##....##
+  #   .##.....##..##...##..##........##..##.....##..##...##.....##.....##..##.....##.####..##.##......
+  #   .##.....##.##.....##.##........##..##.....##.##.....##....##.....##..##.....##.##.##.##..######.
+  #   ..##...##..#########.##........##..##.....##.#########....##.....##..##.....##.##..####.......##
+  #   ...##.##...##.....##.##........##..##.....##.##.....##....##.....##..##.....##.##...###.##....##
+  #   ....###....##.....##.########.####.########..##.....##....##....####..#######..##....##..######.
+
   context 'when that is new user' do
     subject { create(:user, :new_user) }
 
     it { is_expected.not_to validate_presence_of :name }
     it { is_expected.not_to validate_presence_of :slug }
-    it { is_expected.not_to validate_presence_of :image }
     it { is_expected.not_to validate_presence_of :description }
 
     it { is_expected.to validate_presence_of :email }
     it { is_expected.to validate_presence_of :provider }
     it { is_expected.to validate_presence_of :encrypted_password }
     it { is_expected.to validate_presence_of :sign_in_count }
+
+    it { is_expected.not_to validate_attached_of(:thumbnail_image) }
   end
 
   context 'when that is new user confirmed' do
@@ -60,13 +65,14 @@ RSpec.describe User do
 
     it { is_expected.not_to validate_presence_of :name }
     it { is_expected.not_to validate_presence_of :slug }
-    it { is_expected.not_to validate_presence_of :image }
     it { is_expected.not_to validate_presence_of :description }
 
     it { is_expected.to validate_presence_of :email }
     it { is_expected.to validate_presence_of :provider }
     it { is_expected.to validate_presence_of :encrypted_password }
     it { is_expected.to validate_presence_of :sign_in_count }
+
+    it { is_expected.not_to validate_attached_of(:thumbnail_image) }
   end
 
   context 'when that is confirmed (not activated)' do
@@ -74,13 +80,14 @@ RSpec.describe User do
 
     it { is_expected.not_to validate_presence_of :name }
     it { is_expected.not_to validate_presence_of :slug }
-    it { is_expected.not_to validate_presence_of :image }
     it { is_expected.not_to validate_presence_of :description }
 
     it { is_expected.to validate_presence_of :email }
     it { is_expected.to validate_presence_of :provider }
     it { is_expected.to validate_presence_of :encrypted_password }
     it { is_expected.to validate_presence_of :sign_in_count }
+
+    it { is_expected.not_to validate_attached_of(:thumbnail_image) }
   end
 
   context 'when that is activated (not published)' do
@@ -88,7 +95,6 @@ RSpec.describe User do
 
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :slug }
-    it { is_expected.to validate_presence_of :image }
     it { is_expected.to validate_presence_of :description }
 
     it { is_expected.to validate_presence_of :email }
@@ -96,7 +102,13 @@ RSpec.describe User do
     it { is_expected.to validate_presence_of :encrypted_password }
     it { is_expected.to validate_presence_of :sign_in_count }
 
+    it { is_expected.to validate_attached_of(:thumbnail_image) }
+    it { is_expected.to validate_content_type_of(:thumbnail_image).allowing('image/png', 'image/jpeg') }
+    it { is_expected.to validate_size_of(:thumbnail_image).less_than(5.megabytes) }
+
     it { is_expected.to validate_uniqueness_of(:slug) }
+    it { is_expected.to validate_length_of(:slug).is_at_least(3) }
+    it { is_expected.to validate_length_of(:slug).is_at_most(32) }
 
     it { is_expected.to validate_numericality_of(:sign_in_count).is_greater_than_or_equal_to(0) }
 
@@ -108,7 +120,6 @@ RSpec.describe User do
 
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :slug }
-    it { is_expected.to validate_presence_of :image }
     it { is_expected.to validate_presence_of :description }
 
     it { is_expected.to validate_presence_of :email }
@@ -116,16 +127,61 @@ RSpec.describe User do
     it { is_expected.to validate_presence_of :encrypted_password }
     it { is_expected.to validate_presence_of :sign_in_count }
 
+    it { is_expected.to validate_attached_of(:thumbnail_image) }
+    it { is_expected.to validate_content_type_of(:thumbnail_image).allowing('image/png', 'image/jpeg') }
+    it { is_expected.to validate_size_of(:thumbnail_image).less_than(5.megabytes) }
+
     it { is_expected.to validate_uniqueness_of(:slug) }
+    it { is_expected.to validate_length_of(:slug).is_at_least(3) }
+    it { is_expected.to validate_length_of(:slug).is_at_most(32) }
 
     it { is_expected.to validate_numericality_of(:sign_in_count).is_greater_than_or_equal_to(0) }
 
     it { is_expected.to validate_inclusion_of(:provider).in_array(User::PROVIDERS) }
   end
 
-  #
-  # methods
-  #
+  #   .##.....##.########.########.##.....##..#######..########...######.
+  #   .###...###.##..........##....##.....##.##.....##.##.....##.##....##
+  #   .####.####.##..........##....##.....##.##.....##.##.....##.##......
+  #   .##.###.##.######......##....#########.##.....##.##.....##..######.
+  #   .##.....##.##..........##....##.....##.##.....##.##.....##.......##
+  #   .##.....##.##..........##....##.....##.##.....##.##.....##.##....##
+  #   .##.....##.########....##....##.....##..#######..########...######.
+
+  #   .########.##.....##.##.....##.##.....##.########..##....##....###....####.##...............####.##.....##....###.....######...########.........##.....##.########..##......
+  #   ....##....##.....##.##.....##.###...###.##.....##.###...##...##.##....##..##................##..###...###...##.##...##....##..##...............##.....##.##.....##.##......
+  #   ....##....##.....##.##.....##.####.####.##.....##.####..##..##...##...##..##................##..####.####..##...##..##........##...............##.....##.##.....##.##......
+  #   ....##....#########.##.....##.##.###.##.########..##.##.##.##.....##..##..##................##..##.###.##.##.....##.##...####.######...........##.....##.########..##......
+  #   ....##....##.....##.##.....##.##.....##.##.....##.##..####.#########..##..##................##..##.....##.#########.##....##..##...............##.....##.##...##...##......
+  #   ....##....##.....##.##.....##.##.....##.##.....##.##...###.##.....##..##..##................##..##.....##.##.....##.##....##..##...............##.....##.##....##..##......
+  #   ....##....##.....##..#######..##.....##.########..##....##.##.....##.####.########.#######.####.##.....##.##.....##..######...########.#######..#######..##.....##.########
+
+  describe '.thumbnail_image_url' do
+    context 'when user has thumbnail_image' do
+      let_it_be(:user) { create(:user, :activated) }
+
+      it 'returns thumbnail_image_url' do
+        expect(user.thumbnail_image_url).to be_a(String)
+      end
+    end
+
+    context 'when user does not have thumbnail_image' do
+      let_it_be(:user) { create(:user, :confirmed) }
+
+      it 'returns nil' do
+        expect(user.thumbnail_image_url).to be_nil
+      end
+    end
+  end
+
+  #   ......######...#######..##....##.########.####.########..##.....##.########.########...#######.
+  #   .....##....##.##.....##.###...##.##........##..##.....##.###...###.##.......##.....##.##.....##
+  #   .....##.......##.....##.####..##.##........##..##.....##.####.####.##.......##.....##.......##.
+  #   .....##.......##.....##.##.##.##.######....##..########..##.###.##.######...##.....##.....###..
+  #   .....##.......##.....##.##..####.##........##..##...##...##.....##.##.......##.....##....##....
+  #   .###.##....##.##.....##.##...###.##........##..##....##..##.....##.##.......##.....##..........
+  #   .###..######...#######..##....##.##.......####.##.....##.##.....##.########.########.....##....
+
   describe '.confirmed?' do
     context 'when user is not confirmed yet' do
       let_it_be(:user) { create(:user, :new_user) }
@@ -144,9 +200,17 @@ RSpec.describe User do
     end
   end
 
+  #   ........###.....######..########.####.##.....##....###....########.########.####
+  #   .......##.##...##....##....##.....##..##.....##...##.##......##....##.......####
+  #   ......##...##..##..........##.....##..##.....##..##...##.....##....##.......####
+  #   .....##.....##.##..........##.....##..##.....##.##.....##....##....######....##.
+  #   .....#########.##..........##.....##...##...##..#########....##....##...........
+  #   .###.##.....##.##....##....##.....##....##.##...##.....##....##....##.......####
+  #   .###.##.....##..######.....##....####....###....##.....##....##....########.####
+
   describe '.activate!' do
     context 'when user has all information' do
-      let_it_be(:user) { create(:user, :confirmed) }
+      let_it_be(:user) { create(:user, :confirmed, :has_image) }
 
       it 'returns true' do
         expect(user.activate!).to be(true)
@@ -206,7 +270,7 @@ RSpec.describe User do
     end
 
     context 'when image is nil' do
-      let_it_be(:user) { create(:user, :confirmed, image: nil) }
+      let_it_be(:user) { create(:user, :confirmed) }
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.activate! }.to raise_error(ActiveRecord::RecordInvalid)
@@ -253,6 +317,14 @@ RSpec.describe User do
       end
     end
   end
+
+  #   ........###.....######..########.####.##.....##....###....########.########.########...#######.
+  #   .......##.##...##....##....##.....##..##.....##...##.##......##....##.......##.....##.##.....##
+  #   ......##...##..##..........##.....##..##.....##..##...##.....##....##.......##.....##.......##.
+  #   .....##.....##.##..........##.....##..##.....##.##.....##....##....######...##.....##.....###..
+  #   .....#########.##..........##.....##...##...##..#########....##....##.......##.....##....##....
+  #   .###.##.....##.##....##....##.....##....##.##...##.....##....##....##.......##.....##..........
+  #   .###.##.....##..######.....##....####....###....##.....##....##....########.########.....##....
 
   describe '.activated?' do
     context 'when user is new user' do
@@ -288,6 +360,14 @@ RSpec.describe User do
     end
   end
 
+  #   .....########..##.....##.########..##.......####..######..##.....##.####
+  #   .....##.....##.##.....##.##.....##.##........##..##....##.##.....##.####
+  #   .....##.....##.##.....##.##.....##.##........##..##.......##.....##.####
+  #   .....########..##.....##.########..##........##...######..#########..##.
+  #   .....##........##.....##.##.....##.##........##........##.##.....##.....
+  #   .###.##........##.....##.##.....##.##........##..##....##.##.....##.####
+  #   .###.##.........#######..########..########.####..######..##.....##.####
+
   describe '.publish!' do
     context 'when user is already published' do
       let_it_be(:user) { create(:user, :published) }
@@ -318,7 +398,7 @@ RSpec.describe User do
     end
 
     context 'when user is not activated yet' do
-      let_it_be(:user) { create(:user, :confirmed) }
+      let_it_be(:user) { create(:user, :confirmed, :has_image) }
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
@@ -334,7 +414,7 @@ RSpec.describe User do
     end
 
     context 'when name is nil' do
-      let_it_be(:user) { create(:user, :confirmed, name: nil) }
+      let_it_be(:user) { create(:user, :confirmed, :has_image, name: nil) }
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
@@ -349,8 +429,8 @@ RSpec.describe User do
       end
     end
 
-    context 'when image is nil' do
-      let_it_be(:user) { create(:user, :confirmed, image: nil) }
+    context 'when thumbnail_image is nil' do
+      let_it_be(:user) { create(:user, :confirmed) }
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
@@ -366,7 +446,7 @@ RSpec.describe User do
     end
 
     context 'when slug is nil' do
-      let_it_be(:user) { create(:user, :confirmed, slug: nil) }
+      let_it_be(:user) { create(:user, :confirmed, :has_image, slug: nil) }
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
@@ -382,7 +462,7 @@ RSpec.describe User do
     end
 
     context 'when description is nil' do
-      let_it_be(:user) { create(:user, :confirmed, description: nil) }
+      let_it_be(:user) { create(:user, :confirmed, :has_image, description: nil) }
 
       it 'raise ActiveRecord::RecordInvalid' do
         expect { user.publish! }.to raise_error(ActiveRecord::RecordInvalid)
@@ -397,6 +477,14 @@ RSpec.describe User do
       end
     end
   end
+
+  #   .....##.....##.##....##.########..##.....##.########..##.......####..######..##.....##.####
+  #   .....##.....##.###...##.##.....##.##.....##.##.....##.##........##..##....##.##.....##.####
+  #   .....##.....##.####..##.##.....##.##.....##.##.....##.##........##..##.......##.....##.####
+  #   .....##.....##.##.##.##.########..##.....##.########..##........##...######..#########..##.
+  #   .....##.....##.##..####.##........##.....##.##.....##.##........##........##.##.....##.....
+  #   .###.##.....##.##...###.##........##.....##.##.....##.##........##..##....##.##.....##.####
+  #   .###..#######..##....##.##.........#######..########..########.####..######..##.....##.####
 
   describe '.unpublish!' do
     context 'when user is not published' do

@@ -33,7 +33,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem 'image_processing', '~> 1.2'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
@@ -51,6 +51,12 @@ gem 'kaminari'
 gem 'devise'
 gem 'devise_token_auth'
 gem 'devise-i18n'
+
+# active storage
+gem 'active_storage_validations'
+
+# S3 adapter
+gem 'aws-sdk-s3', require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -79,9 +85,6 @@ group :development do
   # schemas
   gem 'annotate'
 
-  # performance
-  gem 'bullet'
-
   # security
   gem 'brakeman'
 
@@ -95,4 +98,7 @@ group :test do
   gem 'test-prof', '~> 1.0'
   gem 'simplecov', require: false
   gem 'committee-rails'
+
+  # performance
+  gem 'bullet'
 end
