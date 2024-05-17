@@ -77,6 +77,8 @@ class User < ApplicationRecord
     greater_than_or_equal_to: 0
   }
 
+  after_create :create_associated_social
+
   def thumbnail_image_url
     # 紐づいている画像のURLを取得する
     thumbnail_image.attached? ? url_for(thumbnail_image) : nil
@@ -124,5 +126,11 @@ class User < ApplicationRecord
 
     self.published = false
     save!
+  end
+
+  private
+
+  def create_associated_social
+    create_social!
   end
 end
