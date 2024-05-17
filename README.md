@@ -44,6 +44,10 @@ docker-compose exec app bundle exec rails db:create
 
 - Swagger UI
 
+## 9001
+
+- MinIO
+
 # マイグレーション
 
 - 基本は ridgepole を採用
