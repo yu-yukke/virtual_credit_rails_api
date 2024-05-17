@@ -40,6 +40,19 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         expect(new_user.activated_at).to be_nil
       end
 
+      it 'creates new Social' do
+        expect { request }.to change(Social, :count).by(1)
+      end
+
+      it 'creates new Social associated with new User' do
+        request
+
+        new_user = User.order(created_at: :desc).first
+        new_social = Social.order(created_at: :desc).first
+
+        expect(new_social.user).to eq(new_user)
+      end
+
       it 'sends a registration email' do
         expect { request }.to change { ActionMailer::Base.deliveries.size }.by(1)
       end
@@ -65,6 +78,10 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         expect { request }.not_to change(User, :count)
       end
 
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
+      end
+
       it 'does not send a registration email' do
         expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
       end
@@ -85,6 +102,10 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
 
       it 'does not create new User' do
         expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
       end
 
       it 'does not send a registration email' do
@@ -109,6 +130,10 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         expect { request }.not_to change(User, :count)
       end
 
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
+      end
+
       it 'does not send a registration email' do
         expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
       end
@@ -129,6 +154,10 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
 
       it 'does not create new User' do
         expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
       end
 
       it 'does not send a registration email' do
@@ -153,6 +182,10 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         expect { request }.not_to change(User, :count)
       end
 
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
+      end
+
       it 'does not send a registration email' do
         expect { request }.not_to(change { ActionMailer::Base.deliveries.size })
       end
@@ -175,6 +208,10 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
 
       it 'does not create new User' do
         expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
       end
 
       it 'does not send a registration email' do
