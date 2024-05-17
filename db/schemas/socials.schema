@@ -1,0 +1,13 @@
+index_key  = 'index_socials_on_'
+
+create_table 'socials', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
+  t.uuid        'user_id',        null: false
+
+  t.string      'website_url'
+  t.string      'x_id'
+
+  t.timestamp   'created_at'
+  t.timestamp   'updated_at'
+
+  t.index       'user_id',        name: "#{index_key}user_id"
+end

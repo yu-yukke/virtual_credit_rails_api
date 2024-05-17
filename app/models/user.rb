@@ -42,6 +42,8 @@ class User < ApplicationRecord
 
   has_one_attached :thumbnail_image
 
+  has_one :social, dependent: :destroy
+
   EMAIL_REGEXP = /\A[\w\-._]+@[\w\-._]+\.[A-Za-z]+\z/
   SLUG_REGEXP = /\A[a-zA-Z0-9][a-zA-Z0-9_-]*\z/
   PROVIDERS = ['email'].freeze
