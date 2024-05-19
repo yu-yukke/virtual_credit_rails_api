@@ -13,10 +13,11 @@
 #
 #  index_socials_on_user_id  (user_id)
 #
-class Social < ApplicationRecord
-  belongs_to :user
+FactoryBot.define do
+  factory :social do
+    user
 
-  WEBSITE_REGEXP = %r{\Ahttps?://(?:www\.)?(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(?::\d+)?(?:/\S*)?\z}
-
-  validates :website_url, format: { with: WEBSITE_REGEXP }, allow_blank: true
+    website_url { Faker::Internet.url }
+    x_id { Faker::Internet.slug }
+  end
 end

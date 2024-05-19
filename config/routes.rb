@@ -18,6 +18,8 @@ Rails.application.routes.draw do
           patch '/me', to: 'users_me#update'
         end
       end
+
+      resource :social, only: %i[update]
     end
   end
 end
