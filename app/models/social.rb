@@ -15,4 +15,8 @@
 #
 class Social < ApplicationRecord
   belongs_to :user
+
+  WEBSITE_REGEXP = %r{\Ahttps?://(?:www\.)?(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(?::\d+)?(?:/\S*)?\z}
+
+  validates :website_url, format: { with: WEBSITE_REGEXP }, allow_blank: true
 end
