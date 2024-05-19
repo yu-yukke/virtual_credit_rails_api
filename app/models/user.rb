@@ -42,6 +42,8 @@ class User < ApplicationRecord
 
   has_one_attached :thumbnail_image
 
+  has_one :social, dependent: :destroy
+
   EMAIL_REGEXP = /\A[\w\-._]+@[\w\-._]+\.[A-Za-z]+\z/
   SLUG_REGEXP = /\A[a-zA-Z0-9][a-zA-Z0-9_-]*\z/
   PROVIDERS = ['email'].freeze
@@ -74,6 +76,8 @@ class User < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }
+
+  after_create :create_associated_social!
 
   def thumbnail_image_url
     # 紐づいている画像のURLを取得する
@@ -122,5 +126,11 @@ class User < ApplicationRecord
 
     self.published = false
     save!
+  end
+
+  private
+
+  def create_associated_social!
+    create_social!
   end
 end
