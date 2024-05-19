@@ -15,6 +15,8 @@ tags:
     description: 認証に関するAPI
   - name: User
     description: ユーザーに関するAPI
+  - name: Social
+    description: ユーザーソーシャル情報に関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -266,6 +268,25 @@ components:
         - activatedAt
         - createdAt
         - updatedAt
+    Social:
+      title: Social
+      x-stoplight:
+        id: e2ujfk0i3x7i8
+      type: object
+      properties:
+        websiteUrl:
+          type: string
+          x-stoplight:
+            id: lyuj6pze8j8yi
+          nullable: true
+        xId:
+          type: string
+          x-stoplight:
+            id: 5pss3amtez7mz
+          nullable: true
+      required:
+        - websiteUrl
+        - xId
   responses:
     BadRequest:
       description: Bad Request
@@ -726,8 +747,6 @@ paths:
                       activatedAt: null
                       createdAt: '2019-08-24T14:15:22Z'
                       updatedAt: '2019-08-24T14:15:22Z'
-        '400':
-          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':
@@ -776,3 +795,51 @@ paths:
                     thumbnailImage: path/to/image
       tags:
         - User
+  /v1/social:
+    patch:
+      summary: ログイン中ユーザーのソーシャル情報の更新
+      operationId: patch-v1-social
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Social'
+                required:
+                  - data
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Social
+      description: 'uid, client, access-tokenからログイン中のユーザーを取得してソーシャル情報をリクエストした内容へ更新する'
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                social:
+                  type: object
+                  x-stoplight:
+                    id: nrtlgyp7tl98j
+                  properties:
+                    websiteUrl:
+                      type: string
+                      x-stoplight:
+                        id: 71eqsnbh8wvx1
+                      nullable: true
+                    xId:
+                      type: string
+                      x-stoplight:
+                        id: doo4dkhdrb3z7
+                      nullable: true
