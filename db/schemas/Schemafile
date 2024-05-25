@@ -4,5 +4,9 @@ require 'users.schema'
 # ソーシャル情報
 require 'socials.schema'
 
+# スキル
+require 'skills.schema'
+require 'user_skills.schema'
+
 # リリースノート
 require 'release_notes.schema'

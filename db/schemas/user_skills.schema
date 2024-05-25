@@ -1,0 +1,14 @@
+index_key  = 'index_user_skills_on_'
+
+create_table 'user_skills', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
+  t.uuid        'user_id',            null: false
+  t.uuid        'skill_id',           null: false
+
+  t.timestamp   'created_at'
+  t.timestamp   'updated_at'
+
+  t.index       'user_id',            name: "#{index_key}user_id"
+  t.index       'skill_id',           name: "#{index_key}skill_id"
+  t.index       %w[user_id skill_id], name: "#{index_key}user_skill_uniq",
+                                      unique: true
+end
