@@ -18,5 +18,12 @@ class UserSkill < ApplicationRecord
   belongs_to :user
   belongs_to :skill
 
-  validates :user_id, uniqueness: { scope: :skill_id }
+  with_options presence: true do
+    validates :user_id
+    validates :user
+    validates :skill_id
+    validates :skill
+  end
+
+  validates :user_id, uniqueness: { scope: :skill_id, case_sensitive: false }
 end

@@ -49,7 +49,11 @@ class User < ApplicationRecord
 
   has_one :social, dependent: :destroy
 
-  has_many :created_skills, class_name: 'Skill', foreign_key: 'created_by', dependent: :nullify, inverse_of: :created_user
+  has_many :user_skills, dependent: :destroy
+  has_many :skills, through: :user_skills
+
+  has_many :created_skills, class_name: 'Skill', foreign_key: 'created_by',
+                            dependent: :nullify, inverse_of: :created_user
 
   with_options presence: true do
     validates :email
