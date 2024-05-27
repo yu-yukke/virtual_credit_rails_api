@@ -17,9 +17,54 @@ tags:
     description: ユーザーに関するAPI
   - name: Social
     description: ユーザーソーシャル情報に関するAPI
+  - name: Skill
+    description: ユーザーのスキルに関するAPI
 components:
   securitySchemes: {}
   schemas:
+    Error:
+      title: Error
+      x-stoplight:
+        id: yaeqhcu06c8j1
+      type: object
+      properties:
+        message:
+          type: string
+          x-stoplight:
+            id: y59gxc86odxqz
+        resource:
+          type: string
+          x-stoplight:
+            id: oedpyfp0krt6b
+        code:
+          type: integer
+          x-stoplight:
+            id: kh944euclth3n
+        errors:
+          type: array
+          x-stoplight:
+            id: exuao25m3o6ex
+          items:
+            x-stoplight:
+              id: urr0xqy1j3mdi
+            type: object
+            properties:
+              field:
+                type: string
+                x-stoplight:
+                  id: 8yqmizf5lp9kk
+              message:
+                type: string
+                x-stoplight:
+                  id: mvq0kx7yf06h7
+            required:
+              - field
+              - message
+      required:
+        - message
+        - resource
+        - code
+        - errors
     Pagination:
       title: Pagination
       x-stoplight:
@@ -85,49 +130,40 @@ components:
         - description
         - createdAt
       x-examples: {}
-    Error:
-      title: Error
+    Skill:
+      title: Skill
       x-stoplight:
-        id: yaeqhcu06c8j1
+        id: 4a2099xcxslg6
       type: object
       properties:
-        message:
+        id:
+          type: string
+        name:
           type: string
           x-stoplight:
-            id: y59gxc86odxqz
-        resource:
-          type: string
-          x-stoplight:
-            id: oedpyfp0krt6b
-        code:
-          type: integer
-          x-stoplight:
-            id: kh944euclth3n
-        errors:
-          type: array
-          x-stoplight:
-            id: exuao25m3o6ex
-          items:
-            x-stoplight:
-              id: urr0xqy1j3mdi
-            type: object
-            properties:
-              field:
-                type: string
-                x-stoplight:
-                  id: 8yqmizf5lp9kk
-              message:
-                type: string
-                x-stoplight:
-                  id: mvq0kx7yf06h7
-            required:
-              - field
-              - message
+            id: koj8nxy0ud34v
       required:
-        - message
-        - resource
-        - code
-        - errors
+        - id
+        - name
+    Social:
+      title: Social
+      x-stoplight:
+        id: e2ujfk0i3x7i8
+      type: object
+      properties:
+        websiteUrl:
+          type: string
+          x-stoplight:
+            id: lyuj6pze8j8yi
+          nullable: true
+        xId:
+          type: string
+          x-stoplight:
+            id: 5pss3amtez7mz
+          nullable: true
+      required:
+        - websiteUrl
+        - xId
     UserInRegistration:
       title: UserInRegistration
       x-stoplight:
@@ -268,25 +304,6 @@ components:
         - activatedAt
         - createdAt
         - updatedAt
-    Social:
-      title: Social
-      x-stoplight:
-        id: e2ujfk0i3x7i8
-      type: object
-      properties:
-        websiteUrl:
-          type: string
-          x-stoplight:
-            id: lyuj6pze8j8yi
-          nullable: true
-        xId:
-          type: string
-          x-stoplight:
-            id: 5pss3amtez7mz
-          nullable: true
-      required:
-        - websiteUrl
-        - xId
   responses:
     BadRequest:
       description: Bad Request
@@ -551,52 +568,6 @@ components:
       schema:
         type: string
 paths:
-  /v1/release_notes:
-    get:
-      summary: リリースノート一覧
-      tags:
-        - ReleaseNote
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    x-stoplight:
-                      id: rb1sb9jr5d19w
-                    items:
-                      $ref: '#/components/schemas/ReleaseNote'
-                  meta:
-                    $ref: '#/components/schemas/Pagination'
-                required:
-                  - data
-                  - meta
-              examples:
-                Example 1:
-                  value:
-                    data:
-                      - id: dk54-1222-fnd1-dk1a
-                        version: 1.0.1
-                        title: New Release
-                        description: 新機能がリリースされまｓｈちあ
-                        createdAt: '2019-08-24T14:15:22Z'
-                    meta:
-                      hasNext: true
-                      hasPrevious: true
-                      currentPage: 1
-                      totalPages: 10
-                      totalCount: 100
-        '400':
-          $ref: '#/components/responses/BadRequest'
-      operationId: get-v1-release-notes
-      description: リリースノートの一覧を返す
-      parameters:
-        - $ref: '#/components/parameters/page'
-    parameters: []
   /v1/auth:
     post:
       summary: ユーザー登録
@@ -679,6 +650,148 @@ paths:
                   password: password
       tags:
         - Authentication
+  /v1/release_notes:
+    get:
+      summary: リリースノート一覧
+      tags:
+        - ReleaseNote
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: rb1sb9jr5d19w
+                    items:
+                      $ref: '#/components/schemas/ReleaseNote'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+                required:
+                  - data
+                  - meta
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - id: dk54-1222-fnd1-dk1a
+                        version: 1.0.1
+                        title: New Release
+                        description: 新機能がリリースされまｓｈちあ
+                        createdAt: '2019-08-24T14:15:22Z'
+                    meta:
+                      hasNext: true
+                      hasPrevious: true
+                      currentPage: 1
+                      totalPages: 10
+                      totalCount: 100
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      operationId: get-v1-release-notes
+      description: リリースノートの一覧を返す
+      parameters:
+        - $ref: '#/components/parameters/page'
+    parameters: []
+  /v1/skills:
+    post:
+      summary: ユーザースキルの作成
+      operationId: post-v1-skills
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Skill'
+                required:
+                  - data
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Skill
+      description: ユーザースキルを1件新しく作成する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                skill:
+                  type: object
+                  x-stoplight:
+                    id: dgthzbn9lpgaz
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: b7f64r3ur8shj
+              required:
+                - skill
+  /v1/social:
+    patch:
+      summary: ログイン中ユーザーのソーシャル情報の更新
+      operationId: patch-v1-social
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Social'
+                required:
+                  - data
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Social
+      description: 'uid, client, access-tokenからログイン中のユーザーを取得してソーシャル情報をリクエストした内容へ更新する'
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                social:
+                  type: object
+                  x-stoplight:
+                    id: nrtlgyp7tl98j
+                  properties:
+                    websiteUrl:
+                      type: string
+                      x-stoplight:
+                        id: 71eqsnbh8wvx1
+                      nullable: true
+                    xId:
+                      type: string
+                      x-stoplight:
+                        id: doo4dkhdrb3z7
+                      nullable: true
   /v1/users/me:
     get:
       summary: ログイン中ユーザーの取得
@@ -795,51 +908,3 @@ paths:
                     thumbnailImage: path/to/image
       tags:
         - User
-  /v1/social:
-    patch:
-      summary: ログイン中ユーザーのソーシャル情報の更新
-      operationId: patch-v1-social
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/Social'
-                required:
-                  - data
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
-      tags:
-        - Social
-      description: 'uid, client, access-tokenからログイン中のユーザーを取得してソーシャル情報をリクエストした内容へ更新する'
-      parameters:
-        - $ref: '#/components/parameters/uid'
-        - $ref: '#/components/parameters/client'
-        - $ref: '#/components/parameters/access-token'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                social:
-                  type: object
-                  x-stoplight:
-                    id: nrtlgyp7tl98j
-                  properties:
-                    websiteUrl:
-                      type: string
-                      x-stoplight:
-                        id: 71eqsnbh8wvx1
-                      nullable: true
-                    xId:
-                      type: string
-                      x-stoplight:
-                        id: doo4dkhdrb3z7
-                      nullable: true
