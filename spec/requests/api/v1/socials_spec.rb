@@ -122,7 +122,7 @@ RSpec.describe 'Api::V1::Social' do
         }
       end
 
-      it_behaves_like 'unprocessable entity' do
+      it_behaves_like 'unprocessable_entity' do
         before { request }
       end
 

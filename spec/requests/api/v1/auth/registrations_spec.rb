@@ -70,7 +70,7 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
     context 'when params is empty' do
       let_it_be(:params) { {} }
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
@@ -96,7 +96,7 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
@@ -122,7 +122,7 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
@@ -148,7 +148,7 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
@@ -174,7 +174,7 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
@@ -202,7 +202,7 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'unprocessable entity' do
+      it_behaves_like 'unprocessable_entity' do
         before { request }
       end
 

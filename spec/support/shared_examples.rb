@@ -18,7 +18,7 @@ shared_examples 'created' do
   end
 end
 
-shared_examples 'bad request' do
+shared_examples 'bad_request' do
   it 'returns bad request' do
     expect(response).to have_http_status(:bad_request)
   end
@@ -38,7 +38,7 @@ shared_examples 'conflict' do
   end
 end
 
-shared_examples 'unprocessable entity' do
+shared_examples 'unprocessable_entity' do
   it 'returns unprocessable entity' do
     expect(response).to have_http_status(:unprocessable_entity)
   end
