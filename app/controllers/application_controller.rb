@@ -6,14 +6,7 @@ class ApplicationController < ActionController::API
 
   before_action :camelcase_to_snakecase
   before_action :authenticate_api_v1_user!
-
-  def camelcase_to_snakecase
-    params.deep_transform_keys!(&:underscore)
-  end
-
-  def is_pagination_params_valid
-    params[:page].to_i.to_s == params[:page]
-  end
+  before_action :set_current_user
 
   # TODO: 要レスポンス確認
   rescue_from ActiveRecord::RecordNotFound do |e|
@@ -40,6 +33,18 @@ class ApplicationController < ActionController::API
         }
       end
     )
+  end
+
+  def camelcase_to_snakecase
+    params.deep_transform_keys!(&:underscore)
+  end
+
+  def is_pagination_params_valid
+    params[:page].to_i.to_s == params[:page]
+  end
+
+  def set_current_user
+    Current.user = current_api_v1_user
   end
 
   private
