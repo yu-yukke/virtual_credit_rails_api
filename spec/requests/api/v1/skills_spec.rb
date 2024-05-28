@@ -109,6 +109,12 @@ RSpec.describe 'Api::V1::Social' do
       it 'creates a new skill' do
         expect { request }.to(change(Skill, :count))
       end
+
+      it 'sets created_user to the new skill created' do
+        request
+
+        expect(Skill.last.created_user).to eq(user)
+      end
     end
 
     context 'when name is already taken' do
