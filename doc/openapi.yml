@@ -145,6 +145,26 @@ components:
       required:
         - id
         - name
+    SkillWithUserCount:
+      title: SkillWithUserCount
+      x-stoplight:
+        id: 7rzbti8579wi0
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: o8akk86horb7z
+        userCount:
+          type: integer
+          x-stoplight:
+            id: orluqvqocnx9h
+      required:
+        - id
+        - name
+        - userCount
     Social:
       title: Social
       x-stoplight:
@@ -744,6 +764,35 @@ paths:
                         id: b7f64r3ur8shj
               required:
                 - skill
+    get:
+      summary: ユーザースキル一覧
+      operationId: get-v1-skills
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: 8p9cqh173wwt6
+                    items:
+                      $ref: '#/components/schemas/SkillWithUserCount'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        name: Creator
+                        userCount: 10
+      description: ユーザーのスキル一覧を返す
+      tags:
+        - Skill
   /v1/social:
     patch:
       summary: ログイン中ユーザーのソーシャル情報の更新
