@@ -304,7 +304,7 @@ RSpec.describe 'Api::V1::ReleaseNotes' do
     context 'with page as string' do
       let_it_be(:page) { 'page' }
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
     end

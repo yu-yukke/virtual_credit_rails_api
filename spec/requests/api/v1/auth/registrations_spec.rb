@@ -40,6 +40,19 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         expect(new_user.activated_at).to be_nil
       end
 
+      it 'creates new Social' do
+        expect { request }.to change(Social, :count).by(1)
+      end
+
+      it 'creates new Social associated with new User' do
+        request
+
+        new_user = User.order(created_at: :desc).first
+        new_social = Social.order(created_at: :desc).first
+
+        expect(new_social.user).to eq(new_user)
+      end
+
       it 'sends a registration email' do
         expect { request }.to change { ActionMailer::Base.deliveries.size }.by(1)
       end
@@ -57,12 +70,16 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
     context 'when params is empty' do
       let_it_be(:params) { {} }
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
       it 'does not create new User' do
         expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
       end
 
       it 'does not send a registration email' do
@@ -79,12 +96,16 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
       it 'does not create new User' do
         expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
       end
 
       it 'does not send a registration email' do
@@ -101,12 +122,16 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
       it 'does not create new User' do
         expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
       end
 
       it 'does not send a registration email' do
@@ -123,12 +148,16 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
       it 'does not create new User' do
         expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
       end
 
       it 'does not send a registration email' do
@@ -145,12 +174,16 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'bad request' do
+      it_behaves_like 'bad_request' do
         before { request }
       end
 
       it 'does not create new User' do
         expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
       end
 
       it 'does not send a registration email' do
@@ -169,12 +202,16 @@ RSpec.describe 'Api::V1::Auth::Registrations' do
         }
       end
 
-      it_behaves_like 'unprocessable entity' do
+      it_behaves_like 'unprocessable_entity' do
         before { request }
       end
 
       it 'does not create new User' do
         expect { request }.not_to change(User, :count)
+      end
+
+      it 'does not create new Social' do
+        expect { request }.not_to change(Social, :count)
       end
 
       it 'does not send a registration email' do

@@ -11,6 +11,7 @@ module VirtualCreditRailsApi
     config.time_zone = 'Tokyo'
     config.active_record.default_timezone
     config.i18n.default_locale = :ja
+    config.eager_load_paths << Rails.root.join('lib')
 
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0

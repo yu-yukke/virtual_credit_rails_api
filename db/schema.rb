@@ -51,6 +51,33 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.index ["version"], name: "index_release_notes_on_version", unique: true
   end
 
+  create_table "skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "created_by"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["name"], name: "index_skills_on_name", unique: true
+  end
+
+  create_table "socials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "website_url"
+    t.string "x_id"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["user_id"], name: "index_socials_on_user_id"
+  end
+
+  create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.uuid "skill_id", null: false
+    t.index ["skill_id"], name: "index_user_skills_on_skill_id"
+    t.index ["user_id", "skill_id"], name: "index_user_skills_on_user_skill_uniq", unique: true
+    t.index ["user_id"], name: "index_user_skills_on_user_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "slug"

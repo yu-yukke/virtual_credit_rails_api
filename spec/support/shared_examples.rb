@@ -18,13 +18,23 @@ shared_examples 'created' do
   end
 end
 
-shared_examples 'bad request' do
+shared_examples 'bad_request' do
   it 'returns bad request' do
     expect(response).to have_http_status(:bad_request)
   end
 
   it 'returns 400 response schema' do
     assert_response_schema_confirm(400)
+  end
+end
+
+shared_examples 'not_found' do
+  it 'returns not found' do
+    expect(response).to have_http_status(:not_found)
+  end
+
+  it 'returns 404 response schema' do
+    assert_response_schema_confirm(404)
   end
 end
 
@@ -38,7 +48,7 @@ shared_examples 'conflict' do
   end
 end
 
-shared_examples 'unprocessable entity' do
+shared_examples 'unprocessable_entity' do
   it 'returns unprocessable entity' do
     expect(response).to have_http_status(:unprocessable_entity)
   end

@@ -40,12 +40,20 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
   include Rails.application.routes.url_helpers
 
-  has_one_attached :thumbnail_image
-
   EMAIL_REGEXP = /\A[\w\-._]+@[\w\-._]+\.[A-Za-z]+\z/
   SLUG_REGEXP = /\A[a-zA-Z0-9][a-zA-Z0-9_-]*\z/
   PROVIDERS = ['email'].freeze
   REGISTRATION_PARAMS = %w[email password password_confirmation confirm_success_url].freeze
+
+  has_one_attached :thumbnail_image
+
+  has_one :social, dependent: :destroy
+
+  has_many :user_skills, dependent: :destroy
+  has_many :skills, through: :user_skills
+
+  has_many :created_skills, class_name: 'Skill', foreign_key: 'created_by',
+                            dependent: :nullify, inverse_of: :created_user
 
   with_options presence: true do
     validates :email
@@ -74,6 +82,8 @@ class User < ApplicationRecord
     only_integer: true,
     greater_than_or_equal_to: 0
   }
+
+  after_create :create_associated_social!
 
   def thumbnail_image_url
     # 紐づいている画像のURLを取得する
@@ -122,5 +132,11 @@ class User < ApplicationRecord
 
     self.published = false
     save!
+  end
+
+  private
+
+  def create_associated_social!
+    create_social!
   end
 end
