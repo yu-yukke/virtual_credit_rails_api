@@ -943,19 +943,24 @@ paths:
             schema:
               type: object
               properties:
-                skill:
+                userSkill:
                   type: object
                   x-stoplight:
                     id: ju25iom3mycbt
                   required:
-                    - id
+                    - skillId
                   properties:
-                    id:
+                    skillId:
                       type: string
                       x-stoplight:
                         id: ntqsfqeas65p6
               required:
-                - skill
+                - userSkill
+            examples:
+              Example 1:
+                value:
+                  userSkill:
+                    skillId: ba4367ee-e54c-4976-8c53-513c893fb418
   /v1/users/me:
     get:
       summary: ログイン中ユーザーの取得
