@@ -145,6 +145,26 @@ components:
       required:
         - id
         - name
+    SkillWithUserCount:
+      title: SkillWithUserCount
+      x-stoplight:
+        id: 7rzbti8579wi0
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: o8akk86horb7z
+        userCount:
+          type: integer
+          x-stoplight:
+            id: orluqvqocnx9h
+      required:
+        - id
+        - name
+        - userCount
     Social:
       title: Social
       x-stoplight:
@@ -712,6 +732,12 @@ paths:
                     $ref: '#/components/schemas/Skill'
                 required:
                   - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: Creator
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -744,6 +770,40 @@ paths:
                         id: b7f64r3ur8shj
               required:
                 - skill
+            examples:
+              Example 1:
+                value:
+                  skill:
+                    name: Creator
+    get:
+      summary: ユーザースキル一覧
+      operationId: get-v1-skills
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: 8p9cqh173wwt6
+                    items:
+                      $ref: '#/components/schemas/SkillWithUserCount'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        name: Creator
+                        userCount: 10
+      description: ユーザーのスキル一覧を返す
+      tags:
+        - Skill
   /v1/social:
     patch:
       summary: ログイン中ユーザーのソーシャル情報の更新
@@ -760,6 +820,12 @@ paths:
                     $ref: '#/components/schemas/Social'
                 required:
                   - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      websiteUrl: 'https://google.com'
+                      xId: VirtualCredit
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':
@@ -792,6 +858,12 @@ paths:
                       x-stoplight:
                         id: doo4dkhdrb3z7
                       nullable: true
+            examples:
+              Example 1:
+                value:
+                  social:
+                    websiteUrl: 'https://google.com'
+                    xId: VirtualCredit
   /v1/users/me:
     get:
       summary: ログイン中ユーザーの取得

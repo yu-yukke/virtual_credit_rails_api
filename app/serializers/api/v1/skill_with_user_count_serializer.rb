@@ -12,15 +12,8 @@
 #
 #  index_skills_on_name  (name) UNIQUE
 #
-FactoryBot.define do
-  factory :skill do
-    created_by { create(:user).id }
-    name { Faker::Internet.slug }
+class Api::V1::SkillWithUserCountSerializer < ActiveModel::Serializer
+  attributes :id, :name, :user_count
 
-    trait :with_users do
-      after(:create) do |skill|
-        skill.users << create_list(:user, rand(1..5), :confirmed)
-      end
-    end
-  end
+  delegate :user_count, to: :object
 end

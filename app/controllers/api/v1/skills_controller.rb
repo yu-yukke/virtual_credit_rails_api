@@ -1,7 +1,24 @@
 module Api
   module V1
     class SkillsController < ApplicationController
+      skip_before_action :authenticate_api_v1_user!, only: %i[index]
       before_action :check_create_params, only: %i[create]
+
+      def index
+        skills = Skill.all.sort_by { |skill| -skill.user_count }
+
+        data = ActiveModelSerializers::SerializableResource.new(
+          skills,
+          each_serializer: Api::V1::SkillWithUserCountSerializer
+        ).serializable_hash
+
+        render(
+          json: {
+            data:
+          },
+          status: :ok
+        )
+      end
 
       def create
         skill = Skill.create!(create_params)
