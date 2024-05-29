@@ -28,6 +28,16 @@ shared_examples 'bad_request' do
   end
 end
 
+shared_examples 'not_found' do
+  it 'returns not found' do
+    expect(response).to have_http_status(:not_found)
+  end
+
+  it 'returns 404 response schema' do
+    assert_response_schema_confirm(404)
+  end
+end
+
 shared_examples 'conflict' do
   it 'returns conflict' do
     expect(response).to have_http_status(:conflict)

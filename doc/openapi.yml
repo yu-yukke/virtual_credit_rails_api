@@ -19,6 +19,8 @@ tags:
     description: ユーザーソーシャル情報に関するAPI
   - name: Skill
     description: ユーザーのスキルに関するAPI
+  - name: UserSkill
+    description: ユーザーとスキルの紐づけに関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -324,6 +326,16 @@ components:
         - activatedAt
         - createdAt
         - updatedAt
+    UserSkill:
+      title: UserSkill
+      x-stoplight:
+        id: fely24ptst6a2
+      type: object
+      properties:
+        skill:
+          $ref: '#/components/schemas/Skill'
+      required:
+        - skill
   responses:
     BadRequest:
       description: Bad Request
@@ -560,6 +572,21 @@ components:
               value:
                 errors:
                   - ログインもしくはアカウント登録してください。
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            Example 1:
+              value:
+                message: Record Not Found
+                resource: User
+                code: 404
+                errors:
+                  - field: id
+                    message: 指定されたIDのリソースが見つかりません。
   examples: {}
   parameters:
     page:
@@ -864,6 +891,68 @@ paths:
                   social:
                     websiteUrl: 'https://google.com'
                     xId: VirtualCredit
+  /v1/user_skills:
+    post:
+      summary: ログイン中ユーザーとスキルの紐づけ
+      operationId: post-v1-user_skills
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserSkill'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      skill:
+                        id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        name: Creator
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - UserSkill
+      description: ログイン中のユーザーに指定したスキルを紐づける
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userSkill:
+                  type: object
+                  x-stoplight:
+                    id: ju25iom3mycbt
+                  required:
+                    - skillId
+                  properties:
+                    skillId:
+                      type: string
+                      x-stoplight:
+                        id: ntqsfqeas65p6
+              required:
+                - userSkill
+            examples:
+              Example 1:
+                value:
+                  userSkill:
+                    skillId: ba4367ee-e54c-4976-8c53-513c893fb418
   /v1/users/me:
     get:
       summary: ログイン中ユーザーの取得

@@ -14,18 +14,6 @@
 #  index_user_skills_on_user_id          (user_id)
 #  index_user_skills_on_user_skill_uniq  (user_id,skill_id) UNIQUE
 #
-class UserSkill < ApplicationRecord
-  CREATE_PARAMS = %w[skill_id].freeze
-
-  belongs_to :user
-  belongs_to :skill
-
-  with_options presence: true do
-    validates :user_id
-    validates :user
-    validates :skill_id
-    validates :skill
-  end
-
-  validates :user_id, uniqueness: { scope: :skill_id, case_sensitive: false }
+class Api::V1::UserSkillSerializer < ActiveModel::Serializer
+  belongs_to :skill, serializer: Api::V1::SkillSerializer
 end
