@@ -1,6 +1,72 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Social' do
+  #   ..######...########.########......##.##...####.##....##.########..########.##.....##
+  #   .##....##..##..........##.........##.##....##..###...##.##.....##.##........##...##.
+  #   .##........##..........##.......#########..##..####..##.##.....##.##.........##.##..
+  #   .##...####.######......##.........##.##....##..##.##.##.##.....##.######......###...
+  #   .##....##..##..........##.......#########..##..##..####.##.....##.##.........##.##..
+  #   .##....##..##..........##.........##.##....##..##...###.##.....##.##........##...##.
+  #   ..######...########....##.........##.##...####.##....##.########..########.##.....##
+
+  describe 'GET #index' do
+    subject(:request) do
+      get api_v1_skills_path, headers:
+    end
+
+    let_it_be(:user) { create(:user, :confirmed) }
+
+    before_all do
+      create_list(:skill, 10, :with_users)
+    end
+
+    context 'when user does not signed-in' do
+      let_it_be(:headers) { {} }
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns all skills' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(10)
+      end
+
+      it 'returns skills in descending order of user_count' do
+        request
+        body = response.parsed_body
+        sorted_user_counts = body['data'].pluck('userCount')
+
+        expect(sorted_user_counts).to eq(sorted_user_counts.sort.reverse)
+      end
+    end
+
+    context 'when user signed-in' do
+      let_it_be(:headers) { sign_in(user) }
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns all skills' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(10)
+      end
+
+      it 'returns skills in descending order of user_count' do
+        request
+        body = response.parsed_body
+        sorted_user_counts = body['data'].pluck('userCount')
+
+        expect(sorted_user_counts).to eq(sorted_user_counts.sort.reverse)
+      end
+    end
+  end
+
   #   .########...#######...######..########......##.##....######..########..########....###....########.########
   #   .##.....##.##.....##.##....##....##.........##.##...##....##.##.....##.##.........##.##......##....##......
   #   .##.....##.##.....##.##..........##.......#########.##.......##.....##.##........##...##.....##....##......
