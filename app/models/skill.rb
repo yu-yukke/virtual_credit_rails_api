@@ -24,4 +24,8 @@ class Skill < ApplicationRecord
   has_many :users, through: :user_skills
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  def user_count
+    users.count
+  end
 end
