@@ -332,17 +332,10 @@ components:
         id: fely24ptst6a2
       type: object
       properties:
-        userSkill:
-          type: object
-          x-stoplight:
-            id: 11blnos3m10cn
-          required:
-            - skill
-          properties:
-            skill:
-              $ref: '#/components/schemas/Skill'
+        skill:
+          $ref: '#/components/schemas/Skill'
       required:
-        - userSkill
+        - skill
   responses:
     BadRequest:
       description: Bad Request
@@ -918,10 +911,9 @@ paths:
                 Example 1:
                   value:
                     data:
-                      userSkill:
-                        skill:
-                          id: ba4367ee-e54c-4976-8c53-513c893fb418
-                          name: Creator
+                      skill:
+                        id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        name: Creator
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
