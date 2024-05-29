@@ -20,6 +20,8 @@ Rails.application.routes.draw do
       end
 
       resource :social, only: %i[update]
+
+      resources :skills, only: %i[create]
     end
   end
 end
