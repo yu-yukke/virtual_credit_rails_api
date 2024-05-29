@@ -732,6 +732,12 @@ paths:
                     $ref: '#/components/schemas/Skill'
                 required:
                   - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: Creator
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -764,6 +770,11 @@ paths:
                         id: b7f64r3ur8shj
               required:
                 - skill
+            examples:
+              Example 1:
+                value:
+                  skill:
+                    name: Creator
     get:
       summary: ユーザースキル一覧
       operationId: get-v1-skills
@@ -809,6 +820,12 @@ paths:
                     $ref: '#/components/schemas/Social'
                 required:
                   - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      websiteUrl: 'https://google.com'
+                      xId: VirtualCredit
         '401':
           $ref: '#/components/responses/Unauthorized'
         '422':
@@ -841,6 +858,12 @@ paths:
                       x-stoplight:
                         id: doo4dkhdrb3z7
                       nullable: true
+            examples:
+              Example 1:
+                value:
+                  social:
+                    websiteUrl: 'https://google.com'
+                    xId: VirtualCredit
   /v1/users/me:
     get:
       summary: ログイン中ユーザーの取得
