@@ -1,0 +1,14 @@
+index_key  = 'index_works_on_'
+
+create_table 'works', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
+  t.uuid        'user_id'
+
+  t.string      'title',          null: false
+  t.text        'description',    null: false
+  t.boolean     'is_published',   null: false, default: false
+
+  t.timestamp   'created_at'
+  t.timestamp   'updated_at'
+
+  t.index       'user_id',        name: "#{index_key}user_id"
+end

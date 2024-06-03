@@ -108,6 +108,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.index ["uid", "provider"], name: "index_users_on_uid_provider", unique: true
   end
 
+  create_table "works", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "title", null: false
+    t.text "description", null: false
+    t.boolean "is_published", default: false, null: false
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["user_id"], name: "index_works_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
 end
