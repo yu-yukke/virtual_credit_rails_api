@@ -82,7 +82,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.string "name"
     t.string "slug"
     t.text "description"
-    t.boolean "published", default: false, null: false
     t.string "provider", default: "email", null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at", precision: nil
@@ -101,6 +100,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.datetime "activated_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.boolean "is_published", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"

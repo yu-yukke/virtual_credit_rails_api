@@ -210,7 +210,7 @@ components:
           x-stoplight:
             id: pd1loyvcnrxl3
           nullable: true
-        published:
+        is_published:
           type: boolean
           x-stoplight:
             id: asn2cjhnqru9m
@@ -252,7 +252,7 @@ components:
         - name
         - slug
         - description
-        - published
+        - is_published
         - provider
         - uid
         - email
@@ -293,7 +293,7 @@ components:
           x-stoplight:
             id: bditj4g3zvqnu
           nullable: true
-        published:
+        isPublished:
           type: boolean
           x-stoplight:
             id: nvt15dp35eigs
@@ -322,7 +322,7 @@ components:
         - slug
         - description
         - email
-        - published
+        - isPublished
         - activatedAt
         - createdAt
         - updatedAt
@@ -408,7 +408,7 @@ components:
                   thumbnailImageUrl: null
                   slug: null
                   description: null
-                  published: false
+                  is_published: false
                   provider: email
                   uid: test@example.com
                   email: test@example.com
@@ -479,7 +479,7 @@ components:
                   thumbnailImageUrl: null
                   slug: null
                   description: null
-                  published: false
+                  is_published: false
                   provider: email
                   uid: ''
                   email: test@example.com
@@ -518,7 +518,7 @@ components:
                   slug: null
                   description: null
                   email: test@example.com
-                  published: false
+                  isPublished: false
                   activatedAt: null
                   createdAt: '2019-08-24T14:15:22Z'
                   updatedAt: '2019-08-24T14:15:22Z'
@@ -980,7 +980,7 @@ paths:
                       slug: null
                       description: null
                       email: test@example.com
-                      published: false
+                      isPublished: false
                       activatedAt: null
                       createdAt: '2019-08-24T14:15:22Z'
                       updatedAt: '2019-08-24T14:15:22Z'
@@ -1017,7 +1017,7 @@ paths:
                       slug: example_user
                       description: I am example user.
                       email: test@example.com
-                      published: false
+                      isPublished: false
                       activatedAt: null
                       createdAt: '2019-08-24T14:15:22Z'
                       updatedAt: '2019-08-24T14:15:22Z'
