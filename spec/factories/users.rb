@@ -12,11 +12,11 @@
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
+#  is_published         :boolean          default(FALSE), not null
 #  last_sign_in_at      :datetime
 #  last_sign_in_ip      :string
 #  name                 :string
 #  provider             :string           default("email"), not null
-#  published            :boolean          default(FALSE), not null
 #  remember_created_at  :datetime
 #  sign_in_count        :integer          default(0), not null
 #  slug                 :string

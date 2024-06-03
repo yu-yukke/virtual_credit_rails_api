@@ -12,11 +12,11 @@
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
+#  is_published         :boolean          default(FALSE), not null
 #  last_sign_in_at      :datetime
 #  last_sign_in_ip      :string
 #  name                 :string
 #  provider             :string           default("email"), not null
-#  published            :boolean          default(FALSE), not null
 #  remember_created_at  :datetime
 #  sign_in_count        :integer          default(0), not null
 #  slug                 :string
@@ -55,6 +55,9 @@ class User < ApplicationRecord
   has_many :created_skills, class_name: 'Skill', foreign_key: 'created_by',
                             dependent: :nullify, inverse_of: :created_user
 
+  has_many :my_works, class_name: 'Work', dependent: :nullify,
+                      inverse_of: :author
+
   with_options presence: true do
     validates :email
     validates :encrypted_password
@@ -72,7 +75,7 @@ class User < ApplicationRecord
   end
 
   validates :email, uniqueness: true, format: { with: EMAIL_REGEXP }
-  validates :published, inclusion: [true, false]
+  validates :is_published, inclusion: [true, false]
   validates :provider, inclusion: { in: PROVIDERS }
   validates :slug, uniqueness: true,
                    format: { with: SLUG_REGEXP },
@@ -114,7 +117,7 @@ class User < ApplicationRecord
 
   def publish!
     # TODO: publishAPI実装時に条件を改めて考えること
-    return true if published?
+    return true if is_published?
 
     unless activated?
       errors.add(:base, 'まだアカウントが有効化されていないユーザーです。')
@@ -122,15 +125,15 @@ class User < ApplicationRecord
       raise ActiveRecord::RecordInvalid, self
     end
 
-    self.published = true
+    self.is_published = true
     save!
   end
 
   def unpublish!
     # TODO: unpublishAPI実装時に条件を改めて考えること
-    return true unless published?
+    return true unless is_published?
 
-    self.published = false
+    self.is_published = false
     save!
   end
 

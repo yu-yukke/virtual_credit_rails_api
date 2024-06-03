@@ -82,7 +82,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.string "name"
     t.string "slug"
     t.text "description"
-    t.boolean "published", default: false, null: false
     t.string "provider", default: "email", null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at", precision: nil
@@ -101,11 +100,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.datetime "activated_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.boolean "is_published", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["slug"], name: "index_users_on_slug", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_provider", unique: true
+  end
+
+  create_table "works", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "title", null: false
+    t.text "description", null: false
+    t.boolean "is_published", default: false, null: false
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["user_id"], name: "index_works_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

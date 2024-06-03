@@ -10,3 +10,6 @@ require 'user_skills.schema'
 
 # リリースノート
 require 'release_notes.schema'
+
+# 作品
+require 'works.schema'

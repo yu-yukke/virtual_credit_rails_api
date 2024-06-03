@@ -12,12 +12,11 @@
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
-#  image                :string
+#  is_published         :boolean          default(FALSE), not null
 #  last_sign_in_at      :datetime
 #  last_sign_in_ip      :string
 #  name                 :string
 #  provider             :string           default("email"), not null
-#  published            :boolean          default(FALSE), not null
 #  remember_created_at  :datetime
 #  sign_in_count        :integer          default(0), not null
 #  slug                 :string
@@ -36,7 +35,7 @@
 #  index_users_on_uid_provider        (uid,provider) UNIQUE
 #
 class Api::V1::UsersMeSerializer < ActiveModel::Serializer
-  attributes :id, :name, :slug, :description, :email, :published,
+  attributes :id, :name, :slug, :description, :email, :is_published,
              :thumbnail_image_url, :activated_at, :created_at, :updated_at
 
   delegate :thumbnail_image_url, to: :object
