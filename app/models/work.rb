@@ -15,6 +15,10 @@
 #  index_works_on_user_id  (user_id)
 #
 class Work < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
+  CREATE_PARAMS = %w[title description cover_image].freeze
+
   has_one_attached :cover_image
   has_many_attached :images
 
@@ -49,5 +53,9 @@ class Work < ApplicationRecord
 
     self.is_published = false
     save!
+  end
+
+  def cover_image_url
+    url_for(cover_image)
   end
 end

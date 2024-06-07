@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       resources :skills, only: %i[index create]
 
       resources :user_skills, only: %i[create]
+
+      resources :works, only: %i[create]
     end
   end
 end
