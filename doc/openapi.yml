@@ -358,7 +358,7 @@ components:
           type: boolean
           x-stoplight:
             id: g2vay9osweglc
-        coverImage:
+        coverImageUrl:
           type: string
           x-stoplight:
             id: 0l2jcvvgmmg1e
@@ -367,7 +367,7 @@ components:
         - title
         - description
         - isPublished
-        - coverImage
+        - coverImageUrl
   responses:
     BadRequest:
       description: Bad Request
@@ -1125,7 +1125,7 @@ paths:
                       title: VRワールド
                       description: 今までになかったVRワールドを作成しました
                       isPublished: false
-                      coverImage: path/to/coverImage
+                      coverImageUrl: path/to/coverImage
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
