@@ -23,8 +23,8 @@ FactoryBot.define do
 
     after(:build) do |work|
       work.cover_image.attach(
-        io: File.open('spec/fixtures/takaomibg.jpeg'),
-        filename: 'takaomibg.jpeg',
+        io: File.open('spec/fixtures/bg_sample_1.jpeg'),
+        filename: 'bg_sample_1.jpeg',
         content_type: 'image/jpeg'
       )
     end

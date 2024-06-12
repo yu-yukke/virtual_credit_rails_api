@@ -21,6 +21,8 @@ tags:
     description: ユーザーのスキルに関するAPI
   - name: UserSkill
     description: ユーザーとスキルの紐づけに関するAPI
+  - name: Work
+    description: 作品に関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -336,6 +338,36 @@ components:
           $ref: '#/components/schemas/Skill'
       required:
         - skill
+    SimpleWork:
+      title: SimpleWork
+      x-stoplight:
+        id: cbgk6a5cuqdrm
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          x-stoplight:
+            id: tqillhgd52qrd
+        description:
+          type: string
+          x-stoplight:
+            id: 0lprrtks30932
+        isPublished:
+          type: boolean
+          x-stoplight:
+            id: g2vay9osweglc
+        coverImageUrl:
+          type: string
+          x-stoplight:
+            id: 0l2jcvvgmmg1e
+      required:
+        - id
+        - title
+        - description
+        - isPublished
+        - coverImageUrl
   responses:
     BadRequest:
       description: Bad Request
@@ -1069,3 +1101,77 @@ paths:
                     thumbnailImage: path/to/image
       tags:
         - User
+  /v1/works:
+    post:
+      summary: 作品の登録
+      operationId: post-v1-works
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SimpleWork'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      title: VRワールド
+                      description: 今までになかったVRワールドを作成しました
+                      isPublished: false
+                      coverImageUrl: path/to/coverImage
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 新しい作品を登録する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                work:
+                  type: object
+                  x-stoplight:
+                    id: xtvu0lge7of2h
+                  required:
+                    - title
+                    - description
+                    - coverImage
+                  properties:
+                    title:
+                      type: string
+                      x-stoplight:
+                        id: aftbksxgz1exa
+                    description:
+                      type: string
+                      x-stoplight:
+                        id: hf7if9rr5n0d8
+                    coverImage:
+                      type: string
+                      x-stoplight:
+                        id: bdztnxeprfbn6
+              required:
+                - work
+            examples:
+              Example 1:
+                value:
+                  work:
+                    title: VRワールド
+                    description: 今までになかったVRワールドを作成しました
+                    coverImage: path/to/coverImage
