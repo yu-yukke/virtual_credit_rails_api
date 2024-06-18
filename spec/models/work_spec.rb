@@ -55,11 +55,11 @@ RSpec.describe Work do
 
   it { is_expected.to validate_attached_of(:cover_image) }
   it { is_expected.to validate_content_type_of(:cover_image).allowing('image/png', 'image/jpeg') }
-  it { is_expected.to validate_size_of(:cover_image).less_than(8.megabytes) }
+  it { is_expected.to validate_size_of(:cover_image).less_than(16.megabytes) }
 
   it { is_expected.not_to validate_attached_of(:images) }
   it { is_expected.to validate_content_type_of(:images).allowing('image/png', 'image/jpeg') }
-  it { is_expected.to validate_size_of(:images).less_than(8.megabytes) }
+  it { is_expected.to validate_size_of(:images).less_than(16.megabytes) }
 
   #   .##.....##.########.########.##.....##..#######..########...######.
   #   .###...###.##..........##....##.....##.##.....##.##.....##.##....##

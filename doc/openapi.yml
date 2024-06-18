@@ -368,6 +368,18 @@ components:
         - description
         - isPublished
         - coverImageUrl
+    WorkImage:
+      title: WorkImage
+      x-stoplight:
+        id: vo7pgnr13r4mv
+      type: object
+      properties:
+        url:
+          type: string
+          x-stoplight:
+            id: c8rqjdfsljw65
+      required:
+        - url
   responses:
     BadRequest:
       description: Bad Request
@@ -1175,3 +1187,64 @@ paths:
                     title: VRワールド
                     description: 今までになかったVRワールドを作成しました
                     coverImage: path/to/coverImage
+  '/v1/works/{work_id}/work_images':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品画像の登録
+      operationId: post-v1-works-work_id-work_images
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WorkImage'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      url: path/to/image
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      description: 指定した作品に画像を登録する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: object
+                  x-stoplight:
+                    id: 0fpd8wg6j62j2
+                  required:
+                    - content
+                  properties:
+                    content:
+                      type: string
+                      x-stoplight:
+                        id: 5uqu5ecnx8zwi
+              required:
+                - image
+      tags:
+        - Work
