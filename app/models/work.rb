@@ -18,6 +18,7 @@ class Work < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   CREATE_PARAMS = %w[title description cover_image].freeze
+  CREATE_WORK_IMAGE_PARAMS = %w[content].freeze
 
   has_one_attached :cover_image
   has_many_attached :images
@@ -34,10 +35,10 @@ class Work < ApplicationRecord
   validates :cover_image,
             attached: true,
             content_type: %w[image/png image/jpeg],
-            size: { less_than: 8.megabytes }
+            size: { less_than: 16.megabytes }
   validates :images,
             content_type: %w[image/png image/jpeg],
-            size: { less_than: 8.megabytes }
+            size: { less_than: 16.megabytes }
 
   def publish!
     # TODO: publishAPI実装時に条件を改めて考えること
