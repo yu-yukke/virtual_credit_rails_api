@@ -35,7 +35,12 @@ module Api
           render_errors(
             status: :unprocessable_entity,
             resource: 'WorkImage',
-            errors: ['作品への画像の紐付けに失敗しました。画像データが正しく送信されているか確認してください。']
+            errors: [
+              {
+                field: 'content',
+                message: '作品への画像の紐付けに失敗しました。画像データが正しく送信されているか確認してください。'
+              }
+            ]
           )
         end
 
