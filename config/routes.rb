@@ -10,7 +10,13 @@ Rails.application.routes.draw do
         sessions: 'api/v1/auth/sessions'
       }
 
+      resources :categories, only: %i[create]
+
       resources :release_notes, only: %i[index]
+
+      resource :social, only: %i[update]
+
+      resources :skills, only: %i[index create]
 
       resources :users, only: %i[] do
         collection do
@@ -18,10 +24,6 @@ Rails.application.routes.draw do
           patch '/me', to: 'users_me#update'
         end
       end
-
-      resource :social, only: %i[update]
-
-      resources :skills, only: %i[index create]
 
       resources :user_skills, only: %i[create]
 
