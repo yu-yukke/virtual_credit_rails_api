@@ -52,11 +52,14 @@ class User < ApplicationRecord
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills
 
+  has_many :my_works, class_name: 'Work', dependent: :nullify,
+                      inverse_of: :author
+
   has_many :created_skills, class_name: 'Skill', foreign_key: 'created_by',
                             dependent: :nullify, inverse_of: :created_user
 
-  has_many :my_works, class_name: 'Work', dependent: :nullify,
-                      inverse_of: :author
+  has_many :created_categories, class_name: 'Category', foreign_key: 'created_by',
+                                dependent: :nullify, inverse_of: :created_user
 
   with_options presence: true do
     validates :email
