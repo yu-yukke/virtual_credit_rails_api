@@ -26,6 +26,9 @@ class Work < ApplicationRecord
   belongs_to :author, class_name: 'User', foreign_key: 'user_id',
                       inverse_of: :my_works, optional: true
 
+  has_many :work_categories, dependent: :destroy
+  has_many :categories, through: :work_categories
+
   with_options presence: true do
     validates :title
     validates :description

@@ -61,6 +61,9 @@ class User < ApplicationRecord
   has_many :created_categories, class_name: 'Category', foreign_key: 'created_by',
                                 dependent: :nullify, inverse_of: :created_user
 
+  has_many :created_work_categories, class_name: 'WorkCategory', foreign_key: 'created_by',
+                                     dependent: :nullify, inverse_of: :created_user
+
   with_options presence: true do
     validates :email
     validates :encrypted_password
