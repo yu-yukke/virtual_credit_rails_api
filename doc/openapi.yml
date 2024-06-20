@@ -21,6 +21,8 @@ tags:
     description: ユーザーのスキルに関するAPI
   - name: UserSkill
     description: ユーザーとスキルの紐づけに関するAPI
+  - name: Work
+    description: 作品に関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -210,7 +212,7 @@ components:
           x-stoplight:
             id: pd1loyvcnrxl3
           nullable: true
-        published:
+        is_published:
           type: boolean
           x-stoplight:
             id: asn2cjhnqru9m
@@ -252,7 +254,7 @@ components:
         - name
         - slug
         - description
-        - published
+        - is_published
         - provider
         - uid
         - email
@@ -293,7 +295,7 @@ components:
           x-stoplight:
             id: bditj4g3zvqnu
           nullable: true
-        published:
+        isPublished:
           type: boolean
           x-stoplight:
             id: nvt15dp35eigs
@@ -322,7 +324,7 @@ components:
         - slug
         - description
         - email
-        - published
+        - isPublished
         - activatedAt
         - createdAt
         - updatedAt
@@ -336,6 +338,48 @@ components:
           $ref: '#/components/schemas/Skill'
       required:
         - skill
+    SimpleWork:
+      title: SimpleWork
+      x-stoplight:
+        id: cbgk6a5cuqdrm
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          x-stoplight:
+            id: tqillhgd52qrd
+        description:
+          type: string
+          x-stoplight:
+            id: 0lprrtks30932
+        isPublished:
+          type: boolean
+          x-stoplight:
+            id: g2vay9osweglc
+        coverImageUrl:
+          type: string
+          x-stoplight:
+            id: 0l2jcvvgmmg1e
+      required:
+        - id
+        - title
+        - description
+        - isPublished
+        - coverImageUrl
+    WorkImage:
+      title: WorkImage
+      x-stoplight:
+        id: vo7pgnr13r4mv
+      type: object
+      properties:
+        url:
+          type: string
+          x-stoplight:
+            id: c8rqjdfsljw65
+      required:
+        - url
   responses:
     BadRequest:
       description: Bad Request
@@ -408,7 +452,7 @@ components:
                   thumbnailImageUrl: null
                   slug: null
                   description: null
-                  published: false
+                  is_published: false
                   provider: email
                   uid: test@example.com
                   email: test@example.com
@@ -479,7 +523,7 @@ components:
                   thumbnailImageUrl: null
                   slug: null
                   description: null
-                  published: false
+                  is_published: false
                   provider: email
                   uid: ''
                   email: test@example.com
@@ -518,7 +562,7 @@ components:
                   slug: null
                   description: null
                   email: test@example.com
-                  published: false
+                  isPublished: false
                   activatedAt: null
                   createdAt: '2019-08-24T14:15:22Z'
                   updatedAt: '2019-08-24T14:15:22Z'
@@ -980,7 +1024,7 @@ paths:
                       slug: null
                       description: null
                       email: test@example.com
-                      published: false
+                      isPublished: false
                       activatedAt: null
                       createdAt: '2019-08-24T14:15:22Z'
                       updatedAt: '2019-08-24T14:15:22Z'
@@ -1017,7 +1061,7 @@ paths:
                       slug: example_user
                       description: I am example user.
                       email: test@example.com
-                      published: false
+                      isPublished: false
                       activatedAt: null
                       createdAt: '2019-08-24T14:15:22Z'
                       updatedAt: '2019-08-24T14:15:22Z'
@@ -1069,3 +1113,138 @@ paths:
                     thumbnailImage: path/to/image
       tags:
         - User
+  /v1/works:
+    post:
+      summary: 作品の登録
+      operationId: post-v1-works
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SimpleWork'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      title: VRワールド
+                      description: 今までになかったVRワールドを作成しました
+                      isPublished: false
+                      coverImageUrl: path/to/coverImage
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 新しい作品を登録する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                work:
+                  type: object
+                  x-stoplight:
+                    id: xtvu0lge7of2h
+                  required:
+                    - title
+                    - description
+                    - coverImage
+                  properties:
+                    title:
+                      type: string
+                      x-stoplight:
+                        id: aftbksxgz1exa
+                    description:
+                      type: string
+                      x-stoplight:
+                        id: hf7if9rr5n0d8
+                    coverImage:
+                      type: string
+                      x-stoplight:
+                        id: bdztnxeprfbn6
+              required:
+                - work
+            examples:
+              Example 1:
+                value:
+                  work:
+                    title: VRワールド
+                    description: 今までになかったVRワールドを作成しました
+                    coverImage: path/to/coverImage
+  '/v1/works/{work_id}/work_images':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品画像の登録
+      operationId: post-v1-works-work_id-work_images
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WorkImage'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      url: path/to/image
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      description: 指定した作品に画像を登録する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: object
+                  x-stoplight:
+                    id: 0fpd8wg6j62j2
+                  required:
+                    - content
+                  properties:
+                    content:
+                      type: string
+                      x-stoplight:
+                        id: 5uqu5ecnx8zwi
+              required:
+                - image
+      tags:
+        - Work

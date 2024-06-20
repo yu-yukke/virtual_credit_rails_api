@@ -21,10 +21,16 @@ module Api
       end
 
       def create
-        skill = Skill.create!(create_params)
+        @skill = Skill.create!(create_params)
 
+        render_create_success
+      end
+
+      protected
+
+      def render_create_success
         data = ActiveModelSerializers::SerializableResource.new(
-          skill,
+          @skill,
           serializer: Api::V1::SkillSerializer
         ).serializable_hash
 

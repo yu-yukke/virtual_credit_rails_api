@@ -5,10 +5,16 @@ module Api
 
       def create
         skill = Skill.find(create_params[:skill_id])
-        user_skill = current_api_v1_user.user_skills.create!(skill:)
+        @user_skill = current_api_v1_user.user_skills.create!(skill:)
 
+        render_create_success
+      end
+
+      protected
+
+      def render_create_success
         data = ActiveModelSerializers::SerializableResource.new(
-          user_skill,
+          @user_skill,
           serializer: Api::V1::UserSkillSerializer
         ).serializable_hash
 

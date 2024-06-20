@@ -2,11 +2,17 @@ module Api
   module V1
     class SocialsController < ApplicationController
       def update
-        social = current_api_v1_user.social
-        social.update!(update_params)
+        @social = current_api_v1_user.social
+        @social.update!(update_params)
 
+        render_update_success
+      end
+
+      protected
+
+      def render_update_success
         data = ActiveModelSerializers::SerializableResource.new(
-          social,
+          @social,
           serializer: Api::V1::SocialSerializer
         ).serializable_hash
 

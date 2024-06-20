@@ -6,7 +6,7 @@ create_table 'users', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
                                                 unique: true
   t.string      'slug',                         unique: true
   t.text        'description'
-  t.boolean     'published',                    null: false,
+  t.boolean     'is_published',                 null: false,
                                                 default: false
   t.timestamp   'activated_at'
 

@@ -12,11 +12,11 @@
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
+#  is_published         :boolean          default(FALSE), not null
 #  last_sign_in_at      :datetime
 #  last_sign_in_ip      :string
 #  name                 :string
 #  provider             :string           default("email"), not null
-#  published            :boolean          default(FALSE), not null
 #  remember_created_at  :datetime
 #  sign_in_count        :integer          default(0), not null
 #  slug                 :string
@@ -46,9 +46,14 @@ RSpec.describe User do
   #   .##.....##..######...######...#######...######..####.##.....##....##....####..#######..##....##..######.
 
   it { is_expected.to have_one(:social) }
+
   it { is_expected.to have_many(:user_skills) }
   it { is_expected.to have_many(:skills) }
+
+  it { is_expected.to have_many(:my_works) }
+
   it { is_expected.to have_many(:created_skills) }
+  it { is_expected.to have_many(:created_categories) }
 
   #   .##.....##....###....##.......####.########.....###....########.####..#######..##....##..######.
   #   .##.....##...##.##...##........##..##.....##...##.##......##.....##..##.....##.###...##.##....##
@@ -394,7 +399,7 @@ RSpec.describe User do
           user.publish!
         rescue StandardError
           nil
-        end.not_to change { user.reload.published? }.from(true)
+        end.not_to change { user.reload.is_published? }.from(true)
       end
     end
 
@@ -406,7 +411,7 @@ RSpec.describe User do
       end
 
       it 'update user to published' do
-        expect { user.publish! }.to change { user.reload.published? }.to(true)
+        expect { user.publish! }.to change { user.reload.is_published? }.to(true)
       end
     end
 
@@ -422,7 +427,7 @@ RSpec.describe User do
           user.publish!
         rescue StandardError
           nil
-        end.not_to change { user.reload.published? }.from(false)
+        end.not_to change { user.reload.is_published? }.from(false)
       end
     end
 
@@ -438,7 +443,7 @@ RSpec.describe User do
           user.publish!
         rescue StandardError
           nil
-        end.not_to change { user.reload.published? }.from(false)
+        end.not_to change { user.reload.is_published? }.from(false)
       end
     end
 
@@ -454,7 +459,7 @@ RSpec.describe User do
           user.publish!
         rescue StandardError
           nil
-        end.not_to change { user.reload.published? }.from(false)
+        end.not_to change { user.reload.is_published? }.from(false)
       end
     end
 
@@ -470,7 +475,7 @@ RSpec.describe User do
           user.publish!
         rescue StandardError
           nil
-        end.not_to change { user.reload.published? }.from(false)
+        end.not_to change { user.reload.is_published? }.from(false)
       end
     end
 
@@ -486,7 +491,7 @@ RSpec.describe User do
           user.publish!
         rescue StandardError
           nil
-        end.not_to change { user.reload.published? }.from(false)
+        end.not_to change { user.reload.is_published? }.from(false)
       end
     end
   end
@@ -512,7 +517,7 @@ RSpec.describe User do
           user.unpublish!
         rescue StandardError
           nil
-        end.not_to change { user.reload.published? }.from(false)
+        end.not_to change { user.reload.is_published? }.from(false)
       end
     end
 
@@ -524,7 +529,7 @@ RSpec.describe User do
       end
 
       it 'update user to unpublished' do
-        expect { user.unpublish! }.to change { user.reload.published? }.to(false)
+        expect { user.unpublish! }.to change { user.reload.is_published? }.to(false)
       end
     end
   end

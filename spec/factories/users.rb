@@ -12,11 +12,11 @@
 #  description          :text
 #  email                :string           not null
 #  encrypted_password   :string           default(""), not null
+#  is_published         :boolean          default(FALSE), not null
 #  last_sign_in_at      :datetime
 #  last_sign_in_ip      :string
 #  name                 :string
 #  provider             :string           default("email"), not null
-#  published            :boolean          default(FALSE), not null
 #  remember_created_at  :datetime
 #  sign_in_count        :integer          default(0), not null
 #  slug                 :string
@@ -62,8 +62,8 @@ FactoryBot.define do
     trait :activated do
       after(:build) do |user|
         user.thumbnail_image.attach(
-          io: File.open('spec/fixtures/takaomi.jpeg'),
-          filename: 'takaomi.jpeg',
+          io: File.open('spec/fixtures/thumbnail_sample_1.jpeg'),
+          filename: 'thumbnail_sample_1.jpeg',
           content_type: 'image/jpeg'
         )
       end
@@ -77,8 +77,8 @@ FactoryBot.define do
     trait :published do
       after(:build) do |user|
         user.thumbnail_image.attach(
-          io: File.open('spec/fixtures/takaomi.jpeg'),
-          filename: 'takaomi.jpeg',
+          io: File.open('spec/fixtures/thumbnail_sample_1.jpeg'),
+          filename: 'thumbnail_sample_1.jpeg',
           content_type: 'image/jpeg'
         )
       end
@@ -93,8 +93,8 @@ FactoryBot.define do
     trait :has_image do
       after(:build) do |user|
         user.thumbnail_image.attach(
-          io: File.open('spec/fixtures/takaomi.jpeg'),
-          filename: 'takaomi.jpeg',
+          io: File.open('spec/fixtures/thumbnail_sample_1.jpeg'),
+          filename: 'thumbnail_sample_1.jpeg',
           content_type: 'image/jpeg'
         )
       end
