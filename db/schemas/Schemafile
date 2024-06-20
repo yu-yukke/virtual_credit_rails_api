@@ -13,3 +13,6 @@ require 'release_notes.schema'
 
 # 作品
 require 'works.schema'
+
+# 作品カテゴリー
+require 'categories.schema'
