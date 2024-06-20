@@ -54,6 +54,7 @@ RSpec.describe User do
 
   it { is_expected.to have_many(:created_skills) }
   it { is_expected.to have_many(:created_categories) }
+  it { is_expected.to have_many(:created_work_categories) }
 
   #   .##.....##....###....##.......####.########.....###....########.####..#######..##....##..######.
   #   .##.....##...##.##...##........##..##.....##...##.##......##.....##..##.....##.###...##.##....##

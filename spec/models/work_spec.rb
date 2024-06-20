@@ -27,6 +27,9 @@ RSpec.describe Work do
 
   it { is_expected.to belong_to(:author).class_name('User').optional }
 
+  it { is_expected.to have_many(:work_categories) }
+  it { is_expected.to have_many(:categories).through(:work_categories) }
+
   context 'when author is deleted' do
     subject(:destroy_author) { author.destroy }
 

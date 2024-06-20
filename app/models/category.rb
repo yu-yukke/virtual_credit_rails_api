@@ -20,5 +20,8 @@ class Category < ApplicationRecord
   belongs_to :created_user, class_name: 'User', foreign_key: 'created_by',
                             inverse_of: :created_categories, optional: true
 
+  has_many :work_categories, dependent: :destroy
+  has_many :works, through: :work_categories
+
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 end

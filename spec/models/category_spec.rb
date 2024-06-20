@@ -27,6 +27,9 @@ RSpec.describe Category do
 
   it { is_expected.to belong_to(:created_user).class_name('User').optional }
 
+  it { is_expected.to have_many(:work_categories) }
+  it { is_expected.to have_many(:works).through(:work_categories) }
+
   #   .##.....##....###....##.......####.########.....###....########.####..#######..##....##..######.
   #   .##.....##...##.##...##........##..##.....##...##.##......##.....##..##.....##.###...##.##....##
   #   .##.....##..##...##..##........##..##.....##..##...##.....##.....##..##.....##.####..##.##......
