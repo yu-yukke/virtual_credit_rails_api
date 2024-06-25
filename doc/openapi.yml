@@ -1263,7 +1263,7 @@ paths:
                     title: VRワールド
                     description: 今までになかったVRワールドを作成しました
                     coverImage: path/to/coverImage
-  '/v1/works/{work_id}/categorise':
+  '/v1/works/{work_id}/categories':
     parameters:
       - schema:
           type: string
@@ -1272,7 +1272,7 @@ paths:
         required: true
     post:
       summary: 作品カテゴリーの紐付け
-      operationId: post-v1-works-work_id-categorise
+      operationId: post-v1-works-work_id-categories
       responses:
         '204':
           description: No Content
