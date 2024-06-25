@@ -18,6 +18,16 @@ shared_examples 'created' do
   end
 end
 
+shared_examples 'no_content' do
+  it 'returns no content' do
+    expect(response).to have_http_status(:no_content)
+  end
+
+  it 'returns 204 response schema' do
+    assert_response_schema_confirm(204)
+  end
+end
+
 shared_examples 'bad_request' do
   it 'returns bad request' do
     expect(response).to have_http_status(:bad_request)

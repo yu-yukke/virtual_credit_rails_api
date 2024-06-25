@@ -1263,6 +1263,58 @@ paths:
                     title: VRワールド
                     description: 今までになかったVRワールドを作成しました
                     coverImage: path/to/coverImage
+  '/v1/works/{work_id}/categories':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品カテゴリーの紐付け
+      operationId: post-v1-works-work_id-categories
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 作品に指定のカテゴリーを紐づける
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: object
+                  x-stoplight:
+                    id: 3cxr0sesj3bc0
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      x-stoplight:
+                        id: msaphi0e6r772
+              required:
+                - category
+            examples:
+              Example 1:
+                value:
+                  category:
+                    id: dk54-1222-fnd1-dk1a
   '/v1/works/{work_id}/work_images':
     parameters:
       - schema:
@@ -1322,5 +1374,10 @@ paths:
                         id: 5uqu5ecnx8zwi
               required:
                 - image
+            examples:
+              Example 1:
+                value:
+                  image:
+                    content: path/to/image
       tags:
         - Work

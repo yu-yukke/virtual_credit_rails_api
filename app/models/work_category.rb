@@ -16,6 +16,8 @@
 #  index_work_categories_on_work_id             (work_id)
 #
 class WorkCategory < ApplicationRecord
+  include CreatorTracking
+
   belongs_to :work
   belongs_to :category
 

@@ -18,6 +18,7 @@ class Work < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   CREATE_PARAMS = %w[title description cover_image].freeze
+  CREATE_WORK_CATEGORY_PARAMS = %w[id].freeze
   CREATE_WORK_IMAGE_PARAMS = %w[content].freeze
 
   has_one_attached :cover_image
