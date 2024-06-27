@@ -76,6 +76,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.index ["user_id"], name: "index_socials_on_user_id"
   end
 
+  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "created_by"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
   create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.datetime "created_at", precision: nil
