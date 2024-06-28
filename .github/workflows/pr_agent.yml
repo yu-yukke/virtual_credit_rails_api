@@ -9,11 +9,6 @@ on:
     types: [opened, reopened, ready_for_review, review_requested]
   issue_comment:
     types: [created, edited]
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.repository }}-${{ github.event.number || github.head_ref || github.sha }}-${{ github.workflow }}-${{ github.event_name == 'pull_request_review_comment' && 'pr_comment' || 'pr' }}
-  cancel-in-progress: ${{ github.event_name != 'pull_request_review_comment' }}
 
 jobs:
   pr_agent_job:
@@ -58,5 +53,3 @@ jobs:
           PR_CODE_SUGGESTIONS.EXTRA_INSTRUCTIONS: ${{ env.COMMON_INSTRUCTIONS }}
           # /improve コメントの後に提案されるコードの数。
           PR_CODE_SUGGESTIONS.NUM_CODE_SUGGESTIONS: 2
-          # Modelを変更
-          CONFIG.MODEL: gpt-3.5-turbo-0613
