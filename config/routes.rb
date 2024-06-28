@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
       resources :skills, only: %i[index create]
 
+      resources :tags, only: %i[create]
+
       resources :users, only: %i[] do
         collection do
           get '/me', to: 'users_me#show'

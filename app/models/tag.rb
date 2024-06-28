@@ -15,6 +15,8 @@
 class Tag < ApplicationRecord
   include CreatorTracking
 
+  CREATE_PARAMS = %w[name].freeze
+
   belongs_to :created_user, class_name: 'User', foreign_key: 'created_by',
                             inverse_of: :created_tags, optional: true
 
