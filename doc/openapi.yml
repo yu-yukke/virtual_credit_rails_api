@@ -1391,6 +1391,58 @@ paths:
                 value:
                   category:
                     id: dk54-1222-fnd1-dk1a
+  '/v1/works/{work_id}/tags':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品タグの紐づけ
+      operationId: post-v1-works-work_id-tags
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      description: 作品に指定のタグを紐づける
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tag:
+                  type: object
+                  x-stoplight:
+                    id: l4ewn00s2bvi3
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      x-stoplight:
+                        id: 8xfojwz5qkhi3
+              required:
+                - tag
+            examples:
+              Example 1:
+                value:
+                  tag:
+                    id: ba4367ee-e54c-4976-8c53-513c893fb418
+      tags:
+        - Work
   '/v1/works/{work_id}/work_images':
     parameters:
       - schema:
