@@ -9,7 +9,7 @@ module Exceptions
         json: {
           error: {
             code: 500,
-            message: "予期せぬエラーが発生しました。: #{error}"
+            message: "予期せぬエラーが発生しましたよ。: #{error}"
           }
         },
         status: :internal_server_error
