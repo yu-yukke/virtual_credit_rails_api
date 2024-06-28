@@ -20,5 +20,8 @@ class Tag < ApplicationRecord
   belongs_to :created_user, class_name: 'User', foreign_key: 'created_by',
                             inverse_of: :created_tags, optional: true
 
+  has_many :work_tags, dependent: :destroy
+  has_many :works, through: :work_tags
+
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 end

@@ -30,6 +30,9 @@ class Work < ApplicationRecord
   has_many :work_categories, dependent: :destroy
   has_many :categories, through: :work_categories
 
+  has_many :work_tags, dependent: :destroy
+  has_many :tags, through: :work_tags
+
   with_options presence: true do
     validates :title
     validates :description
