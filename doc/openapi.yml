@@ -23,6 +23,10 @@ tags:
     description: ユーザーとスキルの紐づけに関するAPI
   - name: Work
     description: 作品に関するAPI
+  - name: Category
+    description: 作品カテゴリーに関するAPI
+  - name: Tag
+    description: 作品タグに関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -380,6 +384,36 @@ components:
             id: c8rqjdfsljw65
       required:
         - url
+    Category:
+      title: Category
+      x-stoplight:
+        id: 858bnudi6dgru
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: dum49oode1ir8
+      required:
+        - id
+        - name
+    Tag:
+      title: Tag
+      x-stoplight:
+        id: zumtog9mg59md
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: x7u1wrk433cvd
+      required:
+        - id
+        - name
   responses:
     BadRequest:
       description: Bad Request
@@ -741,6 +775,65 @@ paths:
                   password: password
       tags:
         - Authentication
+  /v1/categories:
+    post:
+      summary: 作品カテゴリーの登録
+      operationId: post-v1-categories
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Category'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: キャラクター
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: object
+                  x-stoplight:
+                    id: 0mrurzs12pkwa
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: q0yslua6aor7e
+              required:
+                - category
+            examples:
+              Example 1:
+                value:
+                  category:
+                    name: キャラクター
+      description: 新しい作品カテゴリーを登録する
+      tags:
+        - Category
   /v1/release_notes:
     get:
       summary: リリースノート一覧
@@ -935,10 +1028,10 @@ paths:
                   social:
                     websiteUrl: 'https://google.com'
                     xId: VirtualCredit
-  /v1/user_skills:
+  /v1/tags:
     post:
-      summary: ログイン中ユーザーとスキルの紐づけ
-      operationId: post-v1-user_skills
+      summary: 作品タグの登録
+      operationId: post-v1-tags
       responses:
         '201':
           description: Created
@@ -948,27 +1041,24 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/UserSkill'
+                    $ref: '#/components/schemas/Tag'
                 required:
                   - data
               examples:
                 Example 1:
                   value:
                     data:
-                      skill:
-                        id: ba4367ee-e54c-4976-8c53-513c893fb418
-                        name: Creator
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: VR
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
       tags:
-        - UserSkill
-      description: ログイン中のユーザーに指定したスキルを紐づける
+        - Tag
+      description: 新しい作品タグを登録する
       parameters:
         - $ref: '#/components/parameters/uid'
         - $ref: '#/components/parameters/client'
@@ -979,24 +1069,24 @@ paths:
             schema:
               type: object
               properties:
-                userSkill:
+                tag:
                   type: object
                   x-stoplight:
-                    id: ju25iom3mycbt
+                    id: w7lb79zss290h
                   required:
-                    - skillId
+                    - name
                   properties:
-                    skillId:
+                    name:
                       type: string
                       x-stoplight:
-                        id: ntqsfqeas65p6
+                        id: v26hwhtr4z0e7
               required:
-                - userSkill
+                - tag
             examples:
               Example 1:
                 value:
-                  userSkill:
-                    skillId: ba4367ee-e54c-4976-8c53-513c893fb418
+                  tag:
+                    name: VR
   /v1/users/me:
     get:
       summary: ログイン中ユーザーの取得
@@ -1113,6 +1203,68 @@ paths:
                     thumbnailImage: path/to/image
       tags:
         - User
+  /v1/user_skills:
+    post:
+      summary: ログイン中ユーザーとスキルの紐づけ
+      operationId: post-v1-user_skills
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserSkill'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      skill:
+                        id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        name: Creator
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - UserSkill
+      description: ログイン中のユーザーに指定したスキルを紐づける
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userSkill:
+                  type: object
+                  x-stoplight:
+                    id: ju25iom3mycbt
+                  required:
+                    - skillId
+                  properties:
+                    skillId:
+                      type: string
+                      x-stoplight:
+                        id: ntqsfqeas65p6
+              required:
+                - userSkill
+            examples:
+              Example 1:
+                value:
+                  userSkill:
+                    skillId: ba4367ee-e54c-4976-8c53-513c893fb418
   /v1/works:
     post:
       summary: 作品の登録
@@ -1187,6 +1339,58 @@ paths:
                     title: VRワールド
                     description: 今までになかったVRワールドを作成しました
                     coverImage: path/to/coverImage
+  '/v1/works/{work_id}/categories':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品カテゴリーの紐付け
+      operationId: post-v1-works-work_id-categories
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 作品に指定のカテゴリーを紐づける
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: object
+                  x-stoplight:
+                    id: 3cxr0sesj3bc0
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      x-stoplight:
+                        id: msaphi0e6r772
+              required:
+                - category
+            examples:
+              Example 1:
+                value:
+                  category:
+                    id: dk54-1222-fnd1-dk1a
   '/v1/works/{work_id}/work_images':
     parameters:
       - schema:
@@ -1246,5 +1450,10 @@ paths:
                         id: 5uqu5ecnx8zwi
               required:
                 - image
+            examples:
+              Example 1:
+                value:
+                  image:
+                    content: path/to/image
       tags:
         - Work

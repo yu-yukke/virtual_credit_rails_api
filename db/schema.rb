@@ -76,6 +76,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.index ["user_id"], name: "index_socials_on_user_id"
   end
 
+  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.uuid "created_by"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
   create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.datetime "created_at", precision: nil
@@ -114,6 +122,28 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.index ["name"], name: "index_users_on_name"
     t.index ["slug"], name: "index_users_on_slug", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_provider", unique: true
+  end
+
+  create_table "work_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "work_id", null: false
+    t.uuid "category_id", null: false
+    t.uuid "created_by"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["category_id"], name: "index_work_categories_on_category_id"
+    t.index ["work_id", "category_id"], name: "index_work_categories_on_work_category_uniq", unique: true
+    t.index ["work_id"], name: "index_work_categories_on_work_id"
+  end
+
+  create_table "work_tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "work_id", null: false
+    t.uuid "tag_id", null: false
+    t.uuid "created_by"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["tag_id"], name: "index_work_tags_on_tag_id"
+    t.index ["work_id", "tag_id"], name: "index_work_tags_on_work_tag_uniq", unique: true
+    t.index ["work_id"], name: "index_work_tags_on_work_id"
   end
 
   create_table "works", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

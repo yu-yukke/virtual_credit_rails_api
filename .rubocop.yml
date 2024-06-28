@@ -82,3 +82,6 @@ FactoryBot/ExcessiveCreateList:
 
 RSpec/ExampleLength:
   Max: 10
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10

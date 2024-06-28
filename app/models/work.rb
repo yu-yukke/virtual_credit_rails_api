@@ -18,6 +18,7 @@ class Work < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   CREATE_PARAMS = %w[title description cover_image].freeze
+  CREATE_WORK_CATEGORY_PARAMS = %w[id].freeze
   CREATE_WORK_IMAGE_PARAMS = %w[content].freeze
 
   has_one_attached :cover_image
@@ -25,6 +26,12 @@ class Work < ApplicationRecord
 
   belongs_to :author, class_name: 'User', foreign_key: 'user_id',
                       inverse_of: :my_works, optional: true
+
+  has_many :work_categories, dependent: :destroy
+  has_many :categories, through: :work_categories
+
+  has_many :work_tags, dependent: :destroy
+  has_many :tags, through: :work_tags
 
   with_options presence: true do
     validates :title
