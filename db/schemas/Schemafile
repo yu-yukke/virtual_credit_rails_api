@@ -20,3 +20,4 @@ require 'work_categories.schema'
 
 # 作品タグ
 require 'tags.schema'
+require 'work_tags.schema'
