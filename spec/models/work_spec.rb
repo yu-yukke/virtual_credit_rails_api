@@ -29,6 +29,8 @@ RSpec.describe Work do
 
   it { is_expected.to have_many(:work_categories) }
   it { is_expected.to have_many(:categories).through(:work_categories) }
+  it { is_expected.to have_many(:work_tags) }
+  it { is_expected.to have_many(:tags).through(:work_tags) }
 
   context 'when author is deleted' do
     subject(:destroy_author) { author.destroy }

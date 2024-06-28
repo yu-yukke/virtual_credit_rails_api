@@ -1,21 +1,24 @@
 # == Schema Information
 #
-# Table name: tags
+# Table name: work_tags
 #
 #  id         :uuid             not null, primary key
 #  created_by :uuid
-#  name       :string           not null
 #  created_at :datetime
 #  updated_at :datetime
+#  tag_id     :uuid             not null
+#  work_id    :uuid             not null
 #
 # Indexes
 #
-#  index_tags_on_name  (name) UNIQUE
+#  index_work_tags_on_tag_id         (tag_id)
+#  index_work_tags_on_work_id        (work_id)
+#  index_work_tags_on_work_tag_uniq  (work_id,tag_id) UNIQUE
 #
 require 'rails_helper'
 
-RSpec.describe Tag do
-  subject { build(:tag) }
+RSpec.describe WorkTag do
+  subject { build(:work_tag) }
 
   #   ....###.....######...######...#######...######..####....###....########.####..#######..##....##..######.
   #   ...##.##...##....##.##....##.##.....##.##....##..##....##.##......##.....##..##.....##.###...##.##....##
@@ -27,8 +30,8 @@ RSpec.describe Tag do
 
   it { is_expected.to belong_to(:created_user).class_name('User').optional }
 
-  it { is_expected.to have_many(:work_tags) }
-  it { is_expected.to have_many(:works).through(:work_tags) }
+  it { is_expected.to belong_to(:tag) }
+  it { is_expected.to belong_to(:work) }
 
   #   .##.....##....###....##.......####.########.....###....########.####..#######..##....##..######.
   #   .##.....##...##.##...##........##..##.....##...##.##......##.....##..##.....##.###...##.##....##
@@ -38,6 +41,15 @@ RSpec.describe Tag do
   #   ...##.##...##.....##.##........##..##.....##.##.....##....##.....##..##.....##.##...###.##....##
   #   ....###....##.....##.########.####.########..##.....##....##....####..#######..##....##..######.
 
-  it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_uniqueness_of(:name).case_insensitive }
+  it { is_expected.to validate_presence_of(:tag_id) }
+  it { is_expected.to validate_presence_of(:work_id) }
+  it { is_expected.to validate_uniqueness_of(:work_id).scoped_to(:tag_id).case_insensitive }
+
+  #   .##.....##.########.########.##.....##..#######..########...######.
+  #   .###...###.##..........##....##.....##.##.....##.##.....##.##....##
+  #   .####.####.##..........##....##.....##.##.....##.##.....##.##......
+  #   .##.###.##.######......##....#########.##.....##.##.....##..######.
+  #   .##.....##.##..........##....##.....##.##.....##.##.....##.......##
+  #   .##.....##.##..........##....##.....##.##.....##.##.....##.##....##
+  #   .##.....##.########....##....##.....##..#######..########...######.
 end
