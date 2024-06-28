@@ -25,6 +25,8 @@ tags:
     description: 作品に関するAPI
   - name: Category
     description: 作品カテゴリーに関するAPI
+  - name: Tag
+    description: 作品タグに関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -394,6 +396,21 @@ components:
           type: string
           x-stoplight:
             id: dum49oode1ir8
+      required:
+        - id
+        - name
+    Tag:
+      title: Tag
+      x-stoplight:
+        id: zumtog9mg59md
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: x7u1wrk433cvd
       required:
         - id
         - name
@@ -1011,6 +1028,65 @@ paths:
                   social:
                     websiteUrl: 'https://google.com'
                     xId: VirtualCredit
+  /v1/tags:
+    post:
+      summary: 作品タグの登録
+      operationId: post-v1-tags
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Tag'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: VR
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Tag
+      description: 新しい作品タグを登録する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tag:
+                  type: object
+                  x-stoplight:
+                    id: w7lb79zss290h
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: v26hwhtr4z0e7
+              required:
+                - tag
+            examples:
+              Example 1:
+                value:
+                  tag:
+                    name: VR
   /v1/users/me:
     get:
       summary: ログイン中ユーザーの取得
