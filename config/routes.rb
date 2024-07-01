@@ -10,6 +10,8 @@ Rails.application.routes.draw do
         sessions: 'api/v1/auth/sessions'
       }
 
+      resources :assets, only: %i[create]
+
       resources :categories, only: %i[create]
 
       resources :release_notes, only: %i[index]
