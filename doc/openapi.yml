@@ -27,6 +27,8 @@ tags:
     description: 作品カテゴリーに関するAPI
   - name: Tag
     description: 作品タグに関するAPI
+  - name: Asset
+    description: 作品アセットに関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -414,6 +416,27 @@ components:
       required:
         - id
         - name
+    Asset:
+      title: Asset
+      x-stoplight:
+        id: 5mj9i6wpmq2mm
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: v96l01jnkaih9
+        url:
+          type: string
+          x-stoplight:
+            id: cjrvyov7tcwpc
+          nullable: true
+      required:
+        - id
+        - name
+        - url
   responses:
     BadRequest:
       description: Bad Request
@@ -693,6 +716,72 @@ components:
       schema:
         type: string
 paths:
+  /v1/assets:
+    post:
+      summary: 作品アセットの登録
+      operationId: post-v1-assets
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Asset'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: 表情アセット
+                      url: 'https://google.com'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Asset
+      description: 新しい作品アセットを登録する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                asset:
+                  type: object
+                  x-stoplight:
+                    id: uaov29qhmyngs
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: wi5ncojlmpael
+                    url:
+                      type: string
+                      x-stoplight:
+                        id: jo5e0bal2yns0
+                      nullable: true
+              required:
+                - asset
+            examples:
+              Example 1:
+                value:
+                  asset:
+                    name: 表情アセット
+                    url: 'https://google.com'
   /v1/auth:
     post:
       summary: ユーザー登録
