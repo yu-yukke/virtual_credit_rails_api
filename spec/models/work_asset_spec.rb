@@ -1,22 +1,24 @@
 # == Schema Information
 #
-# Table name: assets
+# Table name: work_assets
 #
 #  id         :uuid             not null, primary key
 #  created_by :uuid
-#  name       :string           not null
-#  url        :string
 #  created_at :datetime
 #  updated_at :datetime
+#  asset_id   :uuid             not null
+#  work_id    :uuid             not null
 #
 # Indexes
 #
-#  index_assets_on_name  (name) UNIQUE
+#  index_work_assets_on_asset_id         (asset_id)
+#  index_work_assets_on_work_asset_uniq  (work_id,asset_id) UNIQUE
+#  index_work_assets_on_work_id          (work_id)
 #
 require 'rails_helper'
 
-RSpec.describe Asset do
-  subject { build(:asset) }
+RSpec.describe WorkAsset do
+  subject { build(:work_asset) }
 
   #   ....###.....######...######...#######...######..####....###....########.####..#######..##....##..######.
   #   ...##.##...##....##.##....##.##.....##.##....##..##....##.##......##.....##..##.....##.###...##.##....##
@@ -28,8 +30,8 @@ RSpec.describe Asset do
 
   it { is_expected.to belong_to(:created_user).class_name('User').optional }
 
-  it { is_expected.to have_many(:work_assets) }
-  it { is_expected.to have_many(:works).through(:work_assets) }
+  it { is_expected.to belong_to(:asset) }
+  it { is_expected.to belong_to(:work) }
 
   #   .##.....##....###....##.......####.########.....###....########.####..#######..##....##..######.
   #   .##.....##...##.##...##........##..##.....##...##.##......##.....##..##.....##.###...##.##....##
@@ -39,11 +41,15 @@ RSpec.describe Asset do
   #   ...##.##...##.....##.##........##..##.....##.##.....##....##.....##..##.....##.##...###.##....##
   #   ....###....##.....##.########.####.########..##.....##....##....####..#######..##....##..######.
 
-  it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_uniqueness_of(:name).case_insensitive }
+  it { is_expected.to validate_presence_of(:asset_id) }
+  it { is_expected.to validate_presence_of(:work_id) }
+  it { is_expected.to validate_uniqueness_of(:work_id).scoped_to(:asset_id).case_insensitive }
 
-  it { is_expected.to allow_value(Faker::Internet.url).for(:url) }
-  it { is_expected.to allow_value(nil).for(:url) }
-  it { is_expected.to allow_value('').for(:url) }
-  it { is_expected.not_to allow_value('unpermitted_format').for(:url) }
+  #   .##.....##.########.########.##.....##..#######..########...######.
+  #   .###...###.##..........##....##.....##.##.....##.##.....##.##....##
+  #   .####.####.##..........##....##.....##.##.....##.##.....##.##......
+  #   .##.###.##.######......##....#########.##.....##.##.....##..######.
+  #   .##.....##.##..........##....##.....##.##.....##.##.....##.......##
+  #   .##.....##.##..........##....##.....##.##.....##.##.....##.##....##
+  #   .##.....##.########....##....##.....##..#######..########...######.
 end
