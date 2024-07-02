@@ -22,6 +22,9 @@ class Asset < ApplicationRecord
   belongs_to :created_user, class_name: 'User', foreign_key: 'created_by',
                             inverse_of: :created_assets, optional: true
 
+  has_many :work_assets, dependent: :destroy
+  has_many :works, through: :work_assets
+
   validates :url, format: { with: URL_REGEXP }, allow_blank: true
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 end

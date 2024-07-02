@@ -133,6 +133,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.index ["uid", "provider"], name: "index_users_on_uid_provider", unique: true
   end
 
+  create_table "work_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "work_id", null: false
+    t.uuid "asset_id", null: false
+    t.uuid "created_by"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["asset_id"], name: "index_work_assets_on_asset_id"
+    t.index ["work_id", "asset_id"], name: "index_work_assets_on_work_asset_uniq", unique: true
+    t.index ["work_id"], name: "index_work_assets_on_work_id"
+  end
+
   create_table "work_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "work_id", null: false
     t.uuid "category_id", null: false
