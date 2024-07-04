@@ -55,6 +55,9 @@ class User < ApplicationRecord
   has_many :my_works, class_name: 'Work', dependent: :nullify,
                       inverse_of: :author
 
+  has_many :likes, dependent: :destroy
+  has_many :liked_works, through: :likes, source: :work
+
   has_many :created_assets, class_name: 'Asset', foreign_key: 'created_by',
                             dependent: :nullify, inverse_of: :created_user
 
