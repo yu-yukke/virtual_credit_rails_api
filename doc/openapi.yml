@@ -1428,6 +1428,58 @@ paths:
                     title: VRワールド
                     description: 今までになかったVRワールドを作成しました
                     coverImage: path/to/coverImage
+  '/v1/works/{work_id}/assets':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品アセットの紐づけ
+      operationId: post-v1-works-work_id-assets
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 作品に指定のアセットを紐づける
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                asset:
+                  type: object
+                  x-stoplight:
+                    id: 240gvtw9ix9lt
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      x-stoplight:
+                        id: 4l496l9ro8788
+              required:
+                - asset
+            examples:
+              Example 1:
+                value:
+                  asset:
+                    id: dk54-1222-fnd1-dk1a
   '/v1/works/{work_id}/categories':
     parameters:
       - schema:
