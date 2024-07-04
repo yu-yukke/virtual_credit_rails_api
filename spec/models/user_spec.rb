@@ -52,6 +52,9 @@ RSpec.describe User do
 
   it { is_expected.to have_many(:my_works) }
 
+  it { is_expected.to have_many(:likes) }
+  it { is_expected.to have_many(:liked_works).through(:likes) }
+
   it { is_expected.to have_many(:created_assets) }
   it { is_expected.to have_many(:created_categories) }
   it { is_expected.to have_many(:created_skills) }
