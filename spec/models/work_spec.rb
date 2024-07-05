@@ -27,6 +27,9 @@ RSpec.describe Work do
 
   it { is_expected.to belong_to(:author).class_name('User').optional }
 
+  it { is_expected.to have_many(:likes) }
+  it { is_expected.to have_many(:liked_users).through(:likes) }
+
   it { is_expected.to have_many(:work_assets) }
   it { is_expected.to have_many(:assets).through(:work_assets) }
   it { is_expected.to have_many(:work_categories) }

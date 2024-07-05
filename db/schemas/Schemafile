@@ -25,3 +25,6 @@ require 'work_tags.schema'
 # 作品アセット
 require 'assets.schema'
 require 'work_assets.schema'
+
+# いいね
+require 'likes.schema'

@@ -1,0 +1,14 @@
+index_key  = 'index_likes_on_'
+
+create_table 'likes', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
+  t.uuid        'user_id',            null: false
+  t.uuid        'work_id',            null: false
+
+  t.timestamp   'created_at'
+  t.timestamp   'updated_at'
+
+  t.index       'user_id',            name: "#{index_key}user_id"
+  t.index       'work_id',            name: "#{index_key}work_id"
+  t.index       %w[user_id work_id],  name: "#{index_key}user_work_uniq",
+                                      unique: true
+end
