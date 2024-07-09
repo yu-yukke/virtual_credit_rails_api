@@ -64,6 +64,9 @@ class User < ApplicationRecord
   has_many :created_categories, class_name: 'Category', foreign_key: 'created_by',
                                 dependent: :nullify, inverse_of: :created_user
 
+  has_many :created_copyrights, class_name: 'Copyright', foreign_key: 'created_by',
+                                dependent: :nullify, inverse_of: :created_user
+
   has_many :created_skills, class_name: 'Skill', foreign_key: 'created_by',
                             dependent: :nullify, inverse_of: :created_user
 

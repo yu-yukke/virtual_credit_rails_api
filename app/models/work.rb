@@ -29,6 +29,8 @@ class Work < ApplicationRecord
   belongs_to :author, class_name: 'User', foreign_key: 'user_id',
                       inverse_of: :my_works, optional: true
 
+  has_many :copyrights, dependent: :destroy
+
   has_many :likes, dependent: :destroy
   has_many :liked_users, through: :likes, source: :user
 
