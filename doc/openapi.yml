@@ -1532,6 +1532,32 @@ paths:
                 value:
                   category:
                     id: dk54-1222-fnd1-dk1a
+  '/v1/works/{work_id}/likes':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品いいね機能
+      operationId: post-v1-works-work_id-likes
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 指定した作品をログイン中のユーザーがいいねする
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
   '/v1/works/{work_id}/tags':
     parameters:
       - schema:
