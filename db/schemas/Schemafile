@@ -28,3 +28,6 @@ require 'work_assets.schema'
 
 # いいね
 require 'likes.schema'
+
+# コピーライト
+require 'copyrights.schema'

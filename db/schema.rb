@@ -59,6 +59,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
+  create_table "copyrights", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "work_id", null: false
+    t.string "name", null: false
+    t.uuid "created_by"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["work_id", "name"], name: "index_copyrights_on_work_name_uniq", unique: true
+  end
+
   create_table "likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.uuid "work_id", null: false
