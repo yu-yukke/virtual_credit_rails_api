@@ -437,6 +437,21 @@ components:
         - id
         - name
         - url
+    Copyright:
+      title: Copyright
+      x-stoplight:
+        id: kgf4q1o2zg9se
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: k3c4ubgevvy5x
+      required:
+        - id
+        - name
   responses:
     BadRequest:
       description: Bad Request
@@ -1532,6 +1547,73 @@ paths:
                 value:
                   category:
                     id: dk54-1222-fnd1-dk1a
+  '/v1/works/{work_id}/copyrights':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品コピーライトの作成
+      operationId: post-v1-works-work_id-copyrights
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Copyright'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: 音響
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 作品コピーライトを新しく1件作成する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                copyright:
+                  type: object
+                  x-stoplight:
+                    id: noroc58mgb1un
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: pzlqp3jtq69mf
+              required:
+                - copyright
+            examples:
+              Example 1:
+                value:
+                  copyright:
+                    name: 音響
   '/v1/works/{work_id}/likes':
     parameters:
       - schema:
