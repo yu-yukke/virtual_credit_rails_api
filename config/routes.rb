@@ -36,6 +36,8 @@ Rails.application.routes.draw do
 
         resources :categories, only: %i[create], module: :works
 
+        resources :copyrights, only: %i[create], module: :works
+
         resources :likes, only: %i[create], module: :works
 
         resources :tags, only: %i[create], module: :works
