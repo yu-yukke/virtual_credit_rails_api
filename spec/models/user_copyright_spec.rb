@@ -1,22 +1,24 @@
 # == Schema Information
 #
-# Table name: copyrights
+# Table name: user_copyrights
 #
-#  id         :uuid             not null, primary key
-#  created_by :uuid
-#  name       :string           not null
-#  created_at :datetime
-#  updated_at :datetime
-#  work_id    :uuid             not null
+#  id           :uuid             not null, primary key
+#  created_by   :uuid
+#  created_at   :datetime
+#  updated_at   :datetime
+#  copyright_id :uuid             not null
+#  user_id      :uuid             not null
 #
 # Indexes
 #
-#  index_copyrights_on_work_name_uniq  (work_id,name) UNIQUE
+#  index_user_copyrights_on_copyright_id         (copyright_id)
+#  index_user_copyrights_on_user_copyright_uniq  (user_id,copyright_id) UNIQUE
+#  index_user_copyrights_on_user_id              (user_id)
 #
 require 'rails_helper'
 
-RSpec.describe Copyright do
-  subject { build(:copyright) }
+RSpec.describe UserCopyright do
+  subject { build(:user_copyright) }
 
   #   ....###.....######...######...#######...######..####....###....########.####..#######..##....##..######.
   #   ...##.##...##....##.##....##.##.....##.##....##..##....##.##......##.....##..##.....##.###...##.##....##
@@ -28,10 +30,8 @@ RSpec.describe Copyright do
 
   it { is_expected.to belong_to(:created_user).class_name('User').optional }
 
-  it { is_expected.to belong_to(:work) }
-
-  it { is_expected.to have_many(:user_copyrights) }
-  it { is_expected.to have_many(:users).through(:user_copyrights) }
+  it { is_expected.to belong_to(:copyright) }
+  it { is_expected.to belong_to(:user) }
 
   #   .##.....##....###....##.......####.########.....###....########.####..#######..##....##..######.
   #   .##.....##...##.##...##........##..##.....##...##.##......##.....##..##.....##.###...##.##....##
@@ -41,7 +41,15 @@ RSpec.describe Copyright do
   #   ...##.##...##.....##.##........##..##.....##.##.....##....##.....##..##.....##.##...###.##....##
   #   ....###....##.....##.########.####.########..##.....##....##....####..#######..##....##..######.
 
-  it { is_expected.to validate_presence_of(:work_id) }
-  it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_uniqueness_of(:name).scoped_to(:work_id).case_insensitive }
+  it { is_expected.to validate_presence_of(:copyright_id) }
+  it { is_expected.to validate_presence_of(:user_id) }
+  it { is_expected.to validate_uniqueness_of(:user_id).scoped_to(:copyright_id).case_insensitive }
+
+  #   .##.....##.########.########.##.....##..#######..########...######.
+  #   .###...###.##..........##....##.....##.##.....##.##.....##.##....##
+  #   .####.####.##..........##....##.....##.##.....##.##.....##.##......
+  #   .##.###.##.######......##....#########.##.....##.##.....##..######.
+  #   .##.....##.##..........##....##.....##.##.....##.##.....##.......##
+  #   .##.....##.##..........##....##.....##.##.....##.##.....##.##....##
+  #   .##.....##.########....##....##.....##..#######..########...######.
 end
