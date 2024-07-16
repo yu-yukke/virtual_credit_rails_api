@@ -112,6 +112,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  create_table "user_copyrights", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.uuid "copyright_id", null: false
+    t.uuid "created_by"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["copyright_id"], name: "index_user_copyrights_on_copyright_id"
+    t.index ["user_id", "copyright_id"], name: "index_user_copyrights_on_user_copyright_uniq", unique: true
+    t.index ["user_id"], name: "index_user_copyrights_on_user_id"
+  end
+
   create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
     t.datetime "created_at", precision: nil
