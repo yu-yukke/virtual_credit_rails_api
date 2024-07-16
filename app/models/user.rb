@@ -58,6 +58,9 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :liked_works, through: :likes, source: :work
 
+  has_many :user_copyrights, dependent: :destroy
+  has_many :copyrights, through: :user_copyrights
+
   has_many :created_assets, class_name: 'Asset', foreign_key: 'created_by',
                             dependent: :nullify, inverse_of: :created_user
 
@@ -72,6 +75,9 @@ class User < ApplicationRecord
 
   has_many :created_tags, class_name: 'Tag', foreign_key: 'created_by',
                           dependent: :nullify, inverse_of: :created_user
+
+  has_many :created_user_copyrights, class_name: 'UserCopyright', foreign_key: 'created_by',
+                                     dependent: :nullify, inverse_of: :created_user
 
   has_many :created_work_assets, class_name: 'WorkAsset', foreign_key: 'created_by',
                                  dependent: :nullify, inverse_of: :created_user

@@ -23,6 +23,9 @@ class Copyright < ApplicationRecord
   belongs_to :created_user, class_name: 'User', foreign_key: 'created_by',
                             inverse_of: :created_copyrights, optional: true
 
+  has_many :user_copyrights, dependent: :destroy
+  has_many :users, through: :user_copyrights
+
   with_options presence: true do
     validates :name
     validates :work_id
