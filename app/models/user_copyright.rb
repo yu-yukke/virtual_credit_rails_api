@@ -16,6 +16,8 @@
 #  index_user_copyrights_on_user_id              (user_id)
 #
 class UserCopyright < ApplicationRecord
+  include CreatorTracking
+
   belongs_to :user
   belongs_to :copyright
 
