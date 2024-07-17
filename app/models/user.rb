@@ -118,6 +118,8 @@ class User < ApplicationRecord
 
   after_create :create_associated_social!
 
+  scope :published, -> { where(is_published: true) }
+
   def thumbnail_image_url
     # 紐づいている画像のURLを取得する
     thumbnail_image.attached? ? url_for(thumbnail_image) : nil
