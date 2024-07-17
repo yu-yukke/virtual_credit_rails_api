@@ -17,6 +17,7 @@ class Copyright < ApplicationRecord
   include CreatorTracking
 
   CREATE_PARAMS = %w[name].freeze
+  CREATE_USER_COPYRIGHT_PARAMS = %w[id].freeze
 
   belongs_to :work
 
