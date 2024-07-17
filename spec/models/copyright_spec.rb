@@ -16,7 +16,7 @@
 require 'rails_helper'
 
 RSpec.describe Copyright do
-  subject { build(:copyright) }
+  subject { create(:copyright) }
 
   #   ....###.....######...######...#######...######..####....###....########.####..#######..##....##..######.
   #   ...##.##...##....##.##....##.##.....##.##....##..##....##.##......##.....##..##.....##.###...##.##....##
@@ -26,9 +26,12 @@ RSpec.describe Copyright do
   #   .##.....##.##....##.##....##.##.....##.##....##..##..##.....##....##.....##..##.....##.##...###.##....##
   #   .##.....##..######...######...#######...######..####.##.....##....##....####..#######..##....##..######.
 
+  it { is_expected.to belong_to(:created_user).class_name('User').optional }
+
   it { is_expected.to belong_to(:work) }
 
-  it { is_expected.to belong_to(:created_user).class_name('User').optional }
+  it { is_expected.to have_many(:user_copyrights) }
+  it { is_expected.to have_many(:users).through(:user_copyrights) }
 
   #   .##.....##....###....##.......####.########.....###....########.####..#######..##....##..######.
   #   .##.....##...##.##...##........##..##.....##...##.##......##.....##..##.....##.###...##.##....##

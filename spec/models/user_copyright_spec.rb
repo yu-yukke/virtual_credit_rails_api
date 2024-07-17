@@ -1,23 +1,24 @@
 # == Schema Information
 #
-# Table name: user_skills
+# Table name: user_copyrights
 #
-#  id         :uuid             not null, primary key
-#  created_at :datetime
-#  updated_at :datetime
-#  skill_id   :uuid             not null
-#  user_id    :uuid             not null
+#  id           :uuid             not null, primary key
+#  created_by   :uuid
+#  created_at   :datetime
+#  updated_at   :datetime
+#  copyright_id :uuid             not null
+#  user_id      :uuid             not null
 #
 # Indexes
 #
-#  index_user_skills_on_skill_id         (skill_id)
-#  index_user_skills_on_user_id          (user_id)
-#  index_user_skills_on_user_skill_uniq  (user_id,skill_id) UNIQUE
+#  index_user_copyrights_on_copyright_id         (copyright_id)
+#  index_user_copyrights_on_user_copyright_uniq  (user_id,copyright_id) UNIQUE
+#  index_user_copyrights_on_user_id              (user_id)
 #
 require 'rails_helper'
 
-RSpec.describe UserSkill do
-  subject { create(:user_skill) }
+RSpec.describe UserCopyright do
+  subject { create(:user_copyright) }
 
   #   ....###.....######...######...#######...######..####....###....########.####..#######..##....##..######.
   #   ...##.##...##....##.##....##.##.....##.##....##..##....##.##......##.....##..##.....##.###...##.##....##
@@ -27,7 +28,9 @@ RSpec.describe UserSkill do
   #   .##.....##.##....##.##....##.##.....##.##....##..##..##.....##....##.....##..##.....##.##...###.##....##
   #   .##.....##..######...######...#######...######..####.##.....##....##....####..#######..##....##..######.
 
-  it { is_expected.to belong_to(:skill) }
+  it { is_expected.to belong_to(:created_user).class_name('User').optional }
+
+  it { is_expected.to belong_to(:copyright) }
   it { is_expected.to belong_to(:user) }
 
   #   .##.....##....###....##.......####.########.....###....########.####..#######..##....##..######.
@@ -38,9 +41,9 @@ RSpec.describe UserSkill do
   #   ...##.##...##.....##.##........##..##.....##.##.....##....##.....##..##.....##.##...###.##....##
   #   ....###....##.....##.########.####.########..##.....##....##....####..#######..##....##..######.
 
-  it { is_expected.to validate_presence_of(:skill_id) }
+  it { is_expected.to validate_presence_of(:copyright_id) }
   it { is_expected.to validate_presence_of(:user_id) }
-  it { is_expected.to validate_uniqueness_of(:user_id).scoped_to(:skill_id).case_insensitive }
+  it { is_expected.to validate_uniqueness_of(:user_id).scoped_to(:copyright_id).case_insensitive }
 
   #   .##.....##.########.########.##.....##..#######..########...######.
   #   .###...###.##..........##....##.....##.##.....##.##.....##.##....##

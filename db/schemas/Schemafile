@@ -31,3 +31,4 @@ require 'likes.schema'
 
 # コピーライト
 require 'copyrights.schema'
+require 'user_copyrights.schema'
