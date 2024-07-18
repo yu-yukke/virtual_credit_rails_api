@@ -1,7 +1,27 @@
 module Api
   module V1
     class WorksController < ApplicationController
+      skip_before_action :authenticate_api_v1_user!, only: %i[index]
+
+      before_action :check_page_params, only: %i[index]
       before_action :check_create_params, only: %i[create]
+
+      def index
+        works = Work.published.page(params[:page])
+
+        data = ActiveModelSerializers::SerializableResource.new(
+          works,
+          each_serializer: Api::V1::SimpleWorkSerializer
+        ).serializable_hash
+
+        render(
+          json: {
+            data:,
+            meta: pagination(works)
+          },
+          status: :ok
+        )
+      end
 
       def create
         @work = current_api_v1_user.my_works.create!(create_params)
