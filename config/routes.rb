@@ -31,7 +31,7 @@ Rails.application.routes.draw do
 
       resources :user_skills, only: %i[create]
 
-      resources :works, only: %i[create] do
+      resources :works, only: %i[index create] do
         resources :assets, only: %i[create], module: :works
 
         resources :categories, only: %i[create], module: :works

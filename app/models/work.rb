@@ -23,6 +23,10 @@ class Work < ApplicationRecord
   CREATE_WORK_TAG_PARAMS = %w[id].freeze
   CREATE_WORK_IMAGE_PARAMS = %w[content].freeze
 
+  # kaminari
+  default_scope -> { order(created_at: :desc) }
+  paginates_per 24
+
   has_one_attached :cover_image
   has_many_attached :images
 
@@ -57,6 +61,8 @@ class Work < ApplicationRecord
             content_type: %w[image/png image/jpeg],
             size: { less_than: 16.megabytes }
 
+  scope :published, -> { where(is_published: true) }
+
   def publish!
     # TODO: publishAPI実装時に条件を改めて考えること
     return true if is_published?
@@ -75,5 +81,13 @@ class Work < ApplicationRecord
 
   def cover_image_url
     url_for(cover_image)
+  end
+
+  def images_urls
+    images.map do |image|
+      {
+        url: url_for(image)
+      }
+    end
   end
 end

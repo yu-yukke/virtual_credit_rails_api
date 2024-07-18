@@ -21,24 +21,6 @@ module Api
           status: :ok
         )
       end
-
-      private
-
-      def check_page_params
-        return if params[:page].nil?
-        return if is_pagination_params_valid
-
-        render_errors(
-          status: :bad_request,
-          resource: 'ReleaseNote',
-          errors: [
-            {
-              field: 'page',
-              message: 'pageは数字で入力してください。'
-            }
-          ]
-        )
-      end
     end
   end
 end

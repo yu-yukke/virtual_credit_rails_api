@@ -368,6 +368,19 @@ components:
           type: string
           x-stoplight:
             id: 0l2jcvvgmmg1e
+        images:
+          type: array
+          x-stoplight:
+            id: 4f702ly6j3c9l
+          items:
+            x-stoplight:
+              id: nj2hrdkwdbyb1
+            type: object
+            properties:
+              url:
+                type: string
+                x-stoplight:
+                  id: ui2aspducmmpk
       required:
         - id
         - title
@@ -463,7 +476,7 @@ components:
             Example 1:
               value:
                 message: Request failed
-                resource: User
+                resource: Pagination
                 code: 400
                 errors:
                   - field: page
@@ -1394,6 +1407,8 @@ paths:
                       description: 今までになかったVRワールドを作成しました
                       isPublished: false
                       coverImageUrl: path/to/coverImage
+                      images:
+                        - url: path/to/image
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -1443,6 +1458,52 @@ paths:
                     title: VRワールド
                     description: 今までになかったVRワールドを作成しました
                     coverImage: path/to/coverImage
+    get:
+      summary: 作品一覧の取得
+      operationId: get-v1-works
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: jlvvmgmfkowf9
+                    items:
+                      $ref: '#/components/schemas/SimpleWork'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+                required:
+                  - data
+                  - meta
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        title: VRワールド
+                        description: 今までになかったVRワールドを作成しました
+                        isPublished: false
+                        coverImageUrl: path/to/coverImage
+                        images:
+                          - url: path/to/image
+                    meta:
+                      hasNext: true
+                      hasPrevious: true
+                      currentPage: 1
+                      totalPages: 10
+                      totalCount: 100
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      description: 公開中の作品一覧を返す
+      parameters:
+        - $ref: '#/components/parameters/page'
+      tags:
+        - Work
   '/v1/works/{work_id}/assets':
     parameters:
       - schema:

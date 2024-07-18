@@ -32,5 +32,15 @@ FactoryBot.define do
     trait :published do
       is_published { true }
     end
+
+    trait :has_images do
+      after(:build) do |work|
+        work.images.attach(
+          io: File.open('spec/fixtures/bg_sample_1.jpeg'),
+          filename: 'bg_sample_1.jpeg',
+          content_type: 'image/jpeg'
+        )
+      end
+    end
   end
 end
