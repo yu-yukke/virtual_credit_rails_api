@@ -1,6 +1,479 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Works' do
+  #   ..######...########.########......##.##...####.##....##.########..########.##.....##
+  #   .##....##..##..........##.........##.##....##..###...##.##.....##.##........##...##.
+  #   .##........##..........##.......#########..##..####..##.##.....##.##.........##.##..
+  #   .##...####.######......##.........##.##....##..##.##.##.##.....##.######......###...
+  #   .##....##..##..........##.......#########..##..##..####.##.....##.##.........##.##..
+  #   .##....##..##..........##.........##.##....##..##...###.##.....##.##........##...##.
+  #   ..######...########....##.........##.##...####.##....##.########..########.##.....##
+
+  describe 'GET #index' do
+    subject(:request) do
+      get api_v1_works_path(page:), headers:
+    end
+
+    let_it_be(:user) { create(:user, :confirmed) }
+    let(:page) { nil }
+
+    context 'when user does not signed-in and no public works exists' do
+      let_it_be(:headers) { {} }
+
+      before_all do
+        create_list(:work, 3, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns no works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']).to eq([])
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => false,
+          'hasPrevious' => false,
+          'totalCount' => 0,
+          'totalPages' => 0
+        )
+      end
+    end
+
+    context 'when user does not signed-in and 24 public works exists and specify page as nil' do
+      let_it_be(:headers) { {} }
+
+      before_all do
+        create_list(:work, 24, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 24 public works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(24)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => false,
+          'hasPrevious' => false,
+          'totalCount' => 24,
+          'totalPages' => 1
+        )
+      end
+    end
+
+    context 'when user does not signed-in and 24 public works exists and specify page as 1' do
+      let_it_be(:headers) { {} }
+      let(:page) { 1 }
+
+      before_all do
+        create_list(:work, 24, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 24 public works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(24)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => false,
+          'hasPrevious' => false,
+          'totalCount' => 24,
+          'totalPages' => 1
+        )
+      end
+    end
+
+    context 'when user does not signed-in and 24 public works exists and specify page as 2' do
+      let_it_be(:headers) { {} }
+      let(:page) { 2 }
+
+      before_all do
+        create_list(:work, 24, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns no works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']).to eq([])
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 2,
+          'hasNext' => false,
+          'hasPrevious' => false,
+          'totalCount' => 24,
+          'totalPages' => 1
+        )
+      end
+    end
+
+    context 'when user does not signed-in and 25 public works exists and specify page as nil' do
+      let_it_be(:headers) { {} }
+
+      before_all do
+        create_list(:work, 25, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 24 public works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(24)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => true,
+          'hasPrevious' => false,
+          'totalCount' => 25,
+          'totalPages' => 2
+        )
+      end
+    end
+
+    context 'when user does not signed-in and 25 public works exists and specify page as 1' do
+      let_it_be(:headers) { {} }
+      let(:page) { 1 }
+
+      before_all do
+        create_list(:work, 25, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 24 public works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(24)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => true,
+          'hasPrevious' => false,
+          'totalCount' => 25,
+          'totalPages' => 2
+        )
+      end
+    end
+
+    context 'when user does not signed-in and 25 public works exists and specify page as 2' do
+      let_it_be(:headers) { {} }
+      let(:page) { 2 }
+
+      before_all do
+        create_list(:work, 25, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 1 work' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(1)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 2,
+          'hasNext' => false,
+          'hasPrevious' => true,
+          'totalCount' => 25,
+          'totalPages' => 2
+        )
+      end
+    end
+
+    context 'when user signed-in and no public works exists' do
+      let_it_be(:headers) { sign_in(user) }
+
+      before_all do
+        create_list(:work, 3, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns no works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']).to eq([])
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => false,
+          'hasPrevious' => false,
+          'totalCount' => 0,
+          'totalPages' => 0
+        )
+      end
+    end
+
+    context 'when user signed-in and 24 public works exists and specify page as nil' do
+      let_it_be(:headers) { sign_in(user) }
+
+      before_all do
+        create_list(:work, 24, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 24 public works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(24)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => false,
+          'hasPrevious' => false,
+          'totalCount' => 24,
+          'totalPages' => 1
+        )
+      end
+    end
+
+    context 'when user signed-in and 24 public works exists and specify page as 1' do
+      let_it_be(:headers) { sign_in(user) }
+      let(:page) { 1 }
+
+      before_all do
+        create_list(:work, 24, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 24 public works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(24)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => false,
+          'hasPrevious' => false,
+          'totalCount' => 24,
+          'totalPages' => 1
+        )
+      end
+    end
+
+    context 'when user signed-in and 24 public works exists and specify page as 2' do
+      let_it_be(:headers) { sign_in(user) }
+      let(:page) { 2 }
+
+      before_all do
+        create_list(:work, 24, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns no works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']).to eq([])
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 2,
+          'hasNext' => false,
+          'hasPrevious' => false,
+          'totalCount' => 24,
+          'totalPages' => 1
+        )
+      end
+    end
+
+    context 'when user signed-in and 25 public works exists and specify page as nil' do
+      let_it_be(:headers) { sign_in(user) }
+
+      before_all do
+        create_list(:work, 25, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 24 public works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(24)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => true,
+          'hasPrevious' => false,
+          'totalCount' => 25,
+          'totalPages' => 2
+        )
+      end
+    end
+
+    context 'when user signed-in and 25 public works exists and specify page as 1' do
+      let_it_be(:headers) { sign_in(user) }
+      let(:page) { 1 }
+
+      before_all do
+        create_list(:work, 25, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 24 public works' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(24)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => true,
+          'hasPrevious' => false,
+          'totalCount' => 25,
+          'totalPages' => 2
+        )
+      end
+    end
+
+    context 'when user signed-in and 25 public works exists and specify page as 2' do
+      let_it_be(:headers) { sign_in(user) }
+      let(:page) { 2 }
+
+      before_all do
+        create_list(:work, 25, :published, :has_images)
+      end
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns 1 work' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(1)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 2,
+          'hasNext' => false,
+          'hasPrevious' => true,
+          'totalCount' => 25,
+          'totalPages' => 2
+        )
+      end
+    end
+  end
+
   #   .########...#######...######..########......##.##....######..########..########....###....########.########
   #   .##.....##.##.....##.##....##....##.........##.##...##....##.##.....##.##.........##.##......##....##......
   #   .##.....##.##.....##.##..........##.......#########.##.......##.....##.##........##...##.....##....##......
