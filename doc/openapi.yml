@@ -476,7 +476,7 @@ components:
             Example 1:
               value:
                 message: Request failed
-                resource: User
+                resource: Pagination
                 code: 400
                 errors:
                   - field: page

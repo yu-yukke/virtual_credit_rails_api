@@ -65,6 +65,22 @@ class ApplicationController < ActionController::API
     )
   end
 
+  def check_page_params
+    return if params[:page].nil?
+    return if is_pagination_params_valid
+
+    render_errors(
+      status: :bad_request,
+      resource: 'Pagination',
+      errors: [
+        {
+          field: 'page',
+          message: 'pageは数字で入力してください。'
+        }
+      ]
+    )
+  end
+
   protected
 
   def render_errors(status:, resource:, errors:)
