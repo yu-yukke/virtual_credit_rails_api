@@ -26,6 +26,14 @@ docker-compose up
 docker-compose exec app bundle exec rails db:create
 ```
 
+- seed 投入
+
+```bash
+docker-compose exec app bundle exec rails db:seed
+```
+
+**既存のレコードは全て削除されるので注意**
+
 # 各ポートへの割り当て
 
 ## 4000
