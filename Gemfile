@@ -69,6 +69,9 @@ group :development, :test do
   gem 'faker'
   gem 'rspec-rails'
   gem 'factory_bot_rails'
+
+  # security
+  gem 'brakeman'
 end
 
 group :development do
@@ -84,9 +87,6 @@ group :development do
 
   # schemas
   gem 'annotate'
-
-  # security
-  gem 'brakeman'
 
   # mailer
   gem 'letter_opener_web', '~> 2.0'
