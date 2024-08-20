@@ -81,9 +81,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
   create_table "release_notes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "version", null: false
     t.string "title", null: false
+    t.text "description", null: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.text "description", null: false
     t.index ["version"], name: "index_release_notes_on_version", unique: true
   end
 
@@ -125,9 +125,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
 
   create_table "user_skills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id", null: false
+    t.uuid "skill_id", null: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.uuid "skill_id", null: false
     t.index ["skill_id"], name: "index_user_skills_on_skill_id"
     t.index ["user_id", "skill_id"], name: "index_user_skills_on_user_skill_uniq", unique: true
     t.index ["user_id"], name: "index_user_skills_on_user_id"
@@ -135,12 +135,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
+    t.string "email", null: false
     t.string "slug"
     t.text "description"
+    t.boolean "is_published", default: false, null: false
+    t.datetime "activated_at", precision: nil
+    t.string "uid", default: "", null: false
     t.string "provider", default: "email", null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.datetime "current_sign_in_at", precision: nil
     t.datetime "last_sign_in_at", precision: nil
     t.string "confirmation_token"
@@ -150,12 +156,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_22_145351) do
     t.text "tokens"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.string "email", null: false
-    t.string "uid", default: "", null: false
-    t.datetime "activated_at", precision: nil
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
-    t.boolean "is_published", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name"
