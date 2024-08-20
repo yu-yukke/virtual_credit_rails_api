@@ -80,13 +80,13 @@ class Work < ApplicationRecord
   end
 
   def cover_image_url
-    url_for(cover_image)
+    rails_storage_proxy_url(cover_image, only_path: true)
   end
 
   def images_urls
     images.map do |image|
       {
-        url: url_for(image)
+        url: rails_storage_proxy_url(image, only_path: true)
       }
     end
   end
