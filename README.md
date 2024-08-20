@@ -61,7 +61,7 @@ docker-compose exec app bundle exec rails db:seed
 - 基本は ridgepole を採用
 
 ```bash
- docker-compose exec app bundle exec ridge:run
+ docker-compose exec app bundle exec rake ridge:run
 ```
 
 - ActiveStorage 等の Rails 標準機能は自動生成される migaration ファイルをそのまま使用する
