@@ -1494,6 +1494,7 @@ paths:
                         description: 今までになかったVRワールドを作成しました
                         isPublished: false
                         coverImageUrl: path/to/coverImage
+                        userCount: 10
                         images:
                           - url: path/to/image
                     meta:
