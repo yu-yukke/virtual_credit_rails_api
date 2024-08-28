@@ -15,9 +15,11 @@
 #  index_works_on_user_id  (user_id)
 #
 class Api::V1::SimpleWorkSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :is_published, :cover_image_url, :images
+  attributes :id, :title, :description, :is_published, :cover_image_url,
+             :images, :user_count
 
   delegate :cover_image_url, to: :object
+  delegate :user_count, to: :object
 
   def images
     object.images_urls

@@ -17,7 +17,7 @@ FactoryBot.define do
   factory :copyright do
     work
 
-    name { Faker::Music.unique.band }
+    sequence(:name) { |n| "Copyright #{n}" }
     created_by { create(:user).id }
   end
 end

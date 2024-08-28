@@ -368,6 +368,10 @@ components:
           type: string
           x-stoplight:
             id: 0l2jcvvgmmg1e
+        userCount:
+          type: integer
+          x-stoplight:
+            id: vadzzujwq41cc
         images:
           type: array
           x-stoplight:
@@ -387,6 +391,7 @@ components:
         - description
         - isPublished
         - coverImageUrl
+        - userCount
     WorkImage:
       title: WorkImage
       x-stoplight:
@@ -1489,6 +1494,7 @@ paths:
                         description: 今までになかったVRワールドを作成しました
                         isPublished: false
                         coverImageUrl: path/to/coverImage
+                        userCount: 10
                         images:
                           - url: path/to/image
                     meta:

@@ -42,5 +42,15 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :with_users do
+      after(:create) do |work|
+        rand(1..3).times do
+          copyright = create(:copyright, work:)
+
+          create(:user_copyright, user: create(:user), copyright:)
+        end
+      end
+    end
   end
 end
