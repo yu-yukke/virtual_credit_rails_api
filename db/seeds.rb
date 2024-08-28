@@ -94,6 +94,33 @@ def seed_skills
   puts '====== Skills Created ======'
 end
 
+# コピーライト
+def seed_copyrights
+  puts '====== Destroy Copyrights ======'
+  Copyright.destroy_all
+  puts '====== Copyrights Destroyed ======'
+
+  puts '====== Create Copyrights ======'
+  random_number = rand(0..5)
+  Work.all.each_with_index do |work, i|
+    next if random_number.zero?
+
+    copyright = work.copyrights.create!(
+      name: "#{Faker::Lorem.word}_#{i}"
+    )
+
+    # ランダムにコピーライトにユーザーを紐づけておく
+    random_number = rand(0..5)
+    next if random_number.zero?
+
+    users = User.published.order('RANDOM()').limit(random_number)
+    users.each do |user|
+      copyright.users << user
+    end
+  end
+  puts '====== Copyrights Created ======'
+end
+
 # 作品
 def seed_works
   puts '====== Destroy Works ======'
@@ -119,6 +146,40 @@ def seed_works
       user = User.order('RANDOM()').first
       work.author = user
       work.save!
+    end
+
+    # ランダムにコピーライトユーザーを登録しておく
+    rand(1..5).times do |j|
+      copyright = work.copyrights.create!(
+        name: "#{Faker::Lorem.word}_#{i}"
+      )
+
+      email = Faker::Internet.email(domain: "copyright#{j}.com")
+      password = Faker::Internet.password(min_length: 8)
+
+      copyright_user = User.create!(
+        email:,
+        password:,
+        password_confirmation: password
+      )
+      copyright_user.confirm
+      copyright_user.update!(
+        name: "#{Faker::Internet.username}_#{j}",
+        slug: "#{Faker::Internet.slug}_#{j}",
+        description: Faker::Lorem.sentence
+      )
+      copyright_user.thumbnail_image.attach(
+        io: File.open('spec/fixtures/thumbnail_sample_1.jpeg'),
+        filename: 'thumbnail_sample_1.jpeg',
+        content_type: 'image/jpeg'
+      )
+      copyright_user.activate!
+      copyright_user.publish!
+
+      UserCopyright.create!(
+        user: copyright_user,
+        copyright:
+      )
     end
 
     # ランダムに公開・非公開を振り分ける
@@ -205,42 +266,15 @@ def seed_assets
   puts '====== Assets Created ======'
 end
 
-# コピーライト
-def seed_copyrights
-  puts '====== Destroy Copyrights ======'
-  Copyright.destroy_all
-  puts '====== Copyrights Destroyed ======'
-
-  puts '====== Create Copyrights ======'
-  random_number = rand(0..5)
-  Work.all.each_with_index do |work, i|
-    next if random_number.zero?
-
-    copyright = work.copyrights.create!(
-      name: "#{Faker::Lorem.word}_#{i}"
-    )
-
-    # ランダムにコピーライトにユーザーを紐づけておく
-    random_number = rand(0..5)
-    next if random_number.zero?
-
-    users = User.published.order('RANDOM()').limit(random_number)
-    users.each do |user|
-      copyright.users << user
-    end
-  end
-  puts '====== Copyrights Created ======'
-end
-
 if Rails.env.development?
   ActiveRecord::Base.transaction do
     seed_users
     seed_socials
     seed_skills
+    seed_copyrights
     seed_works
     seed_categories
     seed_tags
     seed_assets
-    seed_copyrights
   end
 end
