@@ -90,4 +90,11 @@ class Work < ApplicationRecord
       }
     end
   end
+
+  def user_count
+    copyrights.joins(:user_copyrights)
+      .select('user_copyrights.user_id')
+      .distinct
+      .count
+  end
 end

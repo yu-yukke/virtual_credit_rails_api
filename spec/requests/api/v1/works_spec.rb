@@ -53,7 +53,7 @@ RSpec.describe 'Api::V1::Works' do
       let_it_be(:headers) { {} }
 
       before_all do
-        create_list(:work, 24, :published, :has_images)
+        create_list(:work, 24, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -86,7 +86,7 @@ RSpec.describe 'Api::V1::Works' do
       let(:page) { 1 }
 
       before_all do
-        create_list(:work, 24, :published, :has_images)
+        create_list(:work, 24, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -119,7 +119,7 @@ RSpec.describe 'Api::V1::Works' do
       let(:page) { 2 }
 
       before_all do
-        create_list(:work, 24, :published, :has_images)
+        create_list(:work, 24, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -151,7 +151,7 @@ RSpec.describe 'Api::V1::Works' do
       let_it_be(:headers) { {} }
 
       before_all do
-        create_list(:work, 25, :published, :has_images)
+        create_list(:work, 25, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -184,7 +184,7 @@ RSpec.describe 'Api::V1::Works' do
       let(:page) { 1 }
 
       before_all do
-        create_list(:work, 25, :published, :has_images)
+        create_list(:work, 25, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -217,7 +217,7 @@ RSpec.describe 'Api::V1::Works' do
       let(:page) { 2 }
 
       before_all do
-        create_list(:work, 25, :published, :has_images)
+        create_list(:work, 25, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -249,7 +249,7 @@ RSpec.describe 'Api::V1::Works' do
       let_it_be(:headers) { sign_in(user) }
 
       before_all do
-        create_list(:work, 3, :has_images)
+        create_list(:work, 3, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -281,7 +281,7 @@ RSpec.describe 'Api::V1::Works' do
       let_it_be(:headers) { sign_in(user) }
 
       before_all do
-        create_list(:work, 24, :published, :has_images)
+        create_list(:work, 24, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -314,7 +314,7 @@ RSpec.describe 'Api::V1::Works' do
       let(:page) { 1 }
 
       before_all do
-        create_list(:work, 24, :published, :has_images)
+        create_list(:work, 24, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -347,7 +347,7 @@ RSpec.describe 'Api::V1::Works' do
       let(:page) { 2 }
 
       before_all do
-        create_list(:work, 24, :published, :has_images)
+        create_list(:work, 24, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -379,7 +379,7 @@ RSpec.describe 'Api::V1::Works' do
       let_it_be(:headers) { sign_in(user) }
 
       before_all do
-        create_list(:work, 25, :published, :has_images)
+        create_list(:work, 25, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -412,7 +412,7 @@ RSpec.describe 'Api::V1::Works' do
       let(:page) { 1 }
 
       before_all do
-        create_list(:work, 25, :published, :has_images)
+        create_list(:work, 25, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
@@ -445,7 +445,7 @@ RSpec.describe 'Api::V1::Works' do
       let(:page) { 2 }
 
       before_all do
-        create_list(:work, 25, :published, :has_images)
+        create_list(:work, 25, :published, :has_images, :with_users)
       end
 
       it_behaves_like 'ok' do
