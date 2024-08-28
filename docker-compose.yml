@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   postgres:
     container_name: virtual_credit_rails_api_postgres
