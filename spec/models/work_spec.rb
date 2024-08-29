@@ -224,7 +224,7 @@ RSpec.describe Work do
       random_user_count.times do
         copyright = create(:copyright, work:)
 
-        create(:user_copyright, user: create(:user), copyright:)
+        create(:user_copyright, user: create(:user, :published), copyright:)
       end
     end
 

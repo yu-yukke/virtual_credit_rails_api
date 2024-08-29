@@ -92,7 +92,8 @@ class Work < ApplicationRecord
   end
 
   def user_count
-    copyrights.joins(:user_copyrights)
+    copyrights.joins(user_copyrights: :user)
+      .where(users: { is_published: true })
       .select('user_copyrights.user_id')
       .distinct
       .count
