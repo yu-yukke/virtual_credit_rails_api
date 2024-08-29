@@ -1,7 +1,6 @@
-require 'parallel'
-
 # ユーザー
 def seed_users
+  puts Rails.env
   puts '====== Destroy Users ======'
   User.destroy_all
   puts '====== Users Destroyed ======'
