@@ -26,6 +26,12 @@ docker-compose up
 docker-compose exec app bundle exec rails db:create
 ```
 
+- データベース接続
+
+```bash
+docker exec -it virtual_credit_db psql -U admin -d virtual_credit_development
+```
+
 - seed 投入
 
 ```bash
