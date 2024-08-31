@@ -470,6 +470,184 @@ components:
       required:
         - id
         - name
+    Work:
+      title: Work
+      x-stoplight:
+        id: qtbc8dvm14mxg
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          x-stoplight:
+            id: 00cyicr71pc7f
+        description:
+          type: string
+          x-stoplight:
+            id: o78jma15hbmt1
+        coverImageUrl:
+          type: string
+          x-stoplight:
+            id: uzub0fl25m0j8
+        isAuthor:
+          type: boolean
+          x-stoplight:
+            id: mnz0allybufro
+        isPublished:
+          type: boolean
+          x-stoplight:
+            id: vjceha68ms8uh
+        images:
+          type: array
+          x-stoplight:
+            id: a6iulrkwi0f2d
+          items:
+            x-stoplight:
+              id: 23uhd2g90jz4d
+            type: object
+            properties:
+              url:
+                type: string
+                x-stoplight:
+                  id: bgec6kkpq4hso
+            required:
+              - url
+        author:
+          type: object
+          x-stoplight:
+            id: hle9vdie16xqh
+          required:
+            - id
+            - name
+            - slug
+          properties:
+            id:
+              type: string
+              x-stoplight:
+                id: xyzn5kw3zqrog
+            name:
+              type: string
+              x-stoplight:
+                id: x1qw367aphsf2
+            slug:
+              type: string
+              x-stoplight:
+                id: bxrmt4dcqzmom
+        assets:
+          type: array
+          x-stoplight:
+            id: ma2lqwkh6fthb
+          items:
+            x-stoplight:
+              id: h2wbp5dh1oja5
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: 13j5xndy11qor
+              name:
+                type: string
+                x-stoplight:
+                  id: jvggsspbh2hih
+              url:
+                type: string
+                x-stoplight:
+                  id: i81u10ab0xjxz
+                nullable: true
+            required:
+              - id
+              - name
+              - url
+        categories:
+          type: array
+          x-stoplight:
+            id: uth1p256daiqt
+          items:
+            x-stoplight:
+              id: qwlb3xj891bv4
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: el9t2b0s1fnoh
+              name:
+                type: string
+                x-stoplight:
+                  id: qjpr83c36hub5
+            required:
+              - id
+              - name
+        tags:
+          type: array
+          x-stoplight:
+            id: g7k60td5lq19y
+          items:
+            x-stoplight:
+              id: gt2eelv2ngfpt
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: r7u9f7fbf2vec
+              name:
+                type: string
+                x-stoplight:
+                  id: zzmqp3ww5an84
+            required:
+              - id
+              - name
+        copyrights:
+          type: array
+          x-stoplight:
+            id: xcxcszyuj8gyh
+          items:
+            x-stoplight:
+              id: a1er41svfy9vk
+            type: object
+            properties:
+              name:
+                type: string
+                x-stoplight:
+                  id: 97caccdloqhes
+              users:
+                type: array
+                x-stoplight:
+                  id: mn451dr1015qf
+                items:
+                  x-stoplight:
+                    id: 875wc50fq2fim
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: vv7pj4s2tjsim
+                    slug:
+                      type: string
+                      x-stoplight:
+                        id: 552utdz7rz13k
+                  required:
+                    - name
+                    - slug
+            required:
+              - name
+              - users
+      required:
+        - id
+        - title
+        - description
+        - coverImageUrl
+        - isAuthor
+        - isPublished
+        - images
+        - assets
+        - categories
+        - tags
+        - copyrights
   responses:
     BadRequest:
       description: Bad Request
@@ -1510,6 +1688,75 @@ paths:
         - $ref: '#/components/parameters/page'
       tags:
         - Work
+  '/v1/works/{work_id}':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    get:
+      summary: 作品情報の取得
+      tags:
+        - Work
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Work'
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      title: VRワールド
+                      description: すごく楽しいワールドです
+                      coverImageUrl: path/to/coverImage
+                      isAuthor: true
+                      isPublished: true
+                      images:
+                        - url: path/to/image
+                      author:
+                        id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        name: ユーザーA
+                        slug: user_a
+                      assets:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: 腕のパーツ
+                          url: 'https://google.com'
+                      categories:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: VRワールド
+                      tags:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: 処女作
+                      copyrights:
+                        - name: イラスト
+                          users:
+                            - name: ユーザーB
+                              slug: user_b
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-v1-works-work_id
+      description: 指定したIDを持つ作品情報を返す
+      parameters:
+        - in: header
+          name: uid
+          schema:
+            type: string
+        - schema:
+            type: string
+          in: header
+          name: client
+        - in: header
+          name: access-token
+          schema:
+            type: string
   '/v1/works/{work_id}/assets':
     parameters:
       - schema:
