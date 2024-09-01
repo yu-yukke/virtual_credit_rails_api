@@ -33,6 +33,10 @@ FactoryBot.define do
       is_published { true }
     end
 
+    trait :unpublished do
+      is_published { false }
+    end
+
     trait :has_images do
       after(:build) do |work|
         work.images.attach(

@@ -16,7 +16,7 @@
 FactoryBot.define do
   factory :asset do
     created_by { create(:user).id }
-    name { Faker::Commerce.unique.material }
+    sequence(:name) { |n| "Asset #{n}" }
     url { Faker::Internet.url }
   end
 end

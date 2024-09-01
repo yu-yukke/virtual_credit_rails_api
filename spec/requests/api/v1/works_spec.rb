@@ -733,4 +733,135 @@ RSpec.describe 'Api::V1::Works' do
       end
     end
   end
+
+  #   ..######...########.########......##.##....######..##.....##..#######..##......##
+  #   .##....##..##..........##.........##.##...##....##.##.....##.##.....##.##..##..##
+  #   .##........##..........##.......#########.##.......##.....##.##.....##.##..##..##
+  #   .##...####.######......##.........##.##....######..#########.##.....##.##..##..##
+  #   .##....##..##..........##.......#########.......##.##.....##.##.....##.##..##..##
+  #   .##....##..##..........##.........##.##...##....##.##.....##.##.....##.##..##..##
+  #   ..######...########....##.........##.##....######..##.....##..#######...###..###.
+
+  describe 'GET #show' do
+    subject(:request) do
+      get api_v1_work_path(work_id), headers:
+    end
+
+    let_it_be(:user) { create(:user, :confirmed) }
+    let_it_be(:work) { create(:work, :published, :has_images, :with_users) }
+    let(:work_id) { work.reload.id }
+
+    before_all do
+      create(:work_asset, work:, asset: create(:asset))
+      create(:work_category, work:, category: create(:category))
+      create(:work_tag, work:, tag: create(:tag))
+      create(:user_copyright, copyright: create(:copyright, work:), user: create(:user))
+    end
+
+    context 'when work_id is not exist' do
+      let_it_be(:work_id) { 'work-id-not-existed' }
+
+      it_behaves_like 'not_found' do
+        before { request }
+      end
+    end
+
+    context 'with published work when user does not signed-in' do
+      let_it_be(:headers) { {} }
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns work' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']['id']).to eq(work.id.to_s)
+      end
+
+      it 'returns work with is_published true' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']['isPublished']).to be(true)
+      end
+    end
+
+    context 'with unpublished work when user does not signed-in' do
+      let_it_be(:headers) { {} }
+
+      before_all do
+        work.unpublish!
+      end
+
+      it_behaves_like 'not_found' do
+        before { request }
+      end
+    end
+
+    context 'with published work when user signed-in' do
+      let_it_be(:headers) { sign_in(user) }
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns work' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']['id']).to eq(work.id.to_s)
+      end
+
+      it 'returns work with is_published true' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']['isPublished']).to be(true)
+      end
+    end
+
+    context 'with unpublished work when user signed-in' do
+      let_it_be(:headers) { sign_in(user) }
+
+      before_all do
+        work.unpublish!
+      end
+
+      it_behaves_like 'not_found' do
+        before { request }
+      end
+    end
+
+    context 'with own unpublished work when user signed-in' do
+      let_it_be(:headers) { sign_in(user) }
+      let_it_be(:work) { create(:work, :unpublished, :has_images, :with_users, author: user) }
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns work' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']['id']).to eq(work.id.to_s)
+      end
+
+      it 'returns work with is_published false' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']['isPublished']).to be(false)
+      end
+
+      it 'returns work with user as author' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']['author']['id']).to eq(user.id.to_s)
+      end
+    end
+  end
 end
