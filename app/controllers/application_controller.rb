@@ -8,7 +8,6 @@ class ApplicationController < ActionController::API
   before_action :authenticate_api_v1_user!
   before_action :set_current_user
 
-  # TODO: 要レスポンス確認
   rescue_from ActiveRecord::RecordNotFound do |e|
     render_errors(
       status: :not_found,
