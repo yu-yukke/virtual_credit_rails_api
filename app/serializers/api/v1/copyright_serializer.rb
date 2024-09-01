@@ -15,4 +15,6 @@
 #
 class Api::V1::CopyrightSerializer < ActiveModel::Serializer
   attributes :id, :name
+
+  has_many :users, serializer: Api::V1::SimpleUserSerializer
 end
