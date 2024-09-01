@@ -467,9 +467,35 @@ components:
           type: string
           x-stoplight:
             id: k3c4ubgevvy5x
+        users:
+          type: array
+          x-stoplight:
+            id: t123drjs9vjr5
+          items:
+            x-stoplight:
+              id: 08dj44ohi9ter
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: 75ejpo31m0ggj
+              name:
+                type: string
+                x-stoplight:
+                  id: nx5vnouqlde9c
+              slug:
+                type: string
+                x-stoplight:
+                  id: ehul4daron471
+            required:
+              - id
+              - name
+              - slug
       required:
         - id
         - name
+        - users
     Work:
       title: Work
       x-stoplight:
@@ -609,6 +635,10 @@ components:
               id: a1er41svfy9vk
             type: object
             properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: 9u2svj3o8dmwe
               name:
                 type: string
                 x-stoplight:
@@ -622,6 +652,10 @@ components:
                     id: 875wc50fq2fim
                   type: object
                   properties:
+                    id:
+                      type: string
+                      x-stoplight:
+                        id: i88yvly0f0uif
                     name:
                       type: string
                       x-stoplight:
@@ -631,9 +665,11 @@ components:
                       x-stoplight:
                         id: 552utdz7rz13k
                   required:
+                    - id
                     - name
                     - slug
             required:
+              - id
               - name
               - users
       required:
@@ -1736,9 +1772,11 @@ paths:
                         - id: ba4367ee-e54c-4976-8c53-513c893fb418
                           name: 処女作
                       copyrights:
-                        - name: イラスト
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: イラスト
                           users:
-                            - name: ユーザーB
+                            - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                              name: ユーザーB
                               slug: user_b
         '404':
           $ref: '#/components/responses/NotFound'
@@ -1889,6 +1927,10 @@ paths:
                     data:
                       id: ba4367ee-e54c-4976-8c53-513c893fb418
                       name: 音響
+                      users:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: ユーザーA
+                          slug: user_a
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
