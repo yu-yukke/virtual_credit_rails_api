@@ -27,6 +27,8 @@ tags:
     description: 作品カテゴリーに関するAPI
   - name: Tag
     description: 作品タグに関するAPI
+  - name: Asset
+    description: 作品アセットに関するAPI
 components:
   securitySchemes: {}
   schemas:
@@ -366,12 +368,30 @@ components:
           type: string
           x-stoplight:
             id: 0l2jcvvgmmg1e
+        userCount:
+          type: integer
+          x-stoplight:
+            id: vadzzujwq41cc
+        images:
+          type: array
+          x-stoplight:
+            id: 4f702ly6j3c9l
+          items:
+            x-stoplight:
+              id: nj2hrdkwdbyb1
+            type: object
+            properties:
+              url:
+                type: string
+                x-stoplight:
+                  id: ui2aspducmmpk
       required:
         - id
         - title
         - description
         - isPublished
         - coverImageUrl
+        - userCount
     WorkImage:
       title: WorkImage
       x-stoplight:
@@ -414,6 +434,256 @@ components:
       required:
         - id
         - name
+    Asset:
+      title: Asset
+      x-stoplight:
+        id: 5mj9i6wpmq2mm
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: v96l01jnkaih9
+        url:
+          type: string
+          x-stoplight:
+            id: cjrvyov7tcwpc
+          nullable: true
+      required:
+        - id
+        - name
+        - url
+    Copyright:
+      title: Copyright
+      x-stoplight:
+        id: kgf4q1o2zg9se
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: k3c4ubgevvy5x
+        users:
+          type: array
+          x-stoplight:
+            id: t123drjs9vjr5
+          items:
+            x-stoplight:
+              id: 08dj44ohi9ter
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: 75ejpo31m0ggj
+              name:
+                type: string
+                x-stoplight:
+                  id: nx5vnouqlde9c
+              slug:
+                type: string
+                x-stoplight:
+                  id: ehul4daron471
+            required:
+              - id
+              - name
+              - slug
+      required:
+        - id
+        - name
+        - users
+    Work:
+      title: Work
+      x-stoplight:
+        id: qtbc8dvm14mxg
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          x-stoplight:
+            id: 00cyicr71pc7f
+        description:
+          type: string
+          x-stoplight:
+            id: o78jma15hbmt1
+        coverImageUrl:
+          type: string
+          x-stoplight:
+            id: uzub0fl25m0j8
+        isAuthor:
+          type: boolean
+          x-stoplight:
+            id: mnz0allybufro
+        isPublished:
+          type: boolean
+          x-stoplight:
+            id: vjceha68ms8uh
+        images:
+          type: array
+          x-stoplight:
+            id: a6iulrkwi0f2d
+          items:
+            x-stoplight:
+              id: 23uhd2g90jz4d
+            type: object
+            properties:
+              url:
+                type: string
+                x-stoplight:
+                  id: bgec6kkpq4hso
+            required:
+              - url
+        author:
+          type: object
+          x-stoplight:
+            id: hle9vdie16xqh
+          required:
+            - id
+            - name
+            - slug
+          properties:
+            id:
+              type: string
+              x-stoplight:
+                id: xyzn5kw3zqrog
+            name:
+              type: string
+              x-stoplight:
+                id: x1qw367aphsf2
+            slug:
+              type: string
+              x-stoplight:
+                id: bxrmt4dcqzmom
+        assets:
+          type: array
+          x-stoplight:
+            id: ma2lqwkh6fthb
+          items:
+            x-stoplight:
+              id: h2wbp5dh1oja5
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: 13j5xndy11qor
+              name:
+                type: string
+                x-stoplight:
+                  id: jvggsspbh2hih
+              url:
+                type: string
+                x-stoplight:
+                  id: i81u10ab0xjxz
+                nullable: true
+            required:
+              - id
+              - name
+              - url
+        categories:
+          type: array
+          x-stoplight:
+            id: uth1p256daiqt
+          items:
+            x-stoplight:
+              id: qwlb3xj891bv4
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: el9t2b0s1fnoh
+              name:
+                type: string
+                x-stoplight:
+                  id: qjpr83c36hub5
+            required:
+              - id
+              - name
+        tags:
+          type: array
+          x-stoplight:
+            id: g7k60td5lq19y
+          items:
+            x-stoplight:
+              id: gt2eelv2ngfpt
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: r7u9f7fbf2vec
+              name:
+                type: string
+                x-stoplight:
+                  id: zzmqp3ww5an84
+            required:
+              - id
+              - name
+        copyrights:
+          type: array
+          x-stoplight:
+            id: xcxcszyuj8gyh
+          items:
+            x-stoplight:
+              id: a1er41svfy9vk
+            type: object
+            properties:
+              id:
+                type: string
+                x-stoplight:
+                  id: 9u2svj3o8dmwe
+              name:
+                type: string
+                x-stoplight:
+                  id: 97caccdloqhes
+              users:
+                type: array
+                x-stoplight:
+                  id: mn451dr1015qf
+                items:
+                  x-stoplight:
+                    id: 875wc50fq2fim
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      x-stoplight:
+                        id: i88yvly0f0uif
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: vv7pj4s2tjsim
+                    slug:
+                      type: string
+                      x-stoplight:
+                        id: 552utdz7rz13k
+                  required:
+                    - id
+                    - name
+                    - slug
+            required:
+              - id
+              - name
+              - users
+      required:
+        - id
+        - title
+        - description
+        - coverImageUrl
+        - isAuthor
+        - isPublished
+        - images
+        - assets
+        - categories
+        - tags
+        - copyrights
   responses:
     BadRequest:
       description: Bad Request
@@ -425,7 +695,7 @@ components:
             Example 1:
               value:
                 message: Request failed
-                resource: User
+                resource: Pagination
                 code: 400
                 errors:
                   - field: page
@@ -693,6 +963,72 @@ components:
       schema:
         type: string
 paths:
+  /v1/assets:
+    post:
+      summary: 作品アセットの登録
+      operationId: post-v1-assets
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Asset'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: 表情アセット
+                      url: 'https://google.com'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Asset
+      description: 新しい作品アセットを登録する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                asset:
+                  type: object
+                  x-stoplight:
+                    id: uaov29qhmyngs
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: wi5ncojlmpael
+                    url:
+                      type: string
+                      x-stoplight:
+                        id: jo5e0bal2yns0
+                      nullable: true
+              required:
+                - asset
+            examples:
+              Example 1:
+                value:
+                  asset:
+                    name: 表情アセット
+                    url: 'https://google.com'
   /v1/auth:
     post:
       summary: ユーザー登録
@@ -1290,6 +1626,8 @@ paths:
                       description: 今までになかったVRワールドを作成しました
                       isPublished: false
                       coverImageUrl: path/to/coverImage
+                      images:
+                        - url: path/to/image
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -1339,6 +1677,176 @@ paths:
                     title: VRワールド
                     description: 今までになかったVRワールドを作成しました
                     coverImage: path/to/coverImage
+    get:
+      summary: 作品一覧の取得
+      operationId: get-v1-works
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: jlvvmgmfkowf9
+                    items:
+                      $ref: '#/components/schemas/SimpleWork'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+                required:
+                  - data
+                  - meta
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        title: VRワールド
+                        description: 今までになかったVRワールドを作成しました
+                        isPublished: false
+                        coverImageUrl: path/to/coverImage
+                        userCount: 10
+                        images:
+                          - url: path/to/image
+                    meta:
+                      hasNext: true
+                      hasPrevious: true
+                      currentPage: 1
+                      totalPages: 10
+                      totalCount: 100
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      description: 公開中の作品一覧を返す
+      parameters:
+        - $ref: '#/components/parameters/page'
+      tags:
+        - Work
+  '/v1/works/{work_id}':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    get:
+      summary: 作品情報の取得
+      tags:
+        - Work
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Work'
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      title: VRワールド
+                      description: すごく楽しいワールドです
+                      coverImageUrl: path/to/coverImage
+                      isAuthor: true
+                      isPublished: true
+                      images:
+                        - url: path/to/image
+                      author:
+                        id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        name: ユーザーA
+                        slug: user_a
+                      assets:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: 腕のパーツ
+                          url: 'https://google.com'
+                      categories:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: VRワールド
+                      tags:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: 処女作
+                      copyrights:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: イラスト
+                          users:
+                            - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                              name: ユーザーB
+                              slug: user_b
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-v1-works-work_id
+      description: 指定したIDを持つ作品情報を返す
+      parameters:
+        - in: header
+          name: uid
+          schema:
+            type: string
+        - schema:
+            type: string
+          in: header
+          name: client
+        - in: header
+          name: access-token
+          schema:
+            type: string
+  '/v1/works/{work_id}/assets':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品アセットの紐づけ
+      operationId: post-v1-works-work_id-assets
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 作品に指定のアセットを紐づける
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                asset:
+                  type: object
+                  x-stoplight:
+                    id: 240gvtw9ix9lt
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      x-stoplight:
+                        id: 4l496l9ro8788
+              required:
+                - asset
+            examples:
+              Example 1:
+                value:
+                  asset:
+                    id: dk54-1222-fnd1-dk1a
   '/v1/works/{work_id}/categories':
     parameters:
       - schema:
@@ -1391,6 +1899,212 @@ paths:
                 value:
                   category:
                     id: dk54-1222-fnd1-dk1a
+  '/v1/works/{work_id}/copyrights':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品コピーライトの作成
+      operationId: post-v1-works-work_id-copyrights
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Copyright'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: 音響
+                      users:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: ユーザーA
+                          slug: user_a
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 作品コピーライトを新しく1件作成する
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                copyright:
+                  type: object
+                  x-stoplight:
+                    id: noroc58mgb1un
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      x-stoplight:
+                        id: pzlqp3jtq69mf
+              required:
+                - copyright
+            examples:
+              Example 1:
+                value:
+                  copyright:
+                    name: 音響
+  '/v1/works/{work_id}/copyrights/{copyright_id}/users':
+    parameters:
+      - schema:
+          type: string
+        name: copyright_id
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品コピーライトに対するユーザーの紐づけ
+      operationId: post-v1-works-work_id-copyrights-copyright_id-users
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 指定した作品のコピーライトにユーザーを紐づける
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  x-stoplight:
+                    id: 707xawj3bfur0
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      x-stoplight:
+                        id: xxl7z1lyxqbxu
+              required:
+                - user
+            examples:
+              Example 1:
+                value:
+                  user:
+                    id: ba4367ee-e54c-4976-8c53-513c893fb418
+  '/v1/works/{work_id}/likes':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品いいね機能
+      operationId: post-v1-works-work_id-likes
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      tags:
+        - Work
+      description: 指定した作品をログイン中のユーザーがいいねする
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+  '/v1/works/{work_id}/tags':
+    parameters:
+      - schema:
+          type: string
+        name: work_id
+        in: path
+        required: true
+    post:
+      summary: 作品タグの紐づけ
+      operationId: post-v1-works-work_id-tags
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+      description: 作品に指定のタグを紐づける
+      parameters:
+        - $ref: '#/components/parameters/uid'
+        - $ref: '#/components/parameters/client'
+        - $ref: '#/components/parameters/access-token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tag:
+                  type: object
+                  x-stoplight:
+                    id: l4ewn00s2bvi3
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      x-stoplight:
+                        id: 8xfojwz5qkhi3
+              required:
+                - tag
+            examples:
+              Example 1:
+                value:
+                  tag:
+                    id: ba4367ee-e54c-4976-8c53-513c893fb418
+      tags:
+        - Work
   '/v1/works/{work_id}/work_images':
     parameters:
       - schema:

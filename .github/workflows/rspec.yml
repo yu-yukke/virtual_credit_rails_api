@@ -36,6 +36,8 @@ jobs:
           sudo apt-get install libpq-dev
           gem install bundler
           bundle install --jobs 4 --retry 3
+      - name: Copy database.yml
+        run: cp config/database.ci.yml config/database.yml
       - name: Setup database
         run: bundle exec rails db:create
         env:

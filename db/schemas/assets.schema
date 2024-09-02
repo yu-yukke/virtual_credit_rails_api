@@ -1,0 +1,14 @@
+index_key  = 'index_assets_on_'
+
+create_table 'assets', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
+  t.string      'name',       null: false
+  t.string      'url'
+
+  t.uuid        'created_by'
+
+  t.timestamp   'created_at'
+  t.timestamp   'updated_at'
+
+  t.index       'name',       name: "#{index_key}name",
+                              unique: true
+end

@@ -1,0 +1,15 @@
+index_key  = 'index_copyrights_on_'
+
+create_table 'copyrights', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
+  t.uuid        'work_id',        null: false
+
+  t.string      'name',           null: false
+
+  t.uuid        'created_by'
+
+  t.timestamp   'created_at'
+  t.timestamp   'updated_at'
+
+  t.index       %w[work_id name], name: "#{index_key}work_name_uniq",
+                                  unique: true
+end

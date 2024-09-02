@@ -10,6 +10,8 @@ Rails.application.routes.draw do
         sessions: 'api/v1/auth/sessions'
       }
 
+      resources :assets, only: %i[create]
+
       resources :categories, only: %i[create]
 
       resources :release_notes, only: %i[index]
@@ -29,8 +31,18 @@ Rails.application.routes.draw do
 
       resources :user_skills, only: %i[create]
 
-      resources :works, only: %i[create] do
+      resources :works, only: %i[index create show] do
+        resources :assets, only: %i[create], module: :works
+
         resources :categories, only: %i[create], module: :works
+
+        resources :copyrights, only: %i[create], module: :works do
+          resources :users, only: %i[create], module: :copyrights
+        end
+
+        resources :likes, only: %i[create], module: :works
+
+        resources :tags, only: %i[create], module: :works
 
         resources :work_images, only: %i[create], module: :works
       end

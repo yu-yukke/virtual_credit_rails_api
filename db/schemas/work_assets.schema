@@ -1,0 +1,16 @@
+index_key  = 'index_work_assets_on_'
+
+create_table 'work_assets', id: :uuid, force: :cascade, charset: 'utf8mb4' do |t|
+  t.uuid        'work_id',              null: false
+  t.uuid        'asset_id',             null: false
+
+  t.uuid        'created_by'
+
+  t.timestamp   'created_at'
+  t.timestamp   'updated_at'
+
+  t.index       'work_id',              name: "#{index_key}work_id"
+  t.index       'asset_id',             name: "#{index_key}asset_id"
+  t.index       %w[work_id asset_id],   name: "#{index_key}work_asset_uniq",
+                                        unique: true
+end

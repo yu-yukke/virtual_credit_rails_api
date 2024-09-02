@@ -32,5 +32,29 @@ FactoryBot.define do
     trait :published do
       is_published { true }
     end
+
+    trait :unpublished do
+      is_published { false }
+    end
+
+    trait :has_images do
+      after(:build) do |work|
+        work.images.attach(
+          io: File.open('spec/fixtures/bg_sample_1.jpeg'),
+          filename: 'bg_sample_1.jpeg',
+          content_type: 'image/jpeg'
+        )
+      end
+    end
+
+    trait :with_users do
+      after(:create) do |work|
+        rand(1..3).times do
+          copyright = create(:copyright, work:)
+
+          create(:user_copyright, user: create(:user), copyright:)
+        end
+      end
+    end
   end
 end

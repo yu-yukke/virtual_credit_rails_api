@@ -8,7 +8,6 @@ class ApplicationController < ActionController::API
   before_action :authenticate_api_v1_user!
   before_action :set_current_user
 
-  # TODO: 要レスポンス確認
   rescue_from ActiveRecord::RecordNotFound do |e|
     render_errors(
       status: :not_found,
@@ -62,6 +61,22 @@ class ApplicationController < ActionController::API
           message: "#{params} は必須パラメータです。"
         }
       end
+    )
+  end
+
+  def check_page_params
+    return if params[:page].nil?
+    return if is_pagination_params_valid
+
+    render_errors(
+      status: :bad_request,
+      resource: 'Pagination',
+      errors: [
+        {
+          field: 'page',
+          message: 'pageは数字で入力してください。'
+        }
+      ]
     )
   end
 

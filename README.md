@@ -26,6 +26,20 @@ docker-compose up
 docker-compose exec app bundle exec rails db:create
 ```
 
+- データベース接続
+
+```bash
+docker exec -it virtual_credit_db psql -U admin -d virtual_credit_development
+```
+
+- seed 投入
+
+```bash
+docker-compose exec app bundle exec rails db:seed
+```
+
+**既存のレコードは全て削除されるので注意**
+
 # 各ポートへの割り当て
 
 ## 4000
@@ -53,7 +67,7 @@ docker-compose exec app bundle exec rails db:create
 - 基本は ridgepole を採用
 
 ```bash
- docker-compose exec app bundle exec ridge:run
+ docker-compose exec app bundle exec rake ridge:run
 ```
 
 - ActiveStorage 等の Rails 標準機能は自動生成される migaration ファイルをそのまま使用する
