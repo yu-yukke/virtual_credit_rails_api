@@ -130,7 +130,7 @@ def seed_works
   50.times do |i|
     work = Work.new(
       title: Faker::Lorem.word,
-      description: Faker::Lorem.paragraphs
+      description: Faker::Lorem.paragraph(sentence_count: 6)
     )
     work.cover_image.attach(
       io: File.open('spec/fixtures/bg_sample_1.jpeg'),
@@ -150,10 +150,10 @@ def seed_works
     # ランダムにコピーライトユーザーを登録しておく
     rand(1..5).times do |j|
       copyright = work.copyrights.create!(
-        name: "#{Faker::Lorem.word}_#{i}"
+        name: "#{Faker::Lorem.word}_#{i}_#{j}"
       )
 
-      email = Faker::Internet.email(domain: "copyright#{j}.com")
+      email = Faker::Internet.email(domain: "copyright#{i}#{j}.com")
       password = Faker::Internet.password(min_length: 8)
 
       copyright_user = User.create!(
@@ -163,8 +163,8 @@ def seed_works
       )
       copyright_user.confirm
       copyright_user.update!(
-        name: "#{Faker::Internet.username}_#{j}",
-        slug: "#{Faker::Internet.slug}_#{j}",
+        name: "#{Faker::Internet.username}_#{i}_#{j}",
+        slug: "#{Faker::Internet.slug}_#{i}_#{j}",
         description: Faker::Lorem.sentence
       )
       copyright_user.thumbnail_image.attach(
