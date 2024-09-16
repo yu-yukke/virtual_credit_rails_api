@@ -180,23 +180,6 @@ def seed_works
       content_type: 'image/jpeg'
     }
   ]
-  work_images = [
-    {
-      path: 'spec/fixtures/work_image_sample_1.png',
-      filename: 'work_image_sample_1.png',
-      content_type: 'image/png'
-    },
-    {
-      path: 'spec/fixtures/work_image_sample_2.png',
-      filename: 'work_image_sample_2.png',
-      content_type: 'image/png'
-    },
-    {
-      path: 'spec/fixtures/work_image_sample_3.jpeg',
-      filename: 'work_image_sample_3.jpeg',
-      content_type: 'image/jpeg'
-    }
-  ]
 
   50.times do |i|
     work = Work.new(
@@ -255,9 +238,27 @@ def seed_works
     end
 
     # ランダムに作品に画像を紐づけておく
+    work_images = [
+      {
+        path: 'spec/fixtures/work_image_sample_1.png',
+        filename: 'work_image_sample_1.png',
+        content_type: 'image/png'
+      },
+      {
+        path: 'spec/fixtures/work_image_sample_2.png',
+        filename: 'work_image_sample_2.png',
+        content_type: 'image/png'
+      },
+      {
+        path: 'spec/fixtures/work_image_sample_3.jpeg',
+        filename: 'work_image_sample_3.jpeg',
+        content_type: 'image/jpeg'
+      }
+    ]
+
     random_number = rand(1..3)
     random_number.times do |j|
-      work_image = work_images.sample
+      work_image = work_images.shift
       work.images.attach(
         io: File.open(work_image[:path]),
         filename: work_image[:filename],
@@ -344,14 +345,14 @@ def seed_assets
 end
 
 if Rails.env.development?
-  ActiveRecord::Base.transaction do
-    seed_users
-    seed_socials
-    seed_skills
-    seed_copyrights
-    seed_works
-    seed_categories
-    seed_tags
-    seed_assets
-  end
+  # MEMO: Rails7.0まではActiveStorageに複数枚画像をattachする際にトランザクションを使うとアップロードされない不具合がある
+  # 7.1からはトランザクションを使う(https://qiita.com/generokenken/items/9aba324f10067dcee19e)
+  seed_users
+  seed_socials
+  seed_skills
+  seed_copyrights
+  seed_works
+  seed_categories
+  seed_tags
+  seed_assets
 end
