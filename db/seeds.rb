@@ -7,6 +7,24 @@ def seed_users
 
   puts '====== Create Users ======'
   # 50件の新規ユーザーを作成
+  thumnail_images = [
+    {
+      path: 'spec/fixtures/thumbnail_sample_1.jpeg',
+      filename: 'thumbnail_sample_1.jpeg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/thumbnail_sample_2.jpg',
+      filename: 'thumbnail_sample_2.jpg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/thumbnail_sample_3.png',
+      filename: 'thumbnail_sample_3.png',
+      content_type: 'image/png'
+    }
+  ]
+
   50.times do |i|
     email = Faker::Internet.email(domain: "gmail#{i}.com")
     slug = "#{Faker::Internet.unique.slug}_#{i}"
@@ -34,10 +52,11 @@ def seed_users
       description: Faker::Lorem.sentence
     )
 
+    thumbnail_image = thumnail_images.sample
     user.thumbnail_image.attach(
-      io: File.open('spec/fixtures/thumbnail_sample_1.jpeg'),
-      filename: 'thumbnail_sample_1.jpeg',
-      content_type: 'image/jpeg'
+      io: File.open(thumbnail_image[:path]),
+      filename: thumbnail_image[:filename],
+      content_type: thumbnail_image[:content_type]
     )
 
     user.activate!
@@ -127,15 +146,68 @@ def seed_works
   puts '====== Works Destroyed ======'
 
   puts '====== Create Works ======'
+  thumnail_images = [
+    {
+      path: 'spec/fixtures/thumbnail_sample_1.jpeg',
+      filename: 'thumbnail_sample_1.jpeg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/thumbnail_sample_2.jpg',
+      filename: 'thumbnail_sample_2.jpg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/thumbnail_sample_3.png',
+      filename: 'thumbnail_sample_3.png',
+      content_type: 'image/png'
+    }
+  ]
+  bg_images = [
+    {
+      path: 'spec/fixtures/bg_sample_1.jpeg',
+      filename: 'bg_sample_1.jpeg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/bg_sample_2.jpeg',
+      filename: 'bg_sample_2.jpeg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/bg_sample_3.jpeg',
+      filename: 'bg_sample_3.jpeg',
+      content_type: 'image/jpeg'
+    }
+  ]
+  work_images = [
+    {
+      path: 'spec/fixtures/work_image_sample_1.png',
+      filename: 'work_image_sample_1.png',
+      content_type: 'image/png'
+    },
+    {
+      path: 'spec/fixtures/work_image_sample_2.png',
+      filename: 'work_image_sample_2.png',
+      content_type: 'image/png'
+    },
+    {
+      path: 'spec/fixtures/work_image_sample_3.jpeg',
+      filename: 'work_image_sample_3.jpeg',
+      content_type: 'image/jpeg'
+    }
+  ]
+
   50.times do |i|
     work = Work.new(
       title: Faker::Lorem.word,
       description: Faker::Lorem.paragraph(sentence_count: 6)
     )
+    bg_image = bg_images.sample
     work.cover_image.attach(
-      io: File.open('spec/fixtures/bg_sample_1.jpeg'),
-      filename: 'bg_sample_1.jpeg',
-      content_type: 'image/jpeg'
+      io: File.open(bg_image[:path]),
+      filename: bg_image[:filename],
+      content_type: bg_image[:content_type]
     )
     work.save!
 
@@ -167,10 +239,11 @@ def seed_works
         slug: "#{Faker::Internet.slug}_#{i}_#{j}",
         description: Faker::Lorem.sentence
       )
+      thumbnail_image = thumnail_images.sample
       copyright_user.thumbnail_image.attach(
-        io: File.open('spec/fixtures/thumbnail_sample_1.jpeg'),
-        filename: 'thumbnail_sample_1.jpeg',
-        content_type: 'image/jpeg'
+        io: File.open(thumbnail_image[:path]),
+        filename: thumbnail_image[:filename],
+        content_type: thumbnail_image[:content_type]
       )
       copyright_user.activate!
       copyright_user.publish!
@@ -181,15 +254,20 @@ def seed_works
       )
     end
 
+    # ランダムに作品に画像を紐づけておく
+    random_number = rand(1..3)
+    random_number.times do |j|
+      work_image = work_images.sample
+      work.images.attach(
+        io: File.open(work_image[:path]),
+        filename: work_image[:filename],
+        content_type: work_image[:content_type]
+      )
+    end
+
     # ランダムに公開・非公開を振り分ける
     random_number = rand(1..10)
     next if random_number.odd?
-
-    work.images.attach(
-      io: File.open('spec/fixtures/bg_sample_1.jpeg'),
-      filename: 'bg_sample_1.jpeg',
-      content_type: 'image/jpeg'
-    )
 
     work.publish!
   end
