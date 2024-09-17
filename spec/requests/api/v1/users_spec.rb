@@ -506,5 +506,42 @@ RSpec.describe 'Api::V1::Users' do
         )
       end
     end
+
+    context 'when published users and unpublished users exist' do
+      let_it_be(:headers) { sign_in(user) }
+      let_it_be(:unpublished_user) { create(:user, :activated, :with_works, :with_copyrights) }
+      let(:page) { nil }
+
+      before_all do
+        create_list(:user, 12, :published, :with_works, :with_copyrights)
+      end
+
+      it 'returns the user' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].size).to eq(12)
+      end
+
+      it 'returns the users not including unpublished user' do
+        request
+        body = response.parsed_body
+
+        expect(body['data'].pluck('id')).not_to include(unpublished_user.id)
+      end
+
+      it 'returns correct meta pagination' do
+        request
+        body = response.parsed_body
+
+        expect(body['meta']).to eq(
+          'currentPage' => 1,
+          'hasNext' => false,
+          'hasPrevious' => false,
+          'totalCount' => 12,
+          'totalPages' => 1
+        )
+      end
+    end
   end
 end
