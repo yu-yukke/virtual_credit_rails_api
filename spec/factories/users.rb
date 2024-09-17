@@ -99,5 +99,17 @@ FactoryBot.define do
         )
       end
     end
+
+    trait :with_works do
+      after(:create) do |user|
+        create_list(:work, 3, :published, :has_images, author: user)
+      end
+    end
+
+    trait :with_copyrights do
+      after(:create) do |user|
+        user.copyrights << create(:copyright, :with_work)
+      end
+    end
   end
 end
