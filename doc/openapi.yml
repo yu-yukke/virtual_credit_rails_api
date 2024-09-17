@@ -684,8 +684,8 @@ components:
         - categories
         - tags
         - copyrights
-    SimpleUser:
-      title: SimpleUser
+    UserWithWorks:
+      title: UserWithWorks
       x-stoplight:
         id: 3ykanmls1zp3b
       type: object
@@ -713,66 +713,13 @@ components:
           x-stoplight:
             id: kpe6b1dx5q660
           items:
-            x-stoplight:
-              id: d9b36px1xr2gt
-            type: object
-            properties:
-              name:
-                type: string
-                x-stoplight:
-                  id: 1v3pzscaexqzg
-            required:
-              - name
-        myWorks:
+            $ref: '#/components/schemas/Skill'
+        relatedWorks:
           type: array
           x-stoplight:
             id: 6n9nwtdlsogcv
           items:
-            x-stoplight:
-              id: 4dy7nad2mbsnl
-            type: object
-            properties:
-              id:
-                type: string
-                x-stoplight:
-                  id: bm7au4dqab7ix
-              title:
-                type: string
-                x-stoplight:
-                  id: 2xpsac0qwq3kf
-              coverImageUrl:
-                type: string
-                x-stoplight:
-                  id: lycxp6pit3pff
-            required:
-              - id
-              - title
-              - coverImageUrl
-        copyrightedWorks:
-          type: array
-          x-stoplight:
-            id: hle1rln7m049w
-          items:
-            x-stoplight:
-              id: 0qs05ezn3x15g
-            type: object
-            properties:
-              id:
-                type: string
-                x-stoplight:
-                  id: bnfh1sqfv8eiz
-              title:
-                type: string
-                x-stoplight:
-                  id: ihn9mgtz2vcpl
-              coverImageUrl:
-                type: string
-                x-stoplight:
-                  id: ls4j5pohfxyy1
-            required:
-              - id
-              - title
-              - coverImageUrl
+            $ref: '#/components/schemas/SimpleWork'
       required:
         - id
         - name
@@ -780,8 +727,7 @@ components:
         - slug
         - thumbnailImageUrl
         - skills
-        - myWorks
-        - copyrightedWorks
+        - relatedWorks
   responses:
     BadRequest:
       description: Bad Request
@@ -1539,7 +1485,7 @@ paths:
                     x-stoplight:
                       id: jbtart4wuwcvf
                     items:
-                      $ref: '#/components/schemas/SimpleUser'
+                      $ref: '#/components/schemas/UserWithWorks'
                   meta:
                     $ref: '#/components/schemas/Pagination'
                 required:
@@ -1551,19 +1497,21 @@ paths:
                     data:
                       - id: ba4367ee-e54c-4976-8c53-513c893fb418
                         name: ユーザーA
-                        description: ユーザー説明ユーザー説明
+                        description: ユーザー説明
                         slug: example_user
                         thumbnailImageUrl: path/to/image
                         skills:
-                          - name: イラストレーター
-                        myWorks:
+                          - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                            name: イラストレーター
+                        relatedWorks:
                           - id: ba4367ee-e54c-4976-8c53-513c893fb418
                             title: VRワールド
+                            description: 作品説明
+                            isPublished: true
                             coverImageUrl: path/to/image
-                        copyrightedWorks:
-                          - id: ba4367ee-e54c-4976-8c53-513c893fb418
-                            title: VRキャラクター
-                            coverImageUrl: path/to/image
+                            userCount: 10
+                            images:
+                              - url: path/to/image
                     meta:
                       hasNext: true
                       hasPrevious: true
