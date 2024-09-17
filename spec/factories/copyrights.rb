@@ -19,5 +19,11 @@ FactoryBot.define do
 
     sequence(:name) { |n| "Copyright #{n}" }
     created_by { create(:user).id }
+
+    trait :with_work do
+      after(:create) do |copyright|
+        copyright.work = create(:work, :published, :has_images)
+      end
+    end
   end
 end
