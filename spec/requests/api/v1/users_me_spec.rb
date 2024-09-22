@@ -1024,7 +1024,7 @@ RSpec.describe 'Api::V1::UsersMe' do
     context 'with changing thumbnail_image of the new user' do
       let_it_be(:user) { create(:user, :new_user) }
       let_it_be(:headers) { sign_in(user) }
-      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpeg'), 'image/jpeg') }
+      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpg'), 'image/jpeg') }
       let_it_be(:params) do
         {
           user: {
@@ -1069,7 +1069,7 @@ RSpec.describe 'Api::V1::UsersMe' do
     context 'with changing thumbnail_image of the new confirmed user' do
       let_it_be(:user) { create(:user, :new_user, :confirmed) }
       let_it_be(:headers) { sign_in(user) }
-      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpeg'), 'image/jpeg') }
+      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpg'), 'image/jpeg') }
       let_it_be(:params) do
         {
           user: {
@@ -1114,7 +1114,7 @@ RSpec.describe 'Api::V1::UsersMe' do
     context 'with changing thumbnail_image of the confirmed user' do
       let_it_be(:user) { create(:user, :confirmed) }
       let_it_be(:headers) { sign_in(user) }
-      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpeg'), 'image/jpeg') }
+      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpg'), 'image/jpeg') }
       let_it_be(:params) do
         {
           user: {
@@ -1159,7 +1159,7 @@ RSpec.describe 'Api::V1::UsersMe' do
     context 'with changing thumbnail_image of the activated user' do
       let_it_be(:user) { create(:user, :activated) }
       let_it_be(:headers) { sign_in(user) }
-      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpeg'), 'image/jpeg') }
+      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpg'), 'image/jpeg') }
       let_it_be(:params) do
         {
           user: {
@@ -1204,7 +1204,7 @@ RSpec.describe 'Api::V1::UsersMe' do
     context 'with changing thumbnail_image of the published user' do
       let_it_be(:user) { create(:user, :published) }
       let_it_be(:headers) { sign_in(user) }
-      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpeg'), 'image/jpeg') }
+      let_it_be(:thumbnail_image) { fixture_file_upload(Rails.root.join('spec/fixtures/thumbnail_sample_2.jpg'), 'image/jpeg') }
       let_it_be(:params) do
         {
           user: {

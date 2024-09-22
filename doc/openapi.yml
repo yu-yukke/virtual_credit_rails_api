@@ -684,6 +684,50 @@ components:
         - categories
         - tags
         - copyrights
+    UserWithWorks:
+      title: UserWithWorks
+      x-stoplight:
+        id: 3ykanmls1zp3b
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: 1j82aoc6yhvl0
+        description:
+          type: string
+          x-stoplight:
+            id: zdhfv028n7tdu
+        slug:
+          type: string
+          x-stoplight:
+            id: lvsmwb4lj2fct
+        thumbnailImageUrl:
+          type: string
+          x-stoplight:
+            id: kmk9oedoncdam
+        skills:
+          type: array
+          x-stoplight:
+            id: kpe6b1dx5q660
+          items:
+            $ref: '#/components/schemas/Skill'
+        relatedWorks:
+          type: array
+          x-stoplight:
+            id: 6n9nwtdlsogcv
+          items:
+            $ref: '#/components/schemas/SimpleWork'
+      required:
+        - id
+        - name
+        - description
+        - slug
+        - thumbnailImageUrl
+        - skills
+        - relatedWorks
   responses:
     BadRequest:
       description: Bad Request
@@ -1423,6 +1467,63 @@ paths:
                 value:
                   tag:
                     name: VR
+  /v1/users:
+    get:
+      summary: クリエイター一覧の取得
+      tags:
+        - User
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    x-stoplight:
+                      id: jbtart4wuwcvf
+                    items:
+                      $ref: '#/components/schemas/UserWithWorks'
+                  meta:
+                    $ref: '#/components/schemas/Pagination'
+                required:
+                  - data
+                  - meta
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                        name: ユーザーA
+                        description: ユーザー説明
+                        slug: example_user
+                        thumbnailImageUrl: path/to/image
+                        skills:
+                          - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                            name: イラストレーター
+                        relatedWorks:
+                          - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                            title: VRワールド
+                            description: 作品説明
+                            isPublished: true
+                            coverImageUrl: path/to/image
+                            userCount: 10
+                            images:
+                              - url: path/to/image
+                    meta:
+                      hasNext: true
+                      hasPrevious: true
+                      currentPage: 1
+                      totalPages: 10
+                      totalCount: 100
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      operationId: get-v1-users
+      description: 公開中のクリエイター一覧を返す
+      parameters:
+        - $ref: '#/components/parameters/page'
   /v1/users/me:
     get:
       summary: ログイン中ユーザーの取得
@@ -1626,6 +1727,7 @@ paths:
                       description: 今までになかったVRワールドを作成しました
                       isPublished: false
                       coverImageUrl: path/to/coverImage
+                      userCount: 10
                       images:
                         - url: path/to/image
         '400':

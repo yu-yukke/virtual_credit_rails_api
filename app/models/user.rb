@@ -45,6 +45,10 @@ class User < ApplicationRecord
   PROVIDERS = ['email'].freeze
   REGISTRATION_PARAMS = %w[email password password_confirmation confirm_success_url].freeze
 
+  # kaminari
+  default_scope -> { order(created_at: :desc) }
+  paginates_per 24
+
   has_one_attached :thumbnail_image
 
   has_one :social, dependent: :destroy
@@ -167,6 +171,20 @@ class User < ApplicationRecord
 
     self.is_published = false
     save!
+  end
+
+  def copyrighted_works
+    Work.joins(:copyrights)
+      .where(copyrights: { id: copyrights.pluck(:id) })
+      .where(is_published: true)
+      .distinct
+  end
+
+  def related_works
+    my_works = self.my_works.where(is_published: true)
+    copyrighted_works = self.copyrighted_works
+
+    (copyrighted_works + my_works).uniq
   end
 
   private
