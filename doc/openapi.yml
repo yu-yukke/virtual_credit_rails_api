@@ -281,6 +281,11 @@ components:
           x-stoplight:
             id: 3iyi3k1e1tizx
           nullable: true
+        coverImageUrl:
+          type: string
+          x-stoplight:
+            id: 01ft7m6rofvzz
+          nullable: true
         thumbnailImageUrl:
           type: string
           x-stoplight:
@@ -326,6 +331,7 @@ components:
       required:
         - id
         - name
+        - coverImageUrl
         - thumbnailImageUrl
         - slug
         - description
@@ -704,6 +710,10 @@ components:
           type: string
           x-stoplight:
             id: lvsmwb4lj2fct
+        coverImageUrl:
+          type: string
+          x-stoplight:
+            id: 7cprb7q5763ny
         thumbnailImageUrl:
           type: string
           x-stoplight:
@@ -725,6 +735,7 @@ components:
         - name
         - description
         - slug
+        - coverImageUrl
         - thumbnailImageUrl
         - skills
         - relatedWorks
