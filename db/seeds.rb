@@ -7,6 +7,23 @@ def seed_users
 
   puts '====== Create Users ======'
   # 50件の新規ユーザーを作成
+  cover_images = [
+    {
+      path: 'spec/fixtures/cover_sample_1.jpg',
+      filename: 'cover_sample_1.jpg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/cover_sample_2.jpg',
+      filename: 'cover_sample_2.jpg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/cover_sample_3.jpg',
+      filename: 'cover_sample_3.jpg',
+      content_type: 'image/jpeg'
+    }
+  ]
   thumnail_images = [
     {
       path: 'spec/fixtures/thumbnail_sample_1.jpeg',
@@ -50,6 +67,13 @@ def seed_users
       name: "#{Faker::Internet.username}_#{i}",
       slug: "#{Faker::Internet.slug}_#{i}",
       description: Faker::Lorem.sentence
+    )
+
+    cover_image = cover_images.sample
+    user.cover_image.attach(
+      io: File.open(cover_image[:path]),
+      filename: cover_image[:filename],
+      content_type: cover_image[:content_type]
     )
 
     thumbnail_image = thumnail_images.sample
@@ -146,6 +170,23 @@ def seed_works
   puts '====== Works Destroyed ======'
 
   puts '====== Create Works ======'
+  cover_images = [
+    {
+      path: 'spec/fixtures/cover_sample_1.jpg',
+      filename: 'cover_sample_1.jpg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/cover_sample_2.jpg',
+      filename: 'cover_sample_2.jpg',
+      content_type: 'image/jpeg'
+    },
+    {
+      path: 'spec/fixtures/cover_sample_3.jpg',
+      filename: 'cover_sample_3.jpg',
+      content_type: 'image/jpeg'
+    }
+  ]
   thumnail_images = [
     {
       path: 'spec/fixtures/thumbnail_sample_1.jpeg',
@@ -217,17 +258,27 @@ def seed_works
         password_confirmation: password
       )
       copyright_user.confirm
+
       copyright_user.update!(
         name: "#{Faker::Internet.username}_#{i}_#{j}",
         slug: "#{Faker::Internet.slug}_#{i}_#{j}",
         description: Faker::Lorem.sentence
       )
+
+      cover_image = cover_images.sample
+      copyright_user.cover_image.attach(
+        io: File.open(cover_image[:path]),
+        filename: cover_image[:filename],
+        content_type: cover_image[:content_type]
+      )
+
       thumbnail_image = thumnail_images.sample
       copyright_user.thumbnail_image.attach(
         io: File.open(thumbnail_image[:path]),
         filename: thumbnail_image[:filename],
         content_type: thumbnail_image[:content_type]
       )
+
       copyright_user.activate!
       copyright_user.publish!
 

@@ -61,6 +61,11 @@ FactoryBot.define do
 
     trait :activated do
       after(:build) do |user|
+        user.cover_image.attach(
+          io: File.open('spec/fixtures/cover_sample_1.jpg'),
+          filename: 'cover_sample_1.jpg',
+          content_type: 'image/jpeg'
+        )
         user.thumbnail_image.attach(
           io: File.open('spec/fixtures/thumbnail_sample_1.jpeg'),
           filename: 'thumbnail_sample_1.jpeg',
@@ -76,6 +81,11 @@ FactoryBot.define do
 
     trait :published do
       after(:build) do |user|
+        user.cover_image.attach(
+          io: File.open('spec/fixtures/cover_sample_1.jpg'),
+          filename: 'cover_sample_1.jpg',
+          content_type: 'image/jpeg'
+        )
         user.thumbnail_image.attach(
           io: File.open('spec/fixtures/thumbnail_sample_1.jpeg'),
           filename: 'thumbnail_sample_1.jpeg',
@@ -92,6 +102,11 @@ FactoryBot.define do
 
     trait :has_image do
       after(:build) do |user|
+        user.cover_image.attach(
+          io: File.open('spec/fixtures/cover_sample_1.jpg'),
+          filename: 'cover_sample_1.jpg',
+          content_type: 'image/jpeg'
+        )
         user.thumbnail_image.attach(
           io: File.open('spec/fixtures/thumbnail_sample_1.jpeg'),
           filename: 'thumbnail_sample_1.jpeg',

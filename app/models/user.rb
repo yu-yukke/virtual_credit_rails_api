@@ -49,6 +49,7 @@ class User < ApplicationRecord
   default_scope -> { order(created_at: :desc) }
   paginates_per 24
 
+  has_one_attached :cover_image
   has_one_attached :thumbnail_image
 
   has_one :social, dependent: :destroy
@@ -102,6 +103,10 @@ class User < ApplicationRecord
   # activated userは必須
   with_options if: -> { activated? } do
     validates :name, :slug, :description, presence: true
+    validates :cover_image,
+              attached: true,
+              content_type: %w[image/png image/jpeg],
+              size: { less_than: 15.megabytes }
     validates :thumbnail_image,
               attached: true,
               content_type: %w[image/png image/jpeg],
@@ -124,9 +129,14 @@ class User < ApplicationRecord
 
   scope :published, -> { where(is_published: true) }
 
+  def cover_image_url
+    # 紐づいているカバー画像のURLを取得する
+    cover_image.attached? ? rails_storage_proxy_url(cover_image, only_path: true) : nil
+  end
+
   def thumbnail_image_url
-    # 紐づいている画像のURLを取得する
-    thumbnail_image.attached? ? url_for(thumbnail_image) : nil
+    # 紐づいているサムネイル画像のURLを取得する
+    thumbnail_image.attached? ? rails_storage_proxy_url(thumbnail_image, only_path: true) : nil
   end
 
   def confirmed?

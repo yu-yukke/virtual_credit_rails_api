@@ -35,8 +35,9 @@
 #  index_users_on_uid_provider        (uid,provider) UNIQUE
 #
 class Api::V1::UserWithWorksSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :slug, :thumbnail_image_url, :related_works
+  attributes :id, :name, :description, :slug, :cover_image_url, :thumbnail_image_url, :related_works
 
+  delegate :cover_image_url, to: :object
   delegate :thumbnail_image_url, to: :object
 
   has_many :skills, serializer: Api::V1::SkillSerializer
