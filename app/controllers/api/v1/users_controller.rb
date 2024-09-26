@@ -10,7 +10,7 @@ module Api
 
         data = ActiveModelSerializers::SerializableResource.new(
           users,
-          each_serializer: Api::V1::UserWithWorksSerializer
+          each_serializer: Api::V1::UserSerializer
         ).serializable_hash
 
         render(

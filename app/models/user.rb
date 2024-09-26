@@ -190,13 +190,6 @@ class User < ApplicationRecord
       .distinct
   end
 
-  def related_works
-    my_works = self.my_works.where(is_published: true)
-    copyrighted_works = self.copyrighted_works
-
-    (copyrighted_works + my_works).uniq
-  end
-
   private
 
   def create_associated_social!

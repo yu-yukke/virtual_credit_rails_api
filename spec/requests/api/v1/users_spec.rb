@@ -490,7 +490,7 @@ RSpec.describe 'Api::V1::Users' do
         request
         body = response.parsed_body
 
-        expect(body['data'][0]['relatedWorks'].pluck('id')).not_to include(unpublished_work.id)
+        expect(body['data'][0]['myWorks'].pluck('id')).not_to include(unpublished_work.id)
       end
 
       it 'returns correct meta pagination' do
