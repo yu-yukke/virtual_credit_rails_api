@@ -690,8 +690,8 @@ components:
         - categories
         - tags
         - copyrights
-    UserWithWorks:
-      title: UserWithWorks
+    User:
+      title: User
       x-stoplight:
         id: 3ykanmls1zp3b
       type: object
@@ -718,13 +718,21 @@ components:
           type: string
           x-stoplight:
             id: kmk9oedoncdam
+        social:
+          $ref: '#/components/schemas/Social'
         skills:
           type: array
           x-stoplight:
             id: kpe6b1dx5q660
           items:
             $ref: '#/components/schemas/Skill'
-        relatedWorks:
+        myWorks:
+          type: array
+          x-stoplight:
+            id: ag81v5nf3nol9
+          items:
+            $ref: '#/components/schemas/SimpleWork'
+        copyrightedWorks:
           type: array
           x-stoplight:
             id: 6n9nwtdlsogcv
@@ -737,8 +745,10 @@ components:
         - slug
         - coverImageUrl
         - thumbnailImageUrl
+        - social
         - skills
-        - relatedWorks
+        - myWorks
+        - copyrightedWorks
   responses:
     BadRequest:
       description: Bad Request
@@ -917,6 +927,7 @@ components:
                 data:
                   id: ba4367ee-e54c-4976-8c53-513c893fb418
                   name: null
+                  coverImageUrl: null
                   thumbnailImageUrl: null
                   slug: null
                   description: null
@@ -1496,7 +1507,7 @@ paths:
                     x-stoplight:
                       id: jbtart4wuwcvf
                     items:
-                      $ref: '#/components/schemas/UserWithWorks'
+                      $ref: '#/components/schemas/User'
                   meta:
                     $ref: '#/components/schemas/Pagination'
                 required:
@@ -1508,21 +1519,34 @@ paths:
                     data:
                       - id: ba4367ee-e54c-4976-8c53-513c893fb418
                         name: ユーザーA
-                        description: ユーザー説明
+                        description: ユーザー説明ユーザー説明
                         slug: example_user
+                        coverImageUrl: path/to/image
                         thumbnailImageUrl: path/to/image
+                        social:
+                          websiteUrl: 'https://google.com'
+                          xId: exmaple_id
                         skills:
                           - id: ba4367ee-e54c-4976-8c53-513c893fb418
-                            name: イラストレーター
-                        relatedWorks:
+                            name: Webディレクター
+                        myWorks:
                           - id: ba4367ee-e54c-4976-8c53-513c893fb418
                             title: VRワールド
-                            description: 作品説明
+                            description: 作品説明作品説明
                             isPublished: true
                             coverImageUrl: path/to/image
                             userCount: 10
                             images:
-                              - url: path/to/image
+                              - url: 'https://google.com'
+                        copyrightedWorks:
+                          - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                            title: VRキャラクター
+                            description: 作品説明作品説明
+                            isPublished: true
+                            coverImageUrl: path/to/image
+                            userCount: 20
+                            images:
+                              - url: 'https://google.com'
                     meta:
                       hasNext: true
                       hasPrevious: true
@@ -1535,6 +1559,67 @@ paths:
       description: 公開中のクリエイター一覧を返す
       parameters:
         - $ref: '#/components/parameters/page'
+  '/v1/users/{slug}':
+    parameters:
+      - schema:
+          type: string
+        name: slug
+        in: path
+        required: true
+    get:
+      summary: ユーザー情報の取得
+      tags:
+        - User
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/User'
+                required:
+                  - data
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      id: ba4367ee-e54c-4976-8c53-513c893fb418
+                      name: ユーザーA
+                      description: ユーザー説明ユーザー説明
+                      slug: example_user
+                      coverImageUrl: path/to/image
+                      thumbnailImageUrl: path/to/image
+                      social:
+                        websiteUrl: 'https://google.com'
+                        xId: exmaple_id
+                      skills:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          name: Webディレクター
+                      myWorks:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          title: VRワールド
+                          description: 作品説明作品説明
+                          isPublished: true
+                          coverImageUrl: path/to/image
+                          userCount: 10
+                          images:
+                            - url: 'https://google.com'
+                      copyrightedWorks:
+                        - id: ba4367ee-e54c-4976-8c53-513c893fb418
+                          title: VRキャラクター
+                          description: 作品説明作品説明
+                          isPublished: true
+                          coverImageUrl: path/to/image
+                          userCount: 20
+                          images:
+                            - url: 'https://google.com'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      operationId: get-v1-users-slug
+      description: 指定したslugからユーザーを取得して返す
   /v1/users/me:
     get:
       summary: ログイン中ユーザーの取得
@@ -1558,6 +1643,7 @@ paths:
                     data:
                       id: ba4367ee-e54c-4976-8c53-513c893fb418
                       name: null
+                      coverImageUrl: null
                       thumbnailImageUrl: null
                       slug: null
                       description: null
@@ -1595,6 +1681,7 @@ paths:
                     data:
                       id: ba4367ee-e54c-4976-8c53-513c893fb418
                       name: example user
+                      coverImageUrl: path/to/coverImage
                       thumbnailImageUrl: path/to/thumbnailImage
                       slug: example_user
                       description: I am example user.
