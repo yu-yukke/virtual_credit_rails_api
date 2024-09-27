@@ -34,17 +34,27 @@
 #  index_users_on_slug                (slug) UNIQUE
 #  index_users_on_uid_provider        (uid,provider) UNIQUE
 #
-class Api::V1::UserWithWorksSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :slug, :cover_image_url, :thumbnail_image_url, :related_works
+class Api::V1::UserSerializer < ActiveModel::Serializer
+  attributes :id, :name, :description, :slug, :cover_image_url, :thumbnail_image_url,
+             :my_works, :copyrighted_works
 
   delegate :cover_image_url, to: :object
   delegate :thumbnail_image_url, to: :object
 
+  has_one :social, serializer: Api::V1::SocialSerializer
+
   has_many :skills, serializer: Api::V1::SkillSerializer
 
-  def related_works
+  def my_works
     ActiveModelSerializers::SerializableResource.new(
-      object.related_works,
+      object.my_works.published,
+      each_serializer: Api::V1::SimpleWorkSerializer
+    ).serializable_hash
+  end
+
+  def copyrighted_works
+    ActiveModelSerializers::SerializableResource.new(
+      object.copyrighted_works,
       each_serializer: Api::V1::SimpleWorkSerializer
     ).serializable_hash
   end

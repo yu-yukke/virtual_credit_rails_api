@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
       resources :tags, only: %i[create]
 
-      resources :users, only: %i[index] do
+      resources :users, only: %i[index show], param: :slug do
         collection do
           get '/me', to: 'users_me#show'
           patch '/me', to: 'users_me#update'

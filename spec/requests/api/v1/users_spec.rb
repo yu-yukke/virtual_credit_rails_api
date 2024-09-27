@@ -490,7 +490,7 @@ RSpec.describe 'Api::V1::Users' do
         request
         body = response.parsed_body
 
-        expect(body['data'][0]['relatedWorks'].pluck('id')).not_to include(unpublished_work.id)
+        expect(body['data'][0]['myWorks'].pluck('id')).not_to include(unpublished_work.id)
       end
 
       it 'returns correct meta pagination' do
@@ -541,6 +541,93 @@ RSpec.describe 'Api::V1::Users' do
           'totalCount' => 12,
           'totalPages' => 1
         )
+      end
+    end
+  end
+
+  #   ..######...########.########......##.##....######..##.....##..#######..##......##
+  #   .##....##..##..........##.........##.##...##....##.##.....##.##.....##.##..##..##
+  #   .##........##..........##.......#########.##.......##.....##.##.....##.##..##..##
+  #   .##...####.######......##.........##.##....######..#########.##.....##.##..##..##
+  #   .##....##..##..........##.......#########.......##.##.....##.##.....##.##..##..##
+  #   .##....##..##..........##.........##.##...##....##.##.....##.##.....##.##..##..##
+  #   ..######...########....##.........##.##....######..##.....##..#######...###..###.
+
+  describe 'GET #show' do
+    subject(:request) do
+      get api_v1_user_path(slug:), headers:
+    end
+
+    let_it_be(:users_me) { create(:user, :confirmed) }
+
+    context 'when user does not signed-in and user does not exist' do
+      let(:slug) { 'not-exist-user' }
+
+      it_behaves_like 'not_found' do
+        before { request }
+      end
+    end
+
+    context 'with activated user when user does not signed-in' do
+      let_it_be(:headers) { {} }
+      let_it_be(:user) { create(:user, :activated, :with_works, :with_copyrights) }
+      let(:slug) { user.slug }
+
+      it_behaves_like 'not_found' do
+        before { request }
+      end
+    end
+
+    context 'with published user when user does not signed-in' do
+      let_it_be(:headers) { {} }
+      let_it_be(:user) { create(:user, :published, :with_works, :with_copyrights) }
+      let(:slug) { user.slug }
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns the user' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']['id']).to eq(user.id.to_s)
+      end
+    end
+
+    context 'when user signed-in and user does not exist' do
+      let_it_be(:headers) { sign_in(users_me) }
+      let(:slug) { 'not-exist-user' }
+
+      it_behaves_like 'not_found' do
+        before { request }
+      end
+    end
+
+    context 'with activated user when user signed-in' do
+      let_it_be(:headers) { sign_in(users_me) }
+      let_it_be(:user) { create(:user, :activated, :with_works, :with_copyrights) }
+      let(:slug) { user.slug }
+
+      it_behaves_like 'not_found' do
+        before { request }
+      end
+    end
+
+    context 'with published user when user signed-in' do
+      let_it_be(:headers) { sign_in(users_me) }
+      let_it_be(:user) { create(:user, :published, :with_works, :with_copyrights) }
+      let(:slug) { user.slug }
+
+      it_behaves_like 'ok' do
+        before { request }
+      end
+
+      it 'returns the user' do
+        request
+        body = response.parsed_body
+
+        expect(body['data']['id']).to eq(user.id.to_s)
       end
     end
   end
